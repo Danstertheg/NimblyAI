@@ -1,0 +1,54 @@
+.button-bottom-row{
+    height:70px;
+    width:100%;
+    background-color: #1b1c26;   
+    color:#9feaf9;
+    display:flex;
+    flex-direction: row;
+    overflow-x: scroll;
+}
+.button-bottom{
+    width:100px;
+    min-width:100px;
+    // box-shadow: 5px 1px  5px #9feaf9;
+    background-color: #1b1c26;  
+    border: 1px solid #9feaf9;
+    color:#9feaf9;
+}
+.button-bottom:hover{
+    background-color:#9feaf9;
+    color:#1b1c26;
+}
+.button-inverse{
+    width:100px;
+    min-width:100px;
+    border: 1px solid #9feaf9;
+    background-color:#9feaf9;
+    color:#1b1c26;
+}
+.button-inverse:hover{
+    background-color: #00d5ff;
+}
+
+
+/* Scroll bar CSS */
+/* width */
+::-webkit-scrollbar {
+    
+    height:10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #1b1c26; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #9feaf9; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
