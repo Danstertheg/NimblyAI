@@ -237,3 +237,29 @@ main footer a{
 	width:100%;
 	
 }
+
+
+/* Scroll bar CSS */
+/* width */
+::-webkit-scrollbar {
+    
+    width:10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    // background: #1b1c26; 
+	background-color: #3b3e49;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    // background: #000885; 
+	background-color: #6fbced;
+	border-radius: 25px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: hotpink; 
+  }

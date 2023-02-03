@@ -32,8 +32,8 @@
               { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" }
             ],
             "styles": [
-              "src/styles.scss"
-         
+              "src/styles.scss",
+              "node_modules/font-awesome/css/font-awesome.css"
             ],
             "scripts": ["node_modules/tinymce/tinymce.min.js"]
           },
