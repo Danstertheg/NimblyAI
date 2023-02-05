@@ -22,6 +22,9 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { SignupPageComponent } from './signup-page/signup-page.component';
 import { ButtonBottomRowComponent } from './button-bottom-row/button-bottom-row.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PremiumModalComponent } from './premium-modal/premium-modal/premium-modal.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     LandingBannerComponent,
     LoginPageComponent,
     SignupPageComponent,
-    ButtonBottomRowComponent
+    ButtonBottomRowComponent,
+    PremiumModalComponent
 
     
   ],
@@ -50,9 +54,17 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     EditorModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
-  providers: [TextAreaInputComponent],
+  providers: [
+    TextAreaInputComponent,
+    {
+      provide: MatDialogRef,
+      useValue: {}
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
