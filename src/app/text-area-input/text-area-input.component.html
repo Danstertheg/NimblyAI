@@ -20,24 +20,24 @@
           <input id="tab2-2" name="tabs-two" type="radio">
           <div style = "padding:0px;height:100%;">
             <!-- <h4>Tab Two</h4> -->
-            <!-- <textarea id='AIresponse'  maxLength='1000'>{{AIresponse}}</textarea> -->
-            <div class = "AIresponse">{{AIresponse}}</div>
+            <textarea id='AIresponse'  maxLength='1000'>{{AIresponse}}</textarea>
+            <!-- <div class = "AIresponse">{{AIresponse}}</div> -->
           </div>
         </div>
       </div>
 </div>
 
 <div class = "button-bottom-row">
-  <button class = "button-bottom" (click) = "aiTest()" >Generate Ideas</button>
-  <button class = "button-bottom">Improve</button>
-  <button class = "button-bottom">Fix Grammar</button>
-  <button class = "button-bottom">Write Draft</button>
-  <button class = "button-bottom">Summarize</button>
-  <button class = "button-bottom">Completion</button>
-  <button class = "button-bottom">Translate</button>
-  <button class = "button-bottom">Create Poem</button>
-  <button class = "button-bottom">Create Script</button>
-  <button class = "button-bottom">Create Story</button>
-  <button class = "button-inverse">Save All</button>
+  <button class = "button-bottom" (click) = " generateIdeas()" >Generate Ideas</button>
+  <button class = "button-bottom" (click) = "improveText()">Improve</button>
+  <button class = "button-bottom" (click) = "fixGrammar()">Fix Grammar</button>
+  <button class = "button-bottom" (click) = "writeDraft()">Write Draft</button>
+  <button class = "button-bottom" (click) = "summarize()">Summarize</button>
+  <button class = "button-bottom" (click) = "complete()">Completion</button>
+  <button class = "button-bottom" (click) = "translate()">Translate</button>
+  <button class = "button-bottom" (click) = "createPoem()"> Poem</button>
+  <button class = "button-bottom" (click) = "createScript()">Create Script</button>
+  <button class = "button-bottom" (click) = "createStory()">Create Story</button>
+  <button class = "button-inverse" (click) = "test()">Save All</button>
   
 </div>

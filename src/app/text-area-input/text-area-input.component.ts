@@ -18,9 +18,7 @@ export class TextAreaInputComponent implements OnInit {
       AIInput: new FormControl('')
     });
   }
-  aiTest(){
-    this.AIresponse = 'new value'
-  }
+  
   set data(val: string){
     // this.AIWriter.value.AIInput = val;
     this.AIresponse = val;
@@ -31,5 +29,80 @@ export class TextAreaInputComponent implements OnInit {
   }
   ngOnInit(): void {
   }
+  generateIdeas(){
+    this.openAI("Please generate ideas about: ")
+  }
+  improveText(){
+    this.openAI("Please Improve the following text: ")
+  }
+  fixGrammar(){
+    this.openAI("Please fix the grammar mistakes in the followng text: ")
+  }
+  writeDraft(){
+    this.openAI("Please write a draft on the prompt: ")
+  }
+  summarize(){
+    this.openAI("Please summarize the following text: ")
+  }
+  complete(){
+    this.openAI("Please add more to the following text and complete it if possible : ")
+  }
+  translate(){
+    this.openAI("Please find out the language used and translate the following text into english: ")
+  }
+  createPoem(){
+    this.openAI("Please create a poem using the prompt: ")
+  }
+  createScript(){
+    this.openAI("Please create a script using the prompt: ")
+  }
+  createStory(){
+    this.openAI("Please create story using the prompt: ")
+  }
+  test(){
+    console.log(this.AIWriter.value.AIInput)
+  }
+  openAI(promptz : string){
+    let prompt = promptz + this.AIWriter.value.AIInput;
+    let engine = 'text-davinci-002';
+    let sessionToken = localStorage.getItem("sessionToken");
+  const request = new XMLHttpRequest();
+  request.open('POST', 'https://finaltest-ten.vercel.app/api/handleAI/premium');
+  request.setRequestHeader('Content-Type', 'application/json');
+  request.setRequestHeader('Authorization', `Bearer ${sessionToken}`);
+
+  request.onload = () =>  {
+    if (request.status >= 200 && request.status < 400) {
+      // Success!
+      const response = JSON.parse(request.responseText);
+      const completedText = response.completedText;
+      this.AIresponse = completedText;
+      // const output = document.getElementById("output");
+      // output.value = completedText;
+      // document.getElementById("loader").innerHTML = '';
+    } else {
+      // There was an error
+      console.error(request.responseText);
+    }
+  };
+
+  request.onerror = function() {
+    console.error('An error occurred while making the request');
+  };
+
+  const data = {
+    model: engine,
+    prompt: prompt
+  };
+  // document.getElementById("loader").innerHTML = '<span>Loading, Please wait...</span>'; // Set here the image before sending request
+  request.send(JSON.stringify(data));
+  }
+
+
+
+
+
+
+
 
 }
