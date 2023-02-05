@@ -21,6 +21,8 @@ import { LandingBannerComponent } from './landing-banner/landing-banner.componen
 import { LoginPageComponent } from './login-page/login-page.component';
 import { SignupPageComponent } from './signup-page/signup-page.component';
 import { ButtonBottomRowComponent } from './button-bottom-row/button-bottom-row.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,9 +49,10 @@ import { ButtonBottomRowComponent } from './button-bottom-row/button-bottom-row.
     BrowserModule,
     AppRoutingModule,
     EditorModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [TextAreaInputComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

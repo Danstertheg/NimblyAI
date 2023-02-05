@@ -1,4 +1,7 @@
 
+
+
+
 <div class ="docInput">
 
     <div class="tabs" style="height:100%;">
@@ -7,7 +10,9 @@
           <input id="tab2-1" name="tabs-two" type="radio" checked="checked">
           <div style = "padding:0px;height:100%;">
             <!-- <h4>Tab One</h4> -->
-            <textarea id='text' placeholder="Enter Your Text Here..." maxLength='1000'></textarea>
+            <form  class="login" [formGroup] = "AIWriter">
+            <textarea id='text' placeholder="No more than 10000 characters" maxLength='10000' formControlName = "AIInput"></textarea>
+          </form>
           </div>
         </div>
         <div class="tab-2">
@@ -15,25 +20,24 @@
           <input id="tab2-2" name="tabs-two" type="radio">
           <div style = "padding:0px;height:100%;">
             <!-- <h4>Tab Two</h4> -->
-            <textarea id='AIResponse'  value = {{AIresponse}} maxLength='1000'></textarea>
+            <!-- <textarea id='AIresponse'  maxLength='1000'>{{AIresponse}}</textarea> -->
+            <div class = "AIresponse">{{AIresponse}}</div>
           </div>
         </div>
       </div>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div class = "button-bottom-row">
+  <button class = "button-bottom" (click) = "aiTest()" >Generate Ideas</button>
+  <button class = "button-bottom">Improve</button>
+  <button class = "button-bottom">Fix Grammar</button>
+  <button class = "button-bottom">Write Draft</button>
+  <button class = "button-bottom">Summarize</button>
+  <button class = "button-bottom">Completion</button>
+  <button class = "button-bottom">Translate</button>
+  <button class = "button-bottom">Create Poem</button>
+  <button class = "button-bottom">Create Script</button>
+  <button class = "button-bottom">Create Story</button>
+  <button class = "button-inverse">Save All</button>
+  
 </div>

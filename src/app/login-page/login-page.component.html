@@ -1,14 +1,19 @@
 
 <div class = "login-page">
-<form class="login">
+
+
+
+<form class="login" [formGroup] = "loginform">
     <h2>Welcome, User!</h2>
     <p>Please log in</p>
-    <input type="text" placeholder="User Name" />
-    <input type="password" placeholder="Password" />
-    <input type="submit" value="Log In" />
+    <input type="text" placeholder="email" formControlName = "email" />
+    <input type="password" placeholder="Password" formControlName = "password" />
+    <input type="submit" value="Log In" (click) = "login()" />
     <div class="links">
       <a >Forgot password</a>
       <a (click) = "redirectSignup()">Register</a>
     </div>
+    <p style = "width:100%;">{{errorMessage}}</p>
   </form>
+
 </div>

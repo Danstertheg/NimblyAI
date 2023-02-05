@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { TextAreaInputComponent } from '../text-area-input/text-area-input.component';
 
 @Component({
   selector: 'app-button-bottom-row',
@@ -7,8 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ButtonBottomRowComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(public textAreaInputComponent:TextAreaInputComponent) { }
+  openAI(){
+    console.log(this.textAreaInputComponent.input);
+this.textAreaInputComponent.data = "pressed the button.";
+  }
   ngOnInit(): void {
   }
 
