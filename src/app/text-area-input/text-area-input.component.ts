@@ -11,12 +11,20 @@ import { FormGroup, FormControl } from '@angular/forms';
 @Injectable()
 export class TextAreaInputComponent implements OnInit {
   @Input() AIresponse: string = '';
+  
   AIWriter: FormGroup;
-
+  // AITab: FormGroup;
+  // AITabZero: FormGroup;
   constructor() { 
     this.AIWriter = new FormGroup({
       AIInput: new FormControl('')
     });
+    // this.AITabZero = new FormGroup({
+    //   tabRadioZero: new FormControl('')
+    // })
+    // this.AITab = new FormGroup({
+    //   tabRadio : new FormControl('')
+    // });
   }
   
   set data(val: string){
@@ -79,6 +87,8 @@ export class TextAreaInputComponent implements OnInit {
       const response = JSON.parse(request.responseText);
       const completedText = response.completedText;
       this.AIresponse = completedText;
+      // this.AITabZero.value.tabRadioZero = false;
+      // this.AITab.value.tabRadio = true;
       // const output = document.getElementById("output");
       // output.value = completedText;
       // document.getElementById("loader").innerHTML = '';

@@ -4,20 +4,24 @@
 
 <div class ="docInput">
 
-    <div class="tabs" style="height:100%;">
+    <div class="tabs" >
         <div class="tab-2">
           <label for="tab2-1">Input</label>
-          <input id="tab2-1" name="tabs-two" type="radio" checked="checked">
+          <!-- <form  [formGroup] = "AITabZero"> -->
+          <input id="tab2-1" name="tabs-two" type="radio" checked="checked" >
+          <!-- </form> -->
           <div style = "padding:0px;height:100%;">
             <!-- <h4>Tab One</h4> -->
-            <form  class="login" [formGroup] = "AIWriter">
+            <form class="AI-Input" [formGroup] = "AIWriter">
             <textarea id='text' placeholder="No more than 10000 characters" maxLength='10000' formControlName = "AIInput"></textarea>
           </form>
           </div>
         </div>
         <div class="tab-2">
           <label for="tab2-2">AI Output</label>
-          <input id="tab2-2" name="tabs-two" type="radio">
+          <!-- <form  [formGroup] = "AITab"> -->
+          <input id="tab2-2" name="tabs-two" type="radio" formControlName = "tabRadio" >
+          <!-- </form> -->
           <div style = "padding:0px;height:100%;">
             <!-- <h4>Tab Two</h4> -->
             <textarea id='AIresponse'  maxLength='1000'>{{AIresponse}}</textarea>
@@ -25,8 +29,9 @@
           </div>
         </div>
       </div>
+      <div class = "credits">Credits: 9</div>
 </div>
-
+<div class = "btn-wrapper">
 <div class = "button-bottom-row">
   <button class = "button-bottom" (click) = " generateIdeas()" >Generate Ideas</button>
   <button class = "button-bottom" (click) = "improveText()">Improve</button>
@@ -40,4 +45,5 @@
   <button class = "button-bottom" (click) = "createStory()">Create Story</button>
   <button class = "button-inverse" (click) = "test()">Save All</button>
   
+</div>
 </div>

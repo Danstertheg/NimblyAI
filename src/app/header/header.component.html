@@ -6,8 +6,13 @@
 				<span class="logo">EinsteinWriter</span>
 			</div>
 			<div class="nav-wrap">
+
 				<ul class="nav-list">
-					<li><a href="/">Premium</a></li>
+					<li>
+						<a (click) = "openGetPremiumModal()">
+						<i class="fa-solid fa-star"></i>
+						Premium</a>
+					</li>
 					<li class="active"><a (click) = "einsteinWriter()" >Einstein Writer</a></li>
 					<li ><a (click) = "einsteinChat()">Einstein Chat</a></li>
 					<!-- <li><a href="#">Einstein Docs</a></li> -->
