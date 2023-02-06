@@ -10,7 +10,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 @Injectable()
 export class TextAreaInputComponent implements OnInit {
-  @Input() AIresponse: string = 'testarea';
+  @Input() AIresponse: string = '';
   AIWriter: FormGroup;
 
   constructor() { 
@@ -62,6 +62,8 @@ export class TextAreaInputComponent implements OnInit {
   test(){
     console.log(this.AIWriter.value.AIInput)
   }
+
+  
   openAI(promptz : string){
     let prompt = promptz + this.AIWriter.value.AIInput;
     let engine = 'text-davinci-002';

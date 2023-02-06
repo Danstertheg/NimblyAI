@@ -1,16 +1,26 @@
+// @font-face {
+//   font-family: 'Rocher';
+//   src: url(https://assets.codepen.io/9632/RocherColorGX.woff2);
+// }
+
+
 .landing-banner{
     width:100%;
+  //   font-family: Rocher;
+  // base-palette: 4;
+  // text-shadow: 4px 4px 0px #9feaf9;
     // height: calc(100% - 70px);
     height:100%;
     background-color:#1b1c26;
     display:flex;
     flex-direction: column;
+    font-weight: bold;
     color:#9feaf9;
     justify-content: center;
     align-items: center;
 }
 .logo-wrapper{
-    background-color: greenyellow;
+    background-color: #9feaf9;
     border-radius: 50%;
     height:200px;
     width:200px;
@@ -152,8 +162,18 @@ button{
 }
   .login-button{
     background-color:#9feaf9;
-   
+    box-shadow:0px 6px 0px #01677b;
+
+  }
+  .login-button:active{
+    background-color: #01677b;
+    border: 0px;
   }
   .signup-button{
     background-color:hotpink;
+    box-shadow:0px 6px 0px rgb(127, 2, 65);
+  }
+  .signup-button:active{
+    background-color: rgb(127, 2, 65);
+    border: 0px;
   }
