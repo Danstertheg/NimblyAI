@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-
+import {MatDialog} from '@angular/material/dialog';
+import { SpinnerOverlayComponentComponent } from '../spinner-overlay-component/spinner-overlay-component.component';
 
 @Component({
   selector: 'app-text-area-input',
@@ -16,7 +17,7 @@ export class TextAreaInputComponent implements OnInit {
   AIWriter: FormGroup;
   // AITab: FormGroup;
   // AITabZero: FormGroup;
-  constructor() { 
+  constructor(private modalOpener: MatDialog) { 
     this.AIWriter = new FormGroup({
       AIInput: new FormControl('')
     });
@@ -72,7 +73,14 @@ export class TextAreaInputComponent implements OnInit {
     console.log(this.AIWriter.value.AIInput)
   }
 
-  
+  selectTabOne(){
+    this.tabOne = true;
+    this.tabTwo = false;
+  }
+  selectTabTwo(){
+    this.tabOne = false;
+      this.tabTwo = true;
+  }
   openAI(promptz : string){
     let prompt = promptz + this.AIWriter.value.AIInput;
     let engine = 'text-davinci-002';
@@ -85,6 +93,7 @@ export class TextAreaInputComponent implements OnInit {
   request.onload = () =>  {
     if (request.status >= 200 && request.status < 400) {
       // Success!
+      loader.close(SpinnerOverlayComponentComponent);
       const response = JSON.parse(request.responseText);
       const completedText = response.completedText;
       this.AIresponse = completedText;
@@ -109,6 +118,7 @@ export class TextAreaInputComponent implements OnInit {
     model: engine,
     prompt: prompt
   };
+  var loader = this.modalOpener.open(SpinnerOverlayComponentComponent);
   // document.getElementById("loader").innerHTML = '<span>Loading, Please wait...</span>'; // Set here the image before sending request
   request.send(JSON.stringify(data));
   }

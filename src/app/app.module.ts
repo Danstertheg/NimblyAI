@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +26,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PremiumModalComponent } from './premium-modal/premium-modal/premium-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { SpinnerOverlayComponentComponent } from './spinner-overlay-component/spinner-overlay-component.component';
+import { PremiumPageComponent } from './premium-page/premium-page.component';
+import { PaymentModalComponent } from './payment-modal/payment-modal.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +49,11 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
     LoginPageComponent,
     SignupPageComponent,
     ButtonBottomRowComponent,
-    PremiumModalComponent
+    PremiumModalComponent,
+    SpinnerOverlayComponentComponent,
+    PremiumPageComponent,
+    PaymentModalComponent,
+   
 
     
   ],
@@ -56,7 +64,8 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
     RouterModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     TextAreaInputComponent,

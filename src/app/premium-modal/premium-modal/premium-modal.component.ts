@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PremiumPageComponent } from 'src/app/premium-page/premium-page.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-premium-modal',
@@ -7,8 +10,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PremiumModalComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router,private modalOpener: MatDialog) { }
+  goToPremium(){
+    // this.router.navigate(['/premiumPage']);
+    this.modalOpener.open(PremiumPageComponent);
 
+  }
   ngOnInit(): void {
   }
 
