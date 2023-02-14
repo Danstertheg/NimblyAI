@@ -1,3 +1,5 @@
+<mat-dialog-content class="no-padding">
+
     <div class="phone">
       <div class = "become-premium">Become Premium</div>
       
@@ -7,15 +9,18 @@
         <span class="radio__interval">1 Month</span>
         <span class="radio__price">9.99 $</span>
         <small class="radio__price__info">/ Month</small>
-        </label><!--
-      --><input type="radio" name="selection" id="radio-2"><!--
-      --><label class="right-radius" for="radio-2">
+        </label>
+      <input type="radio" name="selection" id="radio-2">
+      <label class="right-radius" for="radio-2">
         <span class="radio__interval">Buy Credits</span>
         <span class="radio__price">1.00 $</span>
         <small class="radio__price__info">/ Credit</small>
         </label>
+     
       </div>
       
       <div class="check-out" (click) = "openPaymentForm()"> CHECK OUT </div>
+      <div mat-dialog-close class = "cancel-btn" >Cancel</div>
     </div>
-    
+      <!-- Your modal content here -->
+</mat-dialog-content>

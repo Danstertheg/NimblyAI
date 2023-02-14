@@ -1,6 +1,6 @@
 #card-element {
     width: 100%;
-    height: 40px;
+    height: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin: 10px 0;
@@ -15,7 +15,7 @@
   }
   
   form {
-    width: 500px;
+    width: 300px;
     margin: 0 auto;
     text-align: center;
     font-family: 'Helvetica Neue', sans-serif;
@@ -25,4 +25,79 @@
     min-width: 333px;
     height: 567px;
     background-color: #1b1c26;
+    color:#9feaf9;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
   }
+  .modal-title{
+    margin-top: 10px;
+    width:100%;
+    text-align: center;
+    font-weight: 600;
+    font-size: 40px;
+  }
+  .section-title{
+    width:100%;
+    text-align: center;
+    font-weight: 500;
+    font-size: 25px;
+    margin-top:25px;
+  }
+  .checkout-item{
+    width:240px;
+    padding:15px;
+    border-radius:15px;
+    color:#9feaf9;
+    background-color:rgba(53, 59, 71, 1)
+  }
+  #payButton{
+    background-color:#54c7ec;
+    color:#1b1c26;
+
+    min-width: 240px;
+    margin-top:15px;
+    font-size: 1.2em;
+    font-weight: bolder;
+    // margin: 0 0;
+    padding: 50px;
+    padding: 15px 20px;
+    text-transform: uppercase;
+    color: #1b1c26;
+    border: none;
+    border-radius: 6px;
+    background: #54c7ec;
+    transition: all 0.25s ease-in-out 0s;
+    // box-shadow: 0px 5px 10px -2px rgb(159 234 249 / 8)
+  }
+  .cancel-text{
+    font-size: 10px;
+    margin: 10px;
+  }
+
+  
+.cancel-btn{
+  // position: relative;
+  // top:43%;
+  margin-top:10px;
+  background-color: rgba(53, 59, 71, 1) !important;
+  font-size: 1.2em;
+  font-weight: bolder;
+  min-width: 240px;
+  color:#9feaf9;
+  margin: 0 0;
+  padding: 50px;
+  // position: absolute;
+  // bottom: 50px;
+  // left: 50%;
+  text-align: center;
+  padding: 15px 20px;
+
+  // cursor: pointer;
+  // transform: translate(-50%, -50%) scale(1);
+  text-transform: uppercase;
+
+  // color: $theme-contrast;
+  border: none;
+  border-radius: 6px;
+}

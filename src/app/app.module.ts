@@ -29,6 +29,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { SpinnerOverlayComponentComponent } from './spinner-overlay-component/spinner-overlay-component.component';
 import { PremiumPageComponent } from './premium-page/premium-page.component';
 import { PaymentModalComponent } from './payment-modal/payment-modal.component';
+import { ChatMessageComponent } from './chat-message/chat-message.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { PaymentModalComponent } from './payment-modal/payment-modal.component';
     SpinnerOverlayComponentComponent,
     PremiumPageComponent,
     PaymentModalComponent,
+    ChatMessageComponent,
    
 
     

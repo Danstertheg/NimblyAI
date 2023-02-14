@@ -59,7 +59,8 @@
 
 .signin input[type=submit] {
   border: none;
-  background: #17d2f8;
+  // background: #17d2f8;
+  background-color: #54c7ec;
   color: white;
   font-weight: bold;  
   transition: 0.2s;
@@ -72,7 +73,7 @@
 
   .signin h2 {
     margin: 20px 0 0; 
-    color: #17d2f8;
+    color: #54c7ec;
     font-size: 28px;
   }
 

@@ -13,14 +13,14 @@
           <div style = "padding:0px;height:100%;">
             <!-- <h4>Tab One</h4> -->
             <form class="AI-Input" [formGroup] = "AIWriter">
-            <textarea id='text' placeholder="No more than 10000 characters" maxLength='10000' formControlName = "AIInput"></textarea>
+            <textarea id='text' placeholder="No more than 10000 characters" maxLength='10000' name = "AIInput" formControlName = "AIInput"></textarea>
           </form>
           </div>
         </div>
         <div class="tab-2">
           <label for="tab2-2">AI Output</label>
           <!-- <form  [formGroup] = "AITab"> -->
-          <input id="tab2-2" name="tabs-two" type="radio" formControlName = "tabRadio" (click) ="selectTabTwo" [checked] = 'tabTwo'>
+          <input id="tab2-2" name="tabs-two" type="radio" (click) ="selectTabTwo" [checked] = 'tabTwo'>
           <!-- </form> -->
           <div style = "padding:0px;height:100%;">
             <!-- <h4>Tab Two</h4> -->
@@ -29,7 +29,7 @@
           </div>
         </div>
       </div>
-      <div class = "credits">Credits: 9</div>
+      <!-- <div class = "credits">Credits: 9</div> -->
 </div>
 <div class = "btn-wrapper">
 <div class = "button-bottom-row">

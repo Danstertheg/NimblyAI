@@ -1,38 +1,18 @@
-<div class = "chatlogs">
-    <div class = "logs">
-        <h2 class = "chat-title">Chat Messages</h2>
-<div class = "log"><div class="container">
-    <img src="../../assets/icon.jpeg" alt="Avatar" style="width:100%;">
-    <p>Hello. How are you today?</p>
-    <span class="time-right">11:00</span>
-  </div>
-  </div>
-<div class = "log"><div class="container darker">
-    <img src="../../assets/icon2.jpeg" alt="Avatar" class="right" style="width:100%;">
-    <p>Hey! I'm fine. Thanks for asking!</p>
-    <span class="time-left">11:01</span>
-  </div>
-  </div>
-<div class = "log"><div class="container">
-    <img src="../../assets/icon.jpeg" alt="Avatar" style="width:100%;">
-    <p>Sweet! So, what do you wanna do today?</p>
-    <span class="time-right">11:02</span>
-  </div>
-  </div>
-<div class = "log"><div class="container darker">
-    <img src="../../assets/icon2.jpeg" alt="Avatar" class="right" style="width:100%;">
-    <p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
-    <span class="time-left">11:05</span>
-  </div></div>
+<div class="chatlogs">
+  <div class="logs">
+    <h2 class="chat-title">Chat Messages</h2>
 
+    <app-chat-message [sender]="false" message="sup" timestamp="11:00"></app-chat-message>
 
+    <app-chat-message [sender]="true" message="Hi I am doing well" timestamp="11:01"></app-chat-message>
 
+    <app-chat-message [sender]="false" message="ok, good to know" timestamp="11:04"></app-chat-message>
 
-    </div>
+  </div>
 
-    <div class = "chatInput">
-        <textarea class = "input"></textarea>
-        <button class = "submit">Send</button>
-        <button class = "submit ai">AI</button>
-    </div>
+  <form [formGroup]="messageForm" class="chatInput">
+    <textarea class="input" id="message" formControlName="message"></textarea>
+    <button class="submit" type="button" (click)="sendMessage()">Send</button>
+    <button class="submit ai">AI</button>
+  </form>
 </div>
