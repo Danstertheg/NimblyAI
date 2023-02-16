@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import io from "socket.io-client";
 import { Message } from '../domains/message';
@@ -17,6 +17,22 @@ const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need 
   styleUrls: ['./chatlogs.component.scss']
 })
 export class ChatlogsComponent implements OnInit {
+  private socket: any;
+
+  // Conversation ID of this chat log component (inputted by parent)
+  @Input() conversationId?: string;
+
+  // User's unique identifier is their email
+  myId = localStorage.getItem("email");
+
+  // Message array to be pulled from DB
+  messages?: Array<Message> = [{
+    senderEmail: this.myId || "your email",
+    timestamp: "2:45 PM",
+    text: "This is a test message, as if written by you",
+  }];
+  
+  // Handle for form to send message
   messageForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {
@@ -26,6 +42,25 @@ export class ChatlogsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.socket = io(serverUrl);
+
+    this.socket.on("connect", () => {
+      console.log("Successfully connected to glitch server!")
+
+      // Join conversation on socket-io:
+      this.socket.emit("join", this.conversationId, this.myId);
+
+      // How client should react when a new message arrives (including one of their own being broadcasted):
+      this.socket.on("message", (senderEmail: string, timestamp: string, text: string, aiAnswer?: string) => {
+        // Add to local array of messages
+        this.messages?.push({
+          senderEmail: senderEmail,
+          timestamp: timestamp,
+          text: text,
+          aiAnswer: aiAnswer
+        })
+      })
+    })
   }
 
   sendMessage() {

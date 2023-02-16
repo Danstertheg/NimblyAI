@@ -27,13 +27,8 @@
     "bootstrap": "^5.2.3",
     "font-awesome": "^4.7.0",
     "quill": "^1.3.7",
-<<<<<<< HEAD
     "socket.io": "^4.6.0",
     "socket.io-client": "^4.6.0",
-=======
-    "socket.io": "4.6.0",
-    "socket.io-client": "4.6.0",
->>>>>>> e9ede0050c8c2989652c1cacb741ae20da7317ae
     "tinymce": "^6.3.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
