@@ -8,7 +8,6 @@ import { HeaderComponent } from './header/header.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ChatboxComponent } from './chatbox/chatbox.component';
 import { TextAreaInputComponent } from './text-area-input/text-area-input.component';
-import { RichTextEditorComponent } from './rich-text-editor/rich-text-editor.component';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { ButtonComponent } from './button/button.component';
 import { ButtonRightAreaComponent } from './button-right-area/button-right-area.component';
@@ -30,6 +29,9 @@ import { SpinnerOverlayComponentComponent } from './spinner-overlay-component/sp
 import { PremiumPageComponent } from './premium-page/premium-page.component';
 import { PaymentModalComponent } from './payment-modal/payment-modal.component';
 import { ChatMessageComponent } from './chat-message/chat-message.component';
+import { BuyCreditsModalComponent } from './buy-credits-modal/buy-credits-modal.component';
+import { ThankYouPageComponent } from './thank-you-page/thank-you-page.component';
+import { AccountPageComponent } from './account-page/account-page.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,6 @@ import { ChatMessageComponent } from './chat-message/chat-message.component';
     HomepageComponent,
     ChatboxComponent,
     TextAreaInputComponent,
-    RichTextEditorComponent,
     ButtonComponent,
     ButtonRightAreaComponent,
     EinsteinWriterComponent,
@@ -55,6 +56,9 @@ import { ChatMessageComponent } from './chat-message/chat-message.component';
     PremiumPageComponent,
     PaymentModalComponent,
     ChatMessageComponent,
+    BuyCreditsModalComponent,
+    ThankYouPageComponent,
+    AccountPageComponent,
    
 
     

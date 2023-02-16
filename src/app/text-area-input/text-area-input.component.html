@@ -13,7 +13,7 @@
           <div style = "padding:0px;height:100%;">
             <!-- <h4>Tab One</h4> -->
             <form class="AI-Input" [formGroup] = "AIWriter">
-            <textarea id='text' placeholder="No more than 10000 characters" maxLength='10000' name = "AIInput" formControlName = "AIInput"></textarea>
+            <textarea id='text' placeholder="No more than 750 characters" maxLength='750' name = "AIInput" formControlName = "AIInput"></textarea>
           </form>
           </div>
         </div>
@@ -39,11 +39,13 @@
   <button class = "button-bottom" (click) = "writeDraft()">Write Draft</button>
   <button class = "button-bottom" (click) = "summarize()">Summarize</button>
   <button class = "button-bottom" (click) = "complete()">Completion</button>
+</div>
+<div class = "button-bottom-row">
   <button class = "button-bottom" (click) = "translate()">Translate</button>
   <button class = "button-bottom" (click) = "createPoem()"> Poem</button>
   <button class = "button-bottom" (click) = "createScript()">Create Script</button>
   <button class = "button-bottom" (click) = "createStory()">Create Story</button>
-  <button class = "button-inverse" (click) = "test()">Save All</button>
-  
+  <button class = "button-bottom" (click) = "rephrase()">Rephrase</button>
+  <button class = "button-inverse" (click) = "test()">+</button>
 </div>
 </div>

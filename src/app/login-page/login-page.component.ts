@@ -25,7 +25,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   async login() {
-    console.log(this.loginform.value);
+    // console.log(this.loginform.value);
     let username = this.loginform.value.email;
     let password = this.loginform.value.password;
     // Send a POST request to the server to log in the user
@@ -47,19 +47,19 @@ export class LoginPageComponent implements OnInit {
       const data = await response.json();
       
       if (data.sessionToken) {
-      console.log(data.sessionToken);
+      // console.log(data.sessionToken);
     }
 
 
       localStorage.setItem('email', username);
-      console.log(data.message);
-      console.log(data.error);
+      // console.log(data.message);
+      // console.log(data.error);
     
       // If the login was successful, redirect the user to the home page
       
       localStorage.setItem('sessionToken', data.sessionToken);
     
-      console.log("sending session token" + JSON.stringify(data.sessionToken))
+      // console.log("sending session token" + JSON.stringify(data.sessionToken))
       this.router.navigate(['/einsteinWriter'])
 
     } else {

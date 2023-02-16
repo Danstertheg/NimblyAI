@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import io from "socket.io-client";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -7,6 +8,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./chatlogs.component.scss']
 })
 export class ChatlogsComponent implements OnInit {
+  private socket: any;
+
   messageForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {
@@ -16,6 +19,8 @@ export class ChatlogsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.socket = io("https://finaltest-ten.vercel.app/");
+    
   }
 
   sendMessage() {

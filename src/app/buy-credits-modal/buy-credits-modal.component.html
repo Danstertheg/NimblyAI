@@ -1,0 +1,44 @@
+<div class = "payment-modal-container">
+    <div class = "modal-title">Check Out</div>
+    <div class = "section-title">Please Select An Item</div>
+
+    <label for = "One" class = "checkout-item optionOne" (click) = "selectOptionOne()">
+        <input type = "radio" name = "One" [checked] = "optionOne" (click) = "selectOptionOne()">
+        $1.00 = 4 credits
+    </label>
+    
+    <label for = "Two" class = "checkout-item optionTwo" (click) = "selectOptionTwo()">
+        <input type = "radio" name = "Two" [checked] = "optionTwo" (click) = "selectOptionTwo()">
+        $5.00 = 20 credits
+    </label>
+    <label for = "Three" class = "checkout-item optionThree" (click) = "selectOptionThree()">
+        <input type = "radio" name = "Three" [checked] = "optionThree" (click) = "selectOptionThree()">
+        $10.00 = 40 credits
+    </label>
+    <div class = "section-title" style = "margin:0 !important;">Payment Information</div>
+  <form style="margin-top: 10px;" id="payment-form">
+      <div class="form-row">
+        <!-- <input type = "text" placeholder="Full Name">
+        <input type = "text" placeholder="Street Address"> -->
+        
+        <label for="card-element">
+          Credit or debit card
+        </label>
+        <div id="card-element" #cardElement>
+          <!-- A Stripe Element will be inserted here. -->
+        </div>
+        <div style = "color:red">{{cardError}}</div>
+        <!-- Used to display form errors. -->
+        <div id="card-errors" role="alert"></div>
+      </div>
+    <input type ="radio" name = "terms-of-services" id = "terms-of-services" required>
+    <label for ="terms-of-services" >By purchasing credits you are agreeing to the <a href="https://stripe.com/legal/end-users" style="font-weight: 600;">terms and services</a></label>
+      <div style = "display: flex;flex-direction: row; width:100%">
+      <div mat-dialog-close id ="payButton" (click) = 'purchaseCredits()'>Purchase</div>
+      <div mat-dialog-close class = "cancel-btn"> Cancel</div>
+    </div>
+  </form>
+  
+  </div>
+  
+  

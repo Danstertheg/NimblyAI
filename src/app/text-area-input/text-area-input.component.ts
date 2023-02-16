@@ -69,6 +69,9 @@ export class TextAreaInputComponent implements OnInit {
   createStory(){
     this.openAI("Please create story using the prompt: ")
   }
+  rephrase(){
+    this.openAI("Please rephrase the following text: ")
+  }
   test(){
     console.log(this.AIWriter.value.AIInput)
   }
