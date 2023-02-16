@@ -2,12 +2,12 @@
   <div class="logs">
     <h2 class="chat-title">Chat Messages</h2>
 
-    <app-chat-message [sender]="false" message="sup" timestamp="11:00"></app-chat-message>
-
-    <app-chat-message [sender]="true" message="Hi I am doing well" timestamp="11:01"></app-chat-message>
-
-    <app-chat-message [sender]="false" message="ok, good to know" timestamp="11:04"></app-chat-message>
-
+    <app-chat-message *ngFor="let message of messages" 
+      [sender]="message.senderEmail === this.myId" 
+      [message]="message.text" 
+      [timestamp]="message.timestamp">
+    </app-chat-message>
+    
   </div>
 
   <form [formGroup]="messageForm" class="chatInput">
