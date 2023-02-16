@@ -1,0 +1,112 @@
+.account{
+    position: fixed;
+    top:70px;
+    height:calc(100% - 70px);
+    display: flex;
+    flex-direction: row;
+    width:100%;
+}
+.account-nav{
+    position: relative;
+height:100%;
+min-width:350px;
+background-color: #fff;
+}
+.profile{
+height:150px;
+border-bottom: 2px solid black;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+.profile img{
+    height:80px;
+    width:80px;
+    border-radius:50%;
+    background-color: aqua;
+}
+.profile .username{
+font-size: 25px;
+font-weight: bold;
+
+}
+.nav-buttons{
+overflow: hidden;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.nav-buttons .btn{
+    font-size: 20px;
+padding:25px;
+border-bottom: 1px solid gainsboro;
+width:100%;
+text-align: center;
+&:hover{
+    background-color: #1b1c26;
+    color:#9feaf9;
+}
+&:active{
+    border:none;
+}
+}
+
+.account-rendering{
+    height: 100%;
+    width:100%;
+    background-color: gainsboro;
+    min-width:600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.account-card{
+    height:75%;
+    width:85%;
+    min-height:400px;
+    min-width:500px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+.account-card .account-card-title{
+    width:100%;
+    text-align: center;
+    height:15%;
+    min-height:60px;
+    font-size: 40px;
+    font-weight: 600;
+}
+.account-card .account-card-content{
+    width:100%;
+    height:85%;
+    min-height:340px;
+    display: flex;
+    flex-direction: column;
+}
+.account-card .account-card-content .account-email{
+    // background-color: #1b1c26;
+    // color:#9feaf9;
+    border-bottom: 2px solid gainsboro;
+    border-top: 2px solid gainsboro;
+    text-align: center;
+    padding: 25px;
+    // width:500px;
+}
+span{
+    font-weight: bold;
+}
+.account-subscription{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+button{
+    padding:25px;
+    margin: 5px;
+    font-size: 15px;
+    background-color: #1b1c26;
+    color:#fff;
+    border-radius: 15px;
+}

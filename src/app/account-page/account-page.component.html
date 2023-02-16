@@ -1,1 +1,36 @@
 <app-header></app-header>
+<div class = "account">
+    <div class = "account-nav">
+        <div class = "profile">
+            <img alt = "profile" src = "./assets/icon.jpeg">
+            <div class = "username">userName</div>
+        </div>
+        <div class = "nav-buttons">
+            <div class = "btn" (click) = "switchTitle('Account')">Account</div>
+            <div class = "btn" (click) = "switchTitle('Security')">Security</div>
+            <div class = "btn">FAQ</div>
+            <div class = "btn">Logout</div>
+        </div>
+    </div>
+
+    <div class = "account-rendering">
+        <div class = "account-card">
+            <div class = "account-card-title">{{currentTab}}</div>
+            <div class = "account-card-content">
+                <div class = "account-email"><span>Email:</span> deeznutz@gmail.com</div>
+                <div class = "account-subscription">
+                    <h2>Subscription</h2>
+                    <h3>Current Status: Premium Member</h3>
+                    <span>Last Charged: 2/16/2023</span>
+                    <span>Next Charge Scheduled: 2/16/2023 </span>
+                    <div class = "account-subscription-options">
+                        <button>Pause Subscription</button>
+                        <button>Cancel Subscription</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</div>

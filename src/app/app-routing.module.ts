@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AccountPageComponent } from './account-page/account-page.component';
 import { EinsteinChatComponent } from './einstein-chat/einstein-chat.component';
 import { EinsteinWriterComponent } from './einstein-writer/einstein-writer.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: 'loginPage',component: LoginPageComponent},
   {path: 'signupPage',component:SignupPageComponent},
   {path: 'premiumPage', component:PremiumPageComponent},
-  {path: 'thankYouPage', component:ThankYouPageComponent}
+  {path: 'thankYouPage', component:ThankYouPageComponent},
+  {path: 'accountPage', component:AccountPageComponent}
 ];
 
 @NgModule({
