@@ -5,4 +5,4 @@ export interface Message {
     text: string;
 
     aiAnswer?: string; // OPTIONAL, only set if it was a question for AI
-  }
+}

@@ -1,6 +1,18 @@
 <div class="chatlogs">
   <div class="logs">
-    <h2 class="chat-title">Chat Messages</h2>
+    <div class="chat-title">
+      <h3>
+        <b>CHAT WITH: </b>
+        jman@martin.org, joe@gmail.com
+      </h3>
+
+      <button mat-raised-button color="primary"
+          (click)="openAddUserToConvDialog()"
+      >
+          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
+          Add User
+      </button>
+    </div>
 
     <app-chat-message *ngFor="let message of messages" 
       [sender]="message.senderEmail === this.myId" 
@@ -12,7 +24,8 @@
 
   <form [formGroup]="messageForm" class="chatInput">
     <textarea class="input" id="message" formControlName="message"></textarea>
-    <button class="submit" type="button" (click)="sendMessage()">Send</button>
-    <button class="submit ai">AI</button>
+    <button class="submit" type="button" (click)="sendMessage()"
+      [disabled]="!this.socket.connected">Send</button>
+    <button class="submit ai" [disabled]="!this.socket.connected">AI</button>
   </form>
 </div>

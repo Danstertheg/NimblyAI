@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chatbox.component.scss']
 })
 export class ChatboxComponent implements OnInit {
+  currentConversationId: string = "1";
 
   constructor() { }
 

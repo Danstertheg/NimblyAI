@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import io from "socket.io-client";
 import { Message } from '../domains/message';
+import { AddUserToConversationComponent } from '../chat-dialogs/add-user-to-conversation/add-user-to-conversation.component';
 
 const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need to specify port 
 
@@ -17,7 +19,7 @@ const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need 
   styleUrls: ['./chatlogs.component.scss']
 })
 export class ChatlogsComponent implements OnInit {
-  private socket: any;
+  socket: any;
 
   // Conversation ID of this chat log component (inputted by parent)
   @Input() conversationId?: string;
@@ -35,7 +37,7 @@ export class ChatlogsComponent implements OnInit {
   // Handle for form to send message
   messageForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private addUserToConversation: MatDialog) {
     this.messageForm = this.formBuilder.group({
       message: ['', Validators.required],
     });
@@ -79,5 +81,11 @@ export class ChatlogsComponent implements OnInit {
       // clear input field:
       this.messageForm.get('message')?.setValue("");
     }
+  }
+
+  openAddUserToConvDialog() {
+    this.addUserToConversation.open(AddUserToConversationComponent, {
+      data: this.conversationId
+    })
   }
 }

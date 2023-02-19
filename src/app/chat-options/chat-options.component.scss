@@ -76,3 +76,37 @@
   .searchButton i{
     color: #0052cc;
   }
+
+
+  .chat-options-menu {
+    background: gray;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0;
+  }
+  .conversation-toggle {
+    display: flex;
+    justify-content: center; // horizontal alignment for children
+
+    padding: 0.5rem;
+    margin: 0;
+  }
+  .toggle-buttons {
+    font-size: 12px;
+  }
+  .toggle-buttons .mat-button-toggle {
+    padding: 0em 1em;
+  }
+
+  .empty-message {
+    color: gray;
+    background-color: white;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .create-new-conversation-section {
+    display: flex;
+    justify-content: flex-end; // align it to the right of this box
+    padding: 0.5em;
+  }

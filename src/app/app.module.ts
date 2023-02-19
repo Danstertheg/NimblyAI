@@ -1,6 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonModule } from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,6 +38,10 @@ import { ChatMessageComponent } from './chat-message/chat-message.component';
 import { BuyCreditsModalComponent } from './buy-credits-modal/buy-credits-modal.component';
 import { ThankYouPageComponent } from './thank-you-page/thank-you-page.component';
 import { AccountPageComponent } from './account-page/account-page.component';
+import { ConversationRequestComponent } from './conversation-request/conversation-request.component';
+import { CreateNewConversationComponent } from './chat-dialogs/create-new-conversation/create-new-conversation.component';
+import { HandleConversationRequestComponent } from './chat-dialogs/handle-conversation-request/handle-conversation-request.component';
+import { AddUserToConversationComponent } from './chat-dialogs/add-user-to-conversation/add-user-to-conversation.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +69,10 @@ import { AccountPageComponent } from './account-page/account-page.component';
     BuyCreditsModalComponent,
     ThankYouPageComponent,
     AccountPageComponent,
+    ConversationRequestComponent,
+    CreateNewConversationComponent,
+    HandleConversationRequestComponent,
+    AddUserToConversationComponent,
    
 
     
@@ -71,7 +85,13 @@ import { AccountPageComponent } from './account-page/account-page.component';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    FormsModule,
+    MatButtonToggleModule,
+    MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [
     TextAreaInputComponent,
