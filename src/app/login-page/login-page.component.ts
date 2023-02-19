@@ -9,12 +9,18 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class LoginPageComponent implements OnInit {
   loginform: FormGroup;
+  forgotPwdForm: FormGroup;
   @Input() errorMessage: string = '';
+  emailStatus:string = ''
+  forgotPassword = false;
   constructor(private router: Router) {
     this.loginform = new FormGroup({
       email: new FormControl(''),
       password: new FormControl('')
     });
+    this.forgotPwdForm = new FormGroup({
+      forgotEmail: new FormControl(''),
+    })
   }
 
   ngOnInit(): void {
@@ -23,7 +29,55 @@ export class LoginPageComponent implements OnInit {
   redirectSignup() {
     this.router.navigate(['/signupPage']);
   }
+  returnToLogin(){
+    this.forgotPassword = false;
+  }
+  forgotPasswordForm(){
+    this.forgotPassword = true;
+  }
+  forgotEmail = "";
+  async submitForgotPassword(){
+    // this.forgotEmail = "test@gmail.com" 
 
+    console.log("sending email to " + this.forgotPwdForm.value.forgotEmail);
+    try {
+      const response = await fetch('https://finaltest-ten.vercel.app/api/forgot-password', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: this.forgotPwdForm.value.forgotEmail
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        // password reset link successfully sent
+  
+         const data = await response.json();
+        
+      //   if (data.sessionToken) {
+      //   // console.log(data.sessionToken);
+      // }
+      console.log(data.message)
+      if (data.message == "success"){
+        this.emailStatus = "Success! Please check your email for a password reset link. Valid for 1 hour.";
+      }
+      else{
+        this.emailStatus = "Something went wrong, please try again later.";
+      }
+  
+      } else {
+        const data = await response.json();
+    
+        this.errorMessage = 'Invalid username or password';
+  
+      }
+    } catch (error) {
+      this.errorMessage = 'An error occured please try again later';
+  
+    }
+    
+  }
   async login() {
     // console.log(this.loginform.value);
     let username = this.loginform.value.email;

@@ -6,7 +6,11 @@
 
     <div class="tabs" >
         <div class="tab-2">
-          <label for="tab2-1">Input</label>
+          <label for="tab2-1" class = "inputTab">
+            <div class = "creditAmount">Credits: {{creditAmount}}</div>
+            <div>Input</div>
+          </label>
+          
           <!-- <form  [formGroup] = "AITabZero"> -->
           <input id="tab2-1" name="tabs-two" type="radio" (click) = "selectTabOne()" [checked] = 'tabOne'>
           <!-- </form> -->

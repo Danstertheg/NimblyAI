@@ -11,5 +11,7 @@ export class ThankYouPageComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  refresh(){
+    window.location.href = './einsteinWriter';
+  }
 }

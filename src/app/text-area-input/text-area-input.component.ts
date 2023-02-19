@@ -14,6 +14,8 @@ export class TextAreaInputComponent implements OnInit {
   @Input() AIresponse: string = '';
   @Input() tabOne: boolean = true;
   @Input() tabTwo: boolean = false;
+  creditAmount = 0;
+  sessionToken = localStorage.getItem("sessionToken");
   AIWriter: FormGroup;
   // AITab: FormGroup;
   // AITabZero: FormGroup;
@@ -38,6 +40,21 @@ export class TextAreaInputComponent implements OnInit {
     return this.AIWriter.value.AIInput;
   }
   ngOnInit(): void {
+    fetch("https://finaltest-ten.vercel.app/api/user/creditBalance", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${this.sessionToken}`
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          this.creditAmount = data.credits;
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
   }
   generateIdeas(){
     this.openAI("Please generate ideas about: ")
@@ -99,6 +116,10 @@ export class TextAreaInputComponent implements OnInit {
       loader.close(SpinnerOverlayComponentComponent);
       const response = JSON.parse(request.responseText);
       const completedText = response.completedText;
+      if (response.credits){
+        console.log(response.credits + " new credit amount")
+        this.creditAmount = response.credits;
+      }
       this.AIresponse = completedText;
       this.tabOne = false;
       this.tabTwo = true;

@@ -9,11 +9,13 @@
 			<div class="nav-wrap">
 
 				<ul class="nav-list">
+					<ng-container *ngIf = "!premiumStatus">
 					<li>
 						<a (click) = "openGetPremiumModal()">
 						<!-- <i class="fa-solid fa-star"></i> -->
 						Premium</a>
 					</li>
+				</ng-container>
 					<li class="active"><a (click) = "einsteinWriter()" >Einstein Writer</a></li>
 					<li ><a (click) = "einsteinChat()">Einstein Chat</a></li>
 					<!-- <li><a href="#">Einstein Docs</a></li> -->
@@ -22,20 +24,32 @@
 						<div class="submenu">
 							<ul class="submenu-inner" style = "list-style: none;
 							padding:0px;">
-								<li><a href="#">Security</a></li>
-								<li><a href="#">Subscription</a></li>
+								<li><a href="./accountPage">Account</a></li>
+								<!-- <li><a href="#">Subscription</a></li> -->
 								<li><a href="#">FAQ</a></li>
-								<li><a href="#">Sign out</a></li>
+								<li><a (click) = "logout()">Sign out</a></li>
 							</ul>
 						</div>
 					</li>
 				</ul>
 			</div>
-			<div class="hamburger">
+			<div class="hamburger" (click) = "toggleMenu()">
 				<span class="line"></span>
 				<span class="line"></span>
 				<span class="line"></span>
 			</div>
+			<ng-container *ngIf = "onHamburger">
+				<ul class="hamburger-menu" style = "list-style: none;
+							padding:0px;">
+								<li class = "hamburger-menu-title">Main Menu</li>
+								<li (click) = "einsteinWriter()"><a href = "./einsteinWriter">EinsteinWriter</a></li>
+								<!-- <li><a href="#">Subscription</a></li> -->
+								<li (click) = "einsteinChat()"><a href = "./einsteinChat">EinsteinChat</a></li>
+								<li (click) = "accountPage()"><a href = "./accountPage">Account</a></li>
+								<li (click) = "toggleMenu()" class = "hamburger-menu-close-btn"><a>Close</a></li>
+				</ul>
+			</ng-container>
+
 		</div>
 	</div>
 </header>
