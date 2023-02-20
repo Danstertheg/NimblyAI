@@ -1,6 +1,7 @@
 // Message interface to use in chatlogs (SHOULD MIRROR DB IMPLEMENTATION):
 export interface Message {
-    senderEmail: string; // Email is ID
+    conversationId: string;
+    senderId: string; // Email is ID
     timestamp: string;
     text: string;
 

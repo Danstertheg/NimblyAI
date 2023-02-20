@@ -3,6 +3,8 @@
     <app-chat-options 
         style = "width:25%;min-width:315px;height:100%;overflow-y:scroll;"
         [currentConversationId]="currentConversationId"
+        
+        (currentConversationIdChange)="SetConversationId($event)"
     ></app-chat-options>
 
     <!-- Actual current conversation (Right side)-->

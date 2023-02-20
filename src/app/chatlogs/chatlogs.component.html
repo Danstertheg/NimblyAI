@@ -1,4 +1,4 @@
-<div class="chatlogs">
+<div class="chatlogs" *ngIf="conversationId !== '0'">
   <div class="logs">
     <div class="chat-title">
       <h3>
@@ -15,9 +15,7 @@
     </div>
 
     <app-chat-message *ngFor="let message of messages" 
-      [sender]="message.senderEmail === this.myId" 
-      [message]="message.text" 
-      [timestamp]="message.timestamp">
+      [message]="message">
     </app-chat-message>
     
   </div>
@@ -28,4 +26,8 @@
       [disabled]="!this.socket.connected">Send</button>
     <button class="submit ai" [disabled]="!this.socket.connected">AI</button>
   </form>
+</div>
+
+<div class="chatlogs" *ngIf="conversationId === '0'">
+  <p>- Welcome! Please choose a conversation from the left -</p>
 </div>

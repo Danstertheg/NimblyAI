@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Message } from '../domains/message';
 
 @Component({
   selector: 'app-chat-message',
@@ -6,13 +7,11 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./chat-message.component.scss', '../chatlogs/chatlogs.component.scss']
 })
 export class ChatMessageComponent implements OnInit {
-  // sender: if true (right side), if false (left side)
-  @Input() sender?: boolean;
+  // User's unique identifier is their email
+  myId = localStorage.getItem("email");
 
-  @Input() message?: string;
-  @Input() timestamp?: string;
-
-
+  // Message itself:
+  @Input() message!: Message;
 
   constructor() { }
 

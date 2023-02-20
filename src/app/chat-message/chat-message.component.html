@@ -1,9 +1,19 @@
 <!-- Component for a single message (both for a sender and recipient) -->
 <div class = "log">
-    <div class="container" [class.darker]="sender">
-        <img [src]="sender ? '/../assets/icon2.jpeg' : '../../assets/icon.jpeg'" alt="Avatar" style="width:100%;" 
-            [class.right]="sender">
-        <p>{{message}}</p>
-        <span [class]="sender ? 'time-left' : 'time-right'">{{timestamp}}</span>
+    <div class="container" [class.darker]="message.senderId === myId">
+     
+        <img [src]="message.senderId === myId ? '/../assets/icon2.jpeg' : '../../assets/icon.jpeg'" 
+            alt="Avatar" 
+            style="width:100%;" 
+            [class.right]="message.senderId === myId"
+        >
+
+        <p>{{message.text}}</p>
+
+        <span *ngIf="message.senderId !== myId" class='time-left'>{{message.senderId.split('@')[0]}}</span>
+        
+        <span [class]="message.senderId === myId ? 'time-left' : 'time-right'">
+            {{message.timestamp}}
+        </span>
     </div>
 </div>
