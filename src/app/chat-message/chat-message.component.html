@@ -1,5 +1,5 @@
 <!-- Component for a single message (both for a sender and recipient) -->
-<div class = "log">
+<div class = "log" *ngIf="message.aiAnswer === ''">
     <div class="container" [class.darker]="message.senderId === myId">
      
         <img [src]="message.senderId === myId ? '/../assets/icon2.jpeg' : '../../assets/icon.jpeg'" 
@@ -16,4 +16,17 @@
             {{message.timestamp}}
         </span>
     </div>
+</div>
+
+<!-- For AI-answers: -->
+<div class="ai-log" *ngIf="message.aiAnswer">
+    <div class="ai-question">
+        <p>
+            <b>{{message.senderId.split('@')[0]}} asked: </b>
+            {{message.text}}
+        </p>
+    </div>
+    <p>
+        {{message.aiAnswer}}
+    </p>
 </div>

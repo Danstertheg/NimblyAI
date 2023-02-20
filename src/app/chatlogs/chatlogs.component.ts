@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import io from "socket.io-client";
 import { Message } from '../domains/message';
 import { AddUserToConversationComponent } from '../chat-dialogs/add-user-to-conversation/add-user-to-conversation.component';
+import { ExitConversationComponent } from '../chat-dialogs/exit-conversation/exit-conversation.component';
+import { SpinnerOverlayComponentComponent } from '../spinner-overlay-component/spinner-overlay-component.component';
 
 // Socket Io (Glitch) URL:
 const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need to specify port 
@@ -43,7 +45,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
   // Handle for form to send message
   messageForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private addUserToConversation: MatDialog) {
+  constructor(private formBuilder: FormBuilder, private dialogOpener: MatDialog) {
     this.messageForm = this.formBuilder.group({
       message: ['', Validators.required],
     });
@@ -115,53 +117,123 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     });
   }
 
-  sendMessage() {
+  handleMessage(forAI: boolean) {
     const message = this.messageForm.get('message')?.value;
 
-    const aiAnswer = ""; // stays empty if is wasn't a question for AI
+    let aiAnswer = ""; // stays empty if is wasn't a question for AI
     // CHECK IF IT WAS A QUESTION FOR AI, IF SO:
       // Call server.js to contact AI and get an answer before sending to socket.io
 
     if (message !== "") {
-      const timestamp = new Date().toLocaleString();
-      
-      // Send message to Socket.io
-      this.socket.emit("message", this.conversationId, this.myId, message, timestamp, aiAnswer);
-
-      // Post message to MongoDb "Messages" collection:
-      fetch(apiURL + "/api/messages/" + this.conversationId, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${sessionToken}`
-        },
-        body: JSON.stringify({
-          senderId: this.myId,
-          timestamp: timestamp,
-          text: message,
-          aiAnswer: aiAnswer
-        })
-      }) 
-      .then(response => {
-        if (response.ok) {
-          console.log('Message sent successfully.');
-
-        } else {
-          throw new Error(`Failed to send message to MongoDB (status ${response.status}). (POST to /messages)`);
-        }
-      })
-      .catch(error => {
-        console.error('An error occurred while accepting the conversation request (POST to /conversation):', error);
-      });
-
-      // clear input field:
-      this.messageForm.get('message')?.setValue("");
+      // Asking the AI:
+      if (forAI) {
+        this.openAI(message);
+      } else 
+        this.postMessage(message, aiAnswer);
     }
   }
 
+  postMessage(message: string, aiAnswer: string) {
+    const timestamp = new Date().toLocaleString();
+
+    // Send message to Socket.io
+    this.socket.emit("message", this.conversationId, this.myId, message, timestamp, aiAnswer);
+
+    // Post message to MongoDb "Messages" collection:
+    fetch(apiURL + "/api/messages/" + this.conversationId, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${sessionToken}`
+      },
+      body: JSON.stringify({
+        senderId: this.myId,
+        timestamp: timestamp,
+        text: message,
+        aiAnswer: aiAnswer
+      })
+    }) 
+    .then(response => {
+      if (response.ok) {
+        console.log('Message sent successfully.');
+
+      } else {
+        throw new Error(`Failed to send message to MongoDB (status ${response.status}). (POST to /messages)`);
+      }
+    })
+    .catch(error => {
+      console.error('An error occurred while accepting the conversation request (POST to /conversation):', error);
+    });
+
+    // clear input field:
+    this.messageForm.get('message')?.setValue("");
+  }
+
   openAddUserToConvDialog() {
-    this.addUserToConversation.open(AddUserToConversationComponent, {
+    this.dialogOpener.open(AddUserToConversationComponent, {
       data: this.conversationId
     })
   }
+
+  openExitConvDialog() {
+    const dialogRef = this.dialogOpener.open(ExitConversationComponent, {
+      data: this.conversationId
+    })
+
+    // exit conversation dialog needs a reference of component that opened it. Why?
+    // Because if user exits, we want to reset "conversationId" to 0
+    dialogRef.componentInstance.parentComponent = this;
+  }
+
+  resetConversationId() {
+    this.conversationId = "0";
+  }
+
+
+
+  openAI(prompt: string) {  
+    let engine = 'text-davinci-002';
+
+    const request = new XMLHttpRequest();
+    request.open('POST', 'https://finaltest-ten.vercel.app/api/handleAI/premium');
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('Authorization', `Bearer ${sessionToken}`);
+
+    request.onload = () =>  {
+      if (request.status >= 200 && request.status < 400) {
+        // Success!
+        const response = JSON.parse(request.responseText);
+        const completedText = response.completedText;
+
+        // close loading modal:
+        loader.close(SpinnerOverlayComponentComponent);
+
+        if (response.credits){
+          console.log(response.credits + " new credit amount")
+          
+          // BOB-TODO: Reduce credit amount by one:
+          // this.creditAmount = response.credits;
+        }
+
+        console.log("AI Responded to '" + prompt + "': " + completedText)
+        this.postMessage(prompt, completedText);
+      } else {
+        // There was an error
+        console.error("ERROR when sending to OpenAI: " + request.responseText);
+      }
+    };
+
+    request.onerror = function() {
+      console.error('An error occurred while making the request');
+    };
+
+    const data = {
+      model: engine,
+      prompt: prompt
+    };
+    var loader = this.dialogOpener.open(SpinnerOverlayComponentComponent);
+    
+    request.send(JSON.stringify(data));
+  }
+
 }

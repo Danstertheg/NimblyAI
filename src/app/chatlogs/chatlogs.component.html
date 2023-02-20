@@ -1,19 +1,30 @@
+<!-- Chatlogs header (containing chat identifiers and buttons) -->
+<div class="chat-title" *ngIf="conversationId !== '0'">
+  <h3>
+    <b>CHAT WITH: </b>
+    jman@martin.org, joe@gmail.com
+  </h3>
+
+  <div>
+    <button mat-raised-button color="primary"
+        (click)="openAddUserToConvDialog()"
+    >
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
+        Add User
+    </button>
+
+    <button mat-raised-button color="warn"
+        (click)="openExitConvDialog()"
+    >
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="exit_to_app"></mat-icon>
+        Leave Conversation
+    </button>
+  </div>
+</div>
+
+<!-- Messages: -->
 <div class="chatlogs" *ngIf="conversationId !== '0'">
   <div class="logs">
-    <div class="chat-title">
-      <h3>
-        <b>CHAT WITH: </b>
-        jman@martin.org, joe@gmail.com
-      </h3>
-
-      <button mat-raised-button color="primary"
-          (click)="openAddUserToConvDialog()"
-      >
-          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
-          Add User
-      </button>
-    </div>
-
     <app-chat-message *ngFor="let message of messages" 
       [message]="message">
     </app-chat-message>
@@ -22,12 +33,21 @@
 
   <form [formGroup]="messageForm" class="chatInput">
     <textarea class="input" id="message" formControlName="message"></textarea>
-    <button class="submit" type="button" (click)="sendMessage()"
-      [disabled]="!this.socket.connected">Send</button>
-    <button class="submit ai" [disabled]="!this.socket.connected">AI</button>
+    <button class="submit" type="button" (click)="handleMessage(false)"
+      [disabled]="!this.socket.connected"
+    >
+      Send
+    </button>
+
+    <button class="submit ai" [disabled]="!this.socket.connected"
+      (click)="handleMessage(true)"
+    >
+      AI
+    </button>
   </form>
 </div>
 
+<!-- Intro screen: -->
 <div class="chatlogs" *ngIf="conversationId === '0'">
   <p>- Welcome! Please choose a conversation from the left -</p>
 </div>
