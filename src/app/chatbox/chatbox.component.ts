@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Conversation } from '../domains/conversation';
 
 @Component({
   selector: 'app-chatbox',
@@ -8,6 +9,8 @@ import { Component, OnInit } from '@angular/core';
 export class ChatboxComponent implements OnInit {
   currentConversationId: string = "0";
 
+  currentConversation!: Conversation;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -15,6 +18,11 @@ export class ChatboxComponent implements OnInit {
 
   SetConversationId(id: string) {
     this.currentConversationId = id;
+  }
+
+  SetConversation(data: any) { // sent from chat-options
+    this.currentConversationId = data.id;
+    this.currentConversation = data.conv;
   }
 
 }

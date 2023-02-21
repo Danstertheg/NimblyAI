@@ -4,12 +4,15 @@
         style = "width:25%;min-width:315px;height:100%;overflow-y:scroll;"
         [currentConversationId]="currentConversationId"
         
-        (currentConversationIdChange)="SetConversationId($event)"
+        (currentConversationIdChange)="SetConversation($event)"
     ></app-chat-options>
 
     <!-- Actual current conversation (Right side)-->
     <app-chatlogs 
         style = "width:75%;min-width: 595px; overflow:hidden" 
         [conversationId]="currentConversationId"
+        [conversation]="currentConversation"
+
+        (currentConversationIdChange)="SetConversationId($event)"
     ></app-chatlogs>
 </div>

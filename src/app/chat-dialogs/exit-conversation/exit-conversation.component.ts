@@ -17,7 +17,7 @@ export class ExitConversationComponent implements OnInit {
   conversationId: string;
 
   // Reference to component to opened this dialog 
-  // This was set by parent after it used .open() (parent is conversation-request component)
+  // This was set by parent after it used .open()
   parentComponent: any;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: string,

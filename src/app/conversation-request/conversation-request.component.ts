@@ -32,6 +32,7 @@ export class ConversationRequestComponent implements OnInit {
 
 
   onConvRequestResponded() {
+    // Request accepted, tell parent via this eventEmitter
     this.refreshConvReqsEmitter.emit();
   }
 }

@@ -42,7 +42,7 @@
         <app-chat-option 
             *ngFor="let conversation of conversations"
             [conversation]="conversation"
-            (click)="setCurrentConversation(conversation._id)"
+            (click)="setCurrentConversation(conversation)"
         ></app-chat-option>
         
         <p class="empty-message" *ngIf="conversations.length === 0">You don't have any conversations. Why not start one?</p>
@@ -63,7 +63,7 @@
             *ngFor="let request of conversationRequests"
             [conversationRequest]="request"
 
-            (refreshConvReqsEmitter) = "getConversationRequests()"
+            (refreshConvReqsEmitter) = "getConversationRequests(); getConversations()"
 
         ></app-conversation-request>
 

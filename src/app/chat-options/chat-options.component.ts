@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Conversation } from '../domains/conversation';
 import { ConversationRequest } from '../domains/conversation-request';
@@ -19,16 +19,13 @@ export class ChatOptionsComponent implements OnInit {
   @Input() currentConversationId?: string;
 
   // Event emitter to trigger parent function when current conversationId changes:
-  @Output() currentConversationIdChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() currentConversationIdChange: EventEmitter<any> = new EventEmitter<any>();
 
   // User's unique identifier is their email
   myId = localStorage.getItem("email");
 
   // Array of conversations retrieved from DB
-  conversations: Array<Conversation> = [{
-    _id: "1",
-    userIds: ["littleJimmy@einstein.org", "shebasquine@gmail.com"]
-  }];
+  conversations: Array<Conversation> = [];
 
   // Array of pending conversations retrieved from DB
   conversationRequests: Array<ConversationRequest> = [];
@@ -40,13 +37,24 @@ export class ChatOptionsComponent implements OnInit {
 
   ngOnInit(): void {
     // GET: Conversation lists where myId is one of the ids in "userIds"
-    this.getConversations();
+    //this.getConversations();
 
     // GET: Conversation Request lists for userId where myId is the invitedId
     this.getConversationRequests();
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    // If currentConversationId changes (set by parent), get conversations again:
+    if ('currentConversationId' in changes) {
+      if (this.currentConversationId === '0')
+        this.getConversations();
+    }
+  }
+
   getConversations() {
+    // Reset array:
+    this.conversations = [];
+
     fetch(apiURL + "/api/conversation/" + this.myId, {
       method: "GET",
       headers: {
@@ -93,12 +101,15 @@ export class ChatOptionsComponent implements OnInit {
     });
   }
 
-  setCurrentConversation(newConversationId: string) {
-    alert("Changing to convo: "+ newConversationId )
-    this.currentConversationId = newConversationId;
+  setCurrentConversation(conversation: Conversation) {
+    this.currentConversationId = conversation._id;
 
+
+    alert("Emitting: "+ JSON.stringify(conversation) );
     // Emit alert so parent knows conversationId has just changed:
-    this.currentConversationIdChange.emit(this.currentConversationId);
+    this.currentConversationIdChange.emit(
+      { id: this.currentConversationId, conv: conversation } // we need to pass the conversation object to chatlogs
+    );
   }
 
   openCreateConversationDialog() {

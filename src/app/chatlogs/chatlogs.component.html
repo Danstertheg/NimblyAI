@@ -2,7 +2,7 @@
 <div class="chat-title" *ngIf="conversationId !== '0'">
   <h3>
     <b>CHAT WITH: </b>
-    jman@martin.org, joe@gmail.com
+    {{userIds}}
   </h3>
 
   <div>
@@ -17,7 +17,7 @@
         (click)="openExitConvDialog()"
     >
         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="exit_to_app"></mat-icon>
-        Leave Conversation
+        Leave   
     </button>
   </div>
 </div>

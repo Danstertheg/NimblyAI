@@ -13,19 +13,32 @@ export class ChatOptionComponent implements OnInit {
   userIds = ""; 
 
   // User's unique identifier is their email
-  myId = localStorage.getItem("email");
+  myId = localStorage.getItem("email") || "";
 
   constructor() {}
 
   ngOnInit(): void {
     // Fill userIds with IDs of all users except current one:
-    if (this.conversation) {
-      for (let i = 0; i < this.conversation.userIds.length; i++) {
-        this.userIds += (i === 0 || i === this.conversation.userIds.length - 1) ? "" : ", "; // add a comma if not the first one
+    if (this.conversation)
+      this.userIds = GetUserIdsStringFromArray(this.conversation.userIds, this.myId);
+  }
 
-        this.userIds += (this.conversation.userIds[i] === this.myId) ? "" : this.conversation.userIds[i];
-      }
+}
+
+// To also use in Chatlogs:
+export function GetUserIdsStringFromArray(userIds: Array<string>, myId: string): string {
+  let userIdList = "(Only You)";
+
+  // Nobody but you? Lonely...
+  if (userIds.length > 1) {
+    userIdList = "";
+    
+    for (let i = 0; i < userIds.length; i++) {
+      userIdList += (i === 0 || i === userIds.length - 1) ? "" : ", "; // add a comma if not the first one
+
+      userIdList += (userIds[i] === myId) ? "" : userIds[i];
     }
   }
 
+  return userIdList;
 }

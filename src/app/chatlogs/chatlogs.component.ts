@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges  } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter  } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import io from "socket.io-client";
@@ -6,6 +6,8 @@ import { Message } from '../domains/message';
 import { AddUserToConversationComponent } from '../chat-dialogs/add-user-to-conversation/add-user-to-conversation.component';
 import { ExitConversationComponent } from '../chat-dialogs/exit-conversation/exit-conversation.component';
 import { SpinnerOverlayComponentComponent } from '../spinner-overlay-component/spinner-overlay-component.component';
+import { Conversation } from '../domains/conversation';
+import { GetUserIdsStringFromArray } from '../chat-option/chat-option.component';
 
 // Socket Io (Glitch) URL:
 const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need to specify port 
@@ -15,12 +17,6 @@ const apiURL = "http://localhost:5000"; //"https://finaltest-ten.vercel.app/";
 
 // JWT:
 const sessionToken = localStorage.getItem("sessionToken");
-
-/*
-  TODO:
-   - Emit "leave" (with convId and userId) when user clicks on another conversation
-   - Pull messages from MongoDB and load them into this.messages (make sure DB implementation mirrors Message interface)
-*/
 
 @Component({
   selector: 'app-chatlogs',
@@ -32,12 +28,22 @@ export class ChatlogsComponent implements OnInit, OnChanges {
 
   // Conversation ID of this chat log component (inputted by parent) - initial value is "0"
   @Input() conversationId!: string;
+  @Input() conversation!: Conversation;
+
+  // String to display for other users (OTHER THAN current user) IDs:
+  userIds = ""; 
+
+  // Current page of messages:
+  currMessagePage = 0;
+
+  // Event emitter to trigger parent function when current conversationId changes:
+  @Output() currentConversationIdChange: EventEmitter<string> = new EventEmitter<string>();
 
   // To leave() the last conversation on socket-io. Or not, if it is initial value "-1"
   previousConversationId = '-1';
 
   // User's unique identifier is their email
-  myId = localStorage.getItem("email");
+  myId = localStorage.getItem("email") || "";
 
   // Message array to be pulled from DB
   messages: Array<Message> = [];
@@ -91,10 +97,16 @@ export class ChatlogsComponent implements OnInit, OnChanges {
         this.getMessagesFromMongoDB();
       }
     }
+
+    if ('conversation' in changes && this.conversation) {
+      // Fill userIds with IDs of all users except current one:
+      this.userIds = GetUserIdsStringFromArray(this.conversation.userIds, this.myId);
+    }
   }
 
   getMessagesFromMongoDB() {
-    fetch(apiURL + "/api/messages/" + this.conversationId, {
+    console.log("response")
+    fetch(apiURL + "/api/messages/" + this.conversationId + "?page=" + this.currMessagePage, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${sessionToken}`
@@ -187,8 +199,10 @@ export class ChatlogsComponent implements OnInit, OnChanges {
 
   resetConversationId() {
     this.conversationId = "0";
-  }
 
+    // let parent (chatbox) know. Why? So, that the sibling (chat-options) can know and re-GET the conversations array:
+    this.currentConversationIdChange.emit("0");
+  }
 
 
   openAI(prompt: string) {  
