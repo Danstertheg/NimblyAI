@@ -1,0 +1,26 @@
+<mat-dialog-content class="no-padding">
+
+    <div class="phone">
+      <div class = "become-premium">Become Premium</div>
+      
+      <div id="selector">
+        <input checked type="radio" name="selection" id="radio-1" (click) = "selectMembership()" [checked] = "membership"><!--
+      --><label class="left-radius" for="radio-1">
+        <span class="radio__interval">1 Month</span>
+        <span class="radio__price">9.99 $</span>
+        <small class="radio__price__info">/ Month</small>
+        </label>
+      <input type="radio" name="selection" id="radio-2" (click) = "selectCredits()" [checked] = "credits">
+      <label class="right-radius" for="radio-2" >
+        <span class="radio__interval">Buy Credits</span>
+        <span class="radio__price">1.00 $</span>
+        <small class="radio__price__info">/ 4 Credits</small>
+        <!-- <input type = "number" placeholder = "amount in dollars (1-99)" style = "position: relative;width:150px; top: 35px; right:35px;padding:10px;" max = "100" min = "1"> -->
+        </label>
+        
+      </div>
+      <div class="check-out" (click) = "openPaymentForm()"> CHECK OUT </div>
+      <div mat-dialog-close class = "cancel-btn" >Cancel</div>
+    </div>
+      <!-- Your modal content here -->
+</mat-dialog-content>

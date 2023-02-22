@@ -1,0 +1,18 @@
+// .spinner{
+//     align-self: center;
+//     justify-self: center;
+//     position: relative;
+//     top:45%;
+//     left:100%;
+// }
+::ng-deep .mat-dialog-container {
+    overflow: hidden;
+    margin: 0 !important;
+    padding: 0px!important;
+    min-height: 0px;
+    min-width: 0px;
+    border-radius: 25px;
+  }
+.spinner{
+    background-color: #333;
+}

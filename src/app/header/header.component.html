@@ -1,0 +1,56 @@
+<header class="header">
+	<div class="container">
+		<div class="row-wrap">
+			<div class="logo-wrap">
+				<img src="./assets/icon.jpeg" height="50px" width = "50px" style="margin-right: 10px;margin-left: 0px;margin-bottom: 0px;margin-top: 0px;position: relative;left:0;border-radius:50%;">
+				<span class="logo">EinsteinWriter</span>
+				<img src="./assets/baby-back.gif" height = "5px" width="5px">
+			</div>
+			<div class="nav-wrap">
+
+				<ul class="nav-list">
+					<ng-container *ngIf = "!premiumStatus">
+					<li>
+						<a (click) = "openGetPremiumModal()">
+						<!-- <i class="fa-solid fa-star"></i> -->
+						Premium</a>
+					</li>
+				</ng-container>
+					<li ><a (click) = "einsteinWriter()" >Einstein Writer</a></li>
+					<li ><a (click) = "einsteinChat()">Einstein Chat</a></li>
+					<!-- <li><a href="#">Einstein Docs</a></li> -->
+					<li class="with-submenu">
+						<a href="./accountPage">Account</a>
+						<div class="submenu">
+							<ul class="submenu-inner" style = "list-style: none;
+							padding:0px;">
+								<li><a href="./accountPage">Account</a></li>
+								<!-- <li><a href="#">Subscription</a></li> -->
+								<li><a href="#">FAQ</a></li>
+								<li><a (click) = "logout()">Sign out</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="hamburger" (click) = "toggleMenu()">
+				<span class="line"></span>
+				<span class="line"></span>
+				<span class="line"></span>
+			</div>
+			<ng-container *ngIf = "onHamburger">
+				<ul class="hamburger-menu" style = "list-style: none;
+							padding:0px;">
+								<li class = "hamburger-menu-title">Main Menu</li>
+								<li (click) = "einsteinWriter()"><a href = "./einsteinWriter">EinsteinWriter</a></li>
+								<!-- <li><a href="#">Subscription</a></li> -->
+								<li (click) = "einsteinChat()"><a href = "./einsteinChat">EinsteinChat</a></li>
+								<li (click) = "accountPage()"><a href = "./accountPage">Account</a></li>
+								<li (click) = "toggleMenu()" class = "hamburger-menu-close-btn"><a>Close</a></li>
+				</ul>
+			</ng-container>
+
+		</div>
+	</div>
+</header>
+<!-- <div class="overlay"></div> -->

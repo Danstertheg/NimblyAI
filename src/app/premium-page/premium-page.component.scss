@@ -1,0 +1,365 @@
+/* RGB */
+$color1: rgba(255, 137, 139, 1);
+$color2: rgba(255, 212, 127, 1);
+$color3: rgba(22, 191, 188, 1);
+$color4: rgba(53, 59, 71, 1);
+$color5: rgba(249, 249, 249, 1);
+
+// $theme: #1b1c26;
+// $theme-contrast: whitesmoke;
+$theme-contrast:#1b1c26;
+$theme: #9feaf9;
+
+
+
+h1
+{
+    font-size: 4em;
+}
+
+
+.wrapper {
+    background: $theme;
+    overflow-y:scroll;
+}
+label{
+    box-sizing: border-box;
+}
+
+.wrapper
+{
+    box-sizing: border-box;
+
+    position: relative;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 35px;
+}
+
+.phone
+{
+    overflow:hidden;
+    align-items: center;
+    // position: relative;
+    display:flex;
+    flex-direction: column;
+    width: 375px;
+    min-width: 333px;
+    height: 480px;
+    min-height:480px;
+
+    border-radius: 25px;
+    background: $theme-contrast;
+    box-shadow: -5px 5px 20px rgba(0, 0, 0, .2);
+
+    .pattern {
+        opacity: .2;
+        background: transparent url('http://rawnly.com/assets/confettiBG.svg') repeat center;
+        
+        width: 100%;
+        height: 100%;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+.cancel-btn{
+    position: relative;
+    top:43%;
+    background-color: rgba(53, 59, 71, 1) !important;
+    font-size: 1.2em;
+    font-weight: bolder;
+    min-width: 200px;
+    color:#9feaf9;
+    margin: 0 0;
+    padding: 50px;
+    // position: absolute;
+    // bottom: 50px;
+    // left: 50%;
+    text-align: center;
+    padding: 15px 20px;
+
+    // cursor: pointer;
+    // transform: translate(-50%, -50%) scale(1);
+    text-transform: uppercase;
+
+    // color: $theme-contrast;
+    border: none;
+    border-radius: 6px;
+
+
+     transition: all .25s ease-in-out 0s;
+  
+    // box-shadow: 0px 5px 10px -2px rgba($theme, .8);
+
+
+    &:hover
+    {
+        background: darken($theme, 5%);
+        box-shadow: 0px 2px 10px 0px rgba($theme, .5);
+    }
+
+    &:active
+    {
+//        transform: translate(-50%, -50%) scale(.97);
+        box-shadow: none;
+    }
+}
+.no-padding{
+    margin: 0px;
+    padding: 0px !important;
+    overflow: hidden;
+    min-height: 480px;
+    min-width: 333px;
+}
+::ng-deep .mat-dialog-container {
+    overflow: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 25px;
+    min-height: 480px;
+    min-width: 333px;
+  }
+// RADIO
+input[type='radio']
+{
+    position: absolute;
+
+    display: none;
+    visibility: hidden;
+
+    opacity: 0;
+}
+
+input[type='radio'] + label
+{
+    position: relative;
+
+    display: block;
+
+    min-width: 300px;
+    min-height: 100px;
+    margin: 0 0;
+    padding: 50px;
+
+    transition: all 200ms;
+
+    color: $theme;
+    border: 2px solid transparent;
+}
+
+input[type='radio']:not(:checked) + label
+{
+    cursor: pointer;
+    background: $theme-contrast;
+    color: rgba($theme, .5);
+  
+    &:hover {
+      background: rgba($theme, .2);
+      color: $theme-contrast;
+    }
+}
+
+
+input[type='radio']:checked + label
+{
+    color: $theme-contrast;
+    background: $theme;
+}
+
+.left-radius
+{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.right-radius
+{
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+
+.radio__interval
+{
+    font-size: 1.2em;
+    font-weight: bold;
+
+    position: absolute;
+    top: 50%;
+    left: 25px;
+
+    transform: translateY(-50%);
+}
+
+.radio__price
+{
+    font-size: 1.2em;
+
+    position: absolute;
+    top: 50%;
+    right: 25px;
+
+    transform: translateY(-50%);
+}
+
+.radio__price__info
+{
+    font-size: .7em;
+
+    position: absolute;
+    top: 70%;
+    right: 25px;
+
+    transform: translateY(-50%);
+}
+
+.become-premium{
+    color: #9feaf9;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    height: 24%;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+}
+#selector
+{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+
+    max-width: 300px;
+
+    transform: translate(-50%, -50%) scale(.8);
+
+    border-radius: 10px;
+    box-shadow: -2px 2px 7px rgba(0, 0, 0, .2);
+}
+
+
+
+// TEXT
+.title
+{
+    position: absolute;
+    left: 0;
+}
+
+#shape
+{
+    width: 160px;
+    height: 285px;
+
+    fill: $theme;
+}
+
+#b2
+{
+    color: $theme-contrast;
+    clip-path: circle(135px at left);
+}
+
+#b1
+{
+    color: $theme;
+}
+
+#b1,
+#b2
+{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+
+// CHECKOUT BUTTON
+.check-out
+{
+    position:relative;
+    top: 40%;
+    width:50px;
+    font-size: 1.2em;
+    font-weight: bolder;
+    min-width: 200px;
+    text-align: center;
+    margin: 0 0;
+    padding: 50px;
+    // position: absolute;
+    // bottom: 50px;
+    // left: 50%;
+
+    padding: 15px 20px;
+
+    // cursor: pointer;
+    // transform: translate(-50%, -50%) scale(1);
+    text-transform: uppercase;
+
+    color: $theme-contrast;
+    border: none;
+    border-radius: 6px;
+    background: #54c7ec;
+  
+    transition: all .25s ease-in-out 0s;
+  
+    // box-shadow: 0px 5px 10px -2px rgba($theme, .8);
+
+
+    &:hover
+    {
+        background: darken($theme, 5%);
+        box-shadow: 0px 2px 10px 0px rgba($theme, .5);
+    }
+
+    &:active
+    {
+//        transform: translate(-50%, -50%) scale(.97);
+        box-shadow: none;
+    }
+}
+
+
+// INFO
+.change-color
+{
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+
+    cursor: pointer;
+    text-align: center;
+
+    color: $theme;
+    border-radius: 100%;
+    background: $theme-contrast;
+    box-shadow: 2px 2px 5px rgba(#000, .2);
+
+    i
+    {
+        font-size: 2em;
+    }
+}
+.mat-dialog-container{
+    overflow:hidden;
+    padding:0px;
+    border-radius: 6%;
+}

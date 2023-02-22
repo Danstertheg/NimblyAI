@@ -1,0 +1,23 @@
+.ai-log {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+
+    margin: auto;
+    width:70%;
+    border: 2px solid #9ff9c3;
+    color:#dcfce3;
+    background-color: #1b1c26;
+    border-radius: 5px;
+    
+    margin: 10px auto 10px auto;
+
+    p {
+        padding: 8px;
+    }
+}
+
+.ai-question {
+    background: rgb(51, 51, 51);
+}

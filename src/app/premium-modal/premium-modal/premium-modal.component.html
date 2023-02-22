@@ -1,0 +1,17 @@
+<div class="modal-container">
+    <h1 mat-dialog-title>
+        Get EinsteinWriter Premium
+    </h1>
+    <div mat-dialog-content class="modal-content">
+        <p>
+            Enjoying these features? Maximize your experience with our Premium plan. Get access to more time-saving functionality for only about $9.99 per month!.
+        </p>
+        <video width="300" height="300" autoplay loop>
+            <source src="./assets/bulking.mp4" type="video/mp4">
+        </video>
+    </div>
+    
+    <button mat-button mat-dialog-close [ngStyle]="{'background-color': 'grey'}">No, thanks</button>
+    <button mat-button mat-dialog-close (click) = "goToPremium()">Get Premium</button>
+
+</div>

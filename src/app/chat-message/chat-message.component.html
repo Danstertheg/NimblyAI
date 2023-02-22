@@ -1,0 +1,33 @@
+<!-- Component for a single message (both for a sender and recipient) -->
+<div class = "log" *ngIf="message.aiAnswer === ''">
+    <div class="container" [class.darker] = "message.senderId === myId">
+     
+        <img [src]="message.senderId === myId ? '/../assets/icon2.jpeg' : '../../assets/icon.jpeg'" 
+            alt="Avatar" 
+            style="width:100%;" 
+            [class.right]="message.senderId === myId"
+        >
+
+        <p>{{message.text}}</p>
+
+        <span *ngIf="message.senderId !== myId" class='time-left'>{{message.senderId.split('@')[0]}}</span>
+        
+        <span [class]="message.senderId === myId ? 'time-left' : 'time-right'">
+            {{message.timestamp}}
+        </span>
+    </div>
+</div>
+
+<!-- For AI-answers: -->
+<div class="ai-log" *ngIf="message.aiAnswer">
+    <div class="ai-question">
+        <p>
+            <b>{{message.senderId.split('@')[0]}} asked: </b>
+            {{message.text}}
+        </p>
+    </div>
+    <p> 
+        <!-- <img src = "./assets/icon.jpeg" height = "50px" width = "50px" style = "border-radius: 50%;position: relative;float:left">  -->
+        {{message.aiAnswer}}
+    </p>
+</div>

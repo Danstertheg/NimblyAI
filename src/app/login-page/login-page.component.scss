@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
+
+.login-page {
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+  background: #1b1c26; 
+  font-family: Raleway, sans-serif;
+  // background-color: #e5e5f7;
+opacity: 1;
+// background-image:  linear-gradient(135deg, #9feaf9 25%, transparent 25%), linear-gradient(225deg, #1b1c26 25%, transparent 25%), linear-gradient(45deg, #1b1c26 25%, transparent 25%), linear-gradient(315deg, #1b1c26 25%, #e5e5f7 25%);
+// background-position:  40px 0, 40px 0, 0 0, 0 0;
+// background-size: 80px 80px;
+// background-repeat: repeat;
+color:hotpink;
+
+}
+
+.login {
+  
+  padding: 40px 50px;
+  max-width: 300px;
+  border-radius: 5px;
+  background: #1b1c26;
+  box-shadow: 1px 1px 1px #666;
+  border: 1px solid hotpink;
+  z-index: 99;
+  
+}
+  .login input {
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    margin: 10px 0;
+    padding: 14px 12px;
+    font-size: 16px;
+    border-radius: 2px; 
+    font-family: Raleway, sans-serif;
+  }
+
+.login input[type=text],
+.login input[type=password] {
+  border: 1px solid #c0c0c0;
+  transition: .2s;
+}
+
+.login input[type=text]:hover {
+  border-color: #F44336;
+  outline: none;
+  transition: all .2s ease-in-out;
+} 
+
+.login input[type=submit] {
+  border: none;
+  background: rgb(245, 5, 125);
+  color: white;
+  font-weight: bold;  
+  transition: 0.2s;
+  margin: 20px 0px;
+}
+
+.login input[type=submit]:hover {
+  background: rgb(67, 1, 34);
+}
+
+  .login h2 {
+    margin: 20px 0 0; 
+    color: rgb(245, 5, 125);
+    font-size: 28px;
+  }
+
+.login p {
+  margin-bottom: 40px;
+}
+
+.links {
+  display: table;
+  width: 100%;  
+  box-sizing: border-box;
+  border-top: 1px solid #c0c0c0;
+  margin-bottom: 10px;
+}
+
+.links a {
+  display: table-cell;
+  padding-top: 10px;
+}
+
+.links a:first-child {
+  text-align: left;
+}
+
+.links a:last-child {
+  text-align: right;
+}
+
+  .login h2,
+  .login p,
+  .login a {
+    text-align: center;    
+  }
+
+.login a {
+  text-decoration: none;  
+  font-size: .8em;
+}
+
+.login a:visited {
+  color: inherit;
+}
+
+.login a:hover {
+  text-decoration: underline;
+}
+
+
+// start star code demo
+
+@mixin sp-layout {
+  @media screen and (max-width: 750px) {
+    @content;
+  }
+}
+
+
+
+@function random_range($min, $max) {
+  $rand: random();
+  $random_range: $min + floor($rand * (($max - $min) + 1));
+  @return $random_range;
+}
+
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  transform: rotate(-45deg);
+}
+
+.star {
+  $star-count: 50;
+  --star-color: var(--primary-color);
+  --star-tail-length: 6em;
+  --star-tail-height: 2px;
+  --star-width: calc(var(--star-tail-length) / 6);
+  --fall-duration: 9s;
+  --tail-fade-duration: var(--fall-duration);
+
+  position: absolute;
+  top: var(--top-offset);
+  left: 0;
+  width: var(--star-tail-length);
+  height: var(--star-tail-height);
+  color: var(--star-color);
+  background: linear-gradient(45deg, currentColor, transparent);
+  border-radius: 50%;
+  filter: drop-shadow(0 0 6px currentColor);
+  transform: translate3d(104em, 0, 0);
+  animation: fall var(--fall-duration) var(--fall-delay) linear infinite, tail-fade var(--tail-fade-duration) var(--fall-delay) ease-out infinite;
+  
+  @include sp-layout {
+    // For mobile performance, tail-fade animation will be removed QAQ
+    animation: fall var(--fall-duration) var(--fall-delay) linear infinite;
+  }
+
+  @for $i from 1 through $star-count {
+    &:nth-child(#{$i}) {
+      --star-tail-length: #{random_range(500em, 750em) / 100};
+      --top-offset: #{random_range(0vh, 10000vh) / 100};
+      --fall-duration: #{random_range(6000, 12000s) / 1000};
+      --fall-delay: #{random_range(0, 10000s) / 1000};
+    }
+  }
+
+  &::before, &::after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: calc(var(--star-width) / -2);
+    width: var(--star-width);
+    height: 100%;
+    background: linear-gradient(45deg, transparent, currentColor, transparent);
+    border-radius: inherit;
+    animation: blink 2s linear infinite;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
+}
+
+@keyframes fall {
+  to {
+    transform: translate3d(-30em, 0, 0);
+  }
+}
+
+@keyframes tail-fade {
+  0%, 50% {
+    width: var(--star-tail-length);
+    opacity: 1;
+  }
+
+  70%, 80% {
+    width: 0;
+    opacity: 0.4;
+  }
+
+  100% {
+    width: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.6;
+  }
+}
+
+
+
+.forgotPasswordForm{
+z-index: 999;
+}
+.forgotPasswordEmail{
+padding:15px;
+width:225px;
+border: 4px solid rgb(245, 5, 125);
+}
+.forgotPasswordButton{
+  padding:19px;
+  border: none;
+  background: rgb(245, 5, 125);
+  
+  color: white;
+  font-weight: bold;  
+  transition: 0.2s;
+ &:hover{
+  background-color: #F44336;
+ }
+}
+.return-btn{
+  padding:19px;
+  border: none;
+  background:#1b1c26;
+  border:1px solid #fff;
+  box-shadow: #fff 2px 2px 2px;
+  color: white;
+  font-weight: bold;  
+  transition: 0.2s;
+ &:hover{
+  background-color: #333;
+ }
+ &:active{
+  box-shadow: none;
+ }
+}

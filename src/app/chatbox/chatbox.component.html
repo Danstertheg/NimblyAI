@@ -1,0 +1,18 @@
+<div class = "chatbox">
+    <!-- Conversation and pending-conversation lists (Left side) -->
+    <app-chat-options 
+        style = "width:25%;min-width:315px;height:100%;"
+        [currentConversationId]="currentConversationId"
+        
+        (currentConversationIdChange)="SetConversation($event)"
+    ></app-chat-options>
+
+    <!-- Actual current conversation (Right side)-->
+    <app-chatlogs 
+        style = "width:75%;min-width: 595px; height:100%; background-color: #1b1c26;" 
+        [conversationId]="currentConversationId"
+        [conversation]="currentConversation"
+
+        (currentConversationIdChange)="SetConversationId($event)"
+    ></app-chatlogs>
+</div>

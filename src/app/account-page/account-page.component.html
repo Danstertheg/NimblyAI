@@ -1,0 +1,57 @@
+<app-header></app-header>
+<div class = "account">
+    <div class = "account-nav">
+        <div class = "profile">
+            <img alt = "profile" src = "./assets/icon.jpeg">
+            <div class = "username">{{email}}</div>
+        </div>
+        <div class = "nav-buttons">
+            <div class = "btn" (click) = "switchTitle('Account')">Account</div>
+            <div class = "btn" (click) = "switchTitle('Security')">Security</div>
+            <div class = "btn">FAQ</div>
+            <div class = "btn" (click) = "logout()">Logout</div>
+        </div>
+    </div>
+
+    <div class = "account-rendering">
+        <div class = "account-card">
+            <div class = "account-card-title">{{currentTab}}</div>
+            <ng-container *ngIf = 'accountPage'>
+            <div class = "account-card-content">
+                <div class = "account-email"><span>Email:</span> {{email}}</div>
+                <div class = "account-email"><span>Credits:</span> {{creditAmount}}</div>
+                <div class = "account-subscription">
+                    <h2 style = "margin:5px;">Subscription</h2>
+                    <h3 style = "margin:5px;margin-bottom:10px;" class = "premium-status">Current Status: {{premiumStatus}}</h3>
+                    
+                    <span>{{lastBill}}</span>
+                    <span>{{nextBill}}</span>
+                    <div class = "account-subscription-options">
+                        <ng-container *ngIf = "isPaidUser">
+                        <!-- <button>Pause Subscription</button> -->
+                        <button (click) = "cancelSubscription()">Cancel Subscription</button>
+                        </ng-container>
+                        <ng-container *ngIf = "!isPaidUser">
+                        <button (click) = "upgradeToPremium()">Upgrade</button>
+                        </ng-container>
+                    </div>
+                
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf = 'securityPage'>
+            <div style = "width:100%;height:100%;display: flex;flex-direction: column;align-items: center;" [formGroup] = "changePwd">
+            <h2>Password</h2>
+            <label for = "cPassword">Current Password: </label>
+            <input type = "text" placeholder = "current password" name = "cPassword" formControlName = "currentPassword">
+            <label for = "nPassword">New Password: </label>
+            <input type = "password" placeholder = "New password" name = "nPassword" formControlName = "newPassword">
+            <button (click) = "updatePasswordByCurrentPassword()">Change Password </button>
+            <div>{{pwdChangedMsg}}</div>
+            </div>
+        </ng-container>
+        </div>
+        
+    </div>
+
+</div>

@@ -1,0 +1,28 @@
+.EinsteinDocButtons{
+    // position:absolute;
+    // top:65px;
+    // right:0;
+    // width:20%;
+    // height:calc(100% - 65px);
+    display:flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    background-color:#121212 ;
+    
+}
+.button-right-area{
+    position:relative;
+    top:70px;
+    
+    height:calc(100% - 65px);
+    display:flex;
+    flex-direction: column;
+}
+.button-area-title{
+    min-height:100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    background-color: #22303C;
+}

@@ -1,0 +1,55 @@
+
+
+
+
+<div class ="docInput">
+
+    <div class="tabs" >
+        <div class="tab-2">
+          <label for="tab2-1" class = "inputTab">
+            <div class = "creditAmount">Credits: {{creditAmount}}</div>
+            <div>Input</div>
+          </label>
+          
+          <!-- <form  [formGroup] = "AITabZero"> -->
+          <input id="tab2-1" name="tabs-two" type="radio" (click) = "selectTabOne()" [checked] = 'tabOne'>
+          <!-- </form> -->
+          <div style = "padding:0px;height:100%;">
+            <!-- <h4>Tab One</h4> -->
+            <form class="AI-Input" [formGroup] = "AIWriter">
+            <textarea id='text' placeholder="No more than 750 characters" maxLength='750' name = "AIInput" formControlName = "AIInput"></textarea>
+          </form>
+          </div>
+        </div>
+        <div class="tab-2">
+          <label for="tab2-2">AI Output</label>
+          <!-- <form  [formGroup] = "AITab"> -->
+          <input id="tab2-2" name="tabs-two" type="radio" (click) ="selectTabTwo" [checked] = 'tabTwo'>
+          <!-- </form> -->
+          <div style = "padding:0px;height:100%;">
+            <!-- <h4>Tab Two</h4> -->
+            <textarea id='AIresponse'  maxLength='1000'>{{AIresponse}}</textarea>
+            <!-- <div class = "AIresponse">{{AIresponse}}</div> -->
+          </div>
+        </div>
+      </div>
+      <!-- <div class = "credits">Credits: 9</div> -->
+</div>
+<div class = "btn-wrapper">
+<div class = "button-bottom-row">
+  <button class = "button-bottom" (click) = " generateIdeas()" >Generate Ideas</button>
+  <button class = "button-bottom" (click) = "improveText()">Improve</button>
+  <button class = "button-bottom" (click) = "fixGrammar()">Fix Grammar</button>
+  <button class = "button-bottom" (click) = "writeDraft()">Write Draft</button>
+  <button class = "button-bottom" (click) = "summarize()">Summarize</button>
+  <button class = "button-bottom" (click) = "complete()">Completion</button>
+</div>
+<div class = "button-bottom-row">
+  <button class = "button-bottom" (click) = "translate()">Translate</button>
+  <button class = "button-bottom" (click) = "createPoem()"> Poem</button>
+  <button class = "button-bottom" (click) = "createScript()">Create Script</button>
+  <button class = "button-bottom" (click) = "createStory()">Create Story</button>
+  <button class = "button-bottom" (click) = "rephrase()">Rephrase</button>
+  <button class = "button-inverse" (click) = "test()">+</button>
+</div>
+</div>

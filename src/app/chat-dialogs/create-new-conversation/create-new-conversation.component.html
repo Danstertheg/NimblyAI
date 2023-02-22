@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Create New Conversation:</h1>
+<div mat-dialog-content>
+    <p>Who would you like to add to this conversation?</p>
+
+    <form (ngSubmit)="onAddUserEmail()">
+        <mat-form-field class="conversation-modal-input">
+            <mat-label>User email</mat-label>
+            
+            <!-- For a simple Angular form, "name" attribute of the input element IS NEEDED (can be anything though) -->
+            <!-- Why? Because when a form is submitted, data is sent to Angular server in key-value pair, the 'name' is the key, the input value is the value -->
+            <input matInput placeholder="Ex. jimmy@yahoo.com" name="inputField" [(ngModel)]="currUserEmail">
+        </mat-form-field>
+
+        <button type="submit" mat-icon-button color="secondary">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
+        </button>
+    </form>
+
+    <!-- List what users have been inputted so far -->
+    <ul>
+        <li *ngFor="let email of usersToAdd">{{email}}</li>
+    </ul>
+</div>
+<div mat-dialog-actions class="dialog-submit-button">
+    <button mat-raised-button color="primary" (click)="postNewConversationRequests()">Create</button>
+</div>
