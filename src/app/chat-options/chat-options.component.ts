@@ -104,8 +104,6 @@ export class ChatOptionsComponent implements OnInit {
   setCurrentConversation(conversation: Conversation) {
     this.currentConversationId = conversation._id;
 
-
-    alert("Emitting: "+ JSON.stringify(conversation) );
     // Emit alert so parent knows conversationId has just changed:
     this.currentConversationIdChange.emit(
       { id: this.currentConversationId, conv: conversation } // we need to pass the conversation object to chatlogs

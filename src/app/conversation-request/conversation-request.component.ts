@@ -21,7 +21,6 @@ export class ConversationRequestComponent implements OnInit {
   }
 
   openHandleConversationRequestDialog() {
-    alert("this request is for conv #" + this.conversationRequest.conversationId)
     const dialogRef = this.handleConvRequestDialog.open(HandleConversationRequestComponent, {
       data: this.conversationRequest
     })
