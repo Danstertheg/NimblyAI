@@ -24,7 +24,7 @@
 
 <!-- Messages: -->
 <div class="chatlogs" *ngIf="conversationId !== '0'">
-  <div class="logs">
+  <div #messageContainer class="logs" (scroll)="onScroll($event)">
     <app-chat-message *ngFor="let message of messages" 
       [message]="message">
     </app-chat-message>

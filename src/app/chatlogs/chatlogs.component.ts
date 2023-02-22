@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter  } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter, ViewChild, ElementRef   } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import io from "socket.io-client";
@@ -24,6 +24,9 @@ const sessionToken = localStorage.getItem("sessionToken");
   styleUrls: ['./chatlogs.component.scss']
 })
 export class ChatlogsComponent implements OnInit, OnChanges {
+  // Reference to the chat container element
+  @ViewChild('messageContainer') messageContainer!: ElementRef;
+
   socket: any;
 
   // Conversation ID of this chat log component (inputted by parent) - initial value is "0"
@@ -35,6 +38,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
 
   // Current page of messages:
   currMessagePage = 0;
+  private nextMessagePageAlreadyCalled = false;
 
   // Event emitter to trigger parent function when current conversationId changes:
   @Output() currentConversationIdChange: EventEmitter<string> = new EventEmitter<string>();
@@ -57,6 +61,27 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     });
   }
 
+  onScroll(event: any) {
+    // Only retrieve more messages if all haven't already been retrieved (at which point currMessagePage = -1)
+    if (this.currMessagePage != -1) {
+      const scrollPos = event.target.scrollTop;
+      const topOffset = 20;
+
+      if (scrollPos <= topOffset && !this.nextMessagePageAlreadyCalled) {
+        this.currMessagePage++;
+        this.getMessagesFromMongoDB(false);
+        
+        this.nextMessagePageAlreadyCalled = true;
+      } else if (scrollPos > topOffset)
+        this.nextMessagePageAlreadyCalled = false;
+    }
+  }
+
+  scrollDown(toBottom: boolean) {
+    const heightToScroll = (toBottom) ? this.messageContainer.nativeElement.scrollHeight : 21;
+    this.messageContainer.nativeElement.scrollTop = heightToScroll;
+  }
+
   ngOnInit(): void {
     this.socket = io(serverUrl);
 
@@ -73,6 +98,11 @@ export class ChatlogsComponent implements OnInit, OnChanges {
           text: text,
           aiAnswer: aiAnswer
         })
+
+        setTimeout(() => {
+          this.scrollDown(true);
+        }, 0)
+        
       })
     })
   }
@@ -94,7 +124,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
 
         // Retrieve past messages of this newly-opened conversation:
         this.messages = [];
-        this.getMessagesFromMongoDB();
+        this.getMessagesFromMongoDB(true); // scroll to bottom since it is initial GET of messages
       }
     }
 
@@ -104,8 +134,9 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     }
   }
 
-  getMessagesFromMongoDB() {
-    console.log("response")
+  getMessagesFromMongoDB(scrollBottom: boolean) {
+    console.log("getting page of messages: " + this.currMessagePage);
+
     fetch(apiURL + "/api/messages/" + this.conversationId + "?page=" + this.currMessagePage, {
       method: "GET",
       headers: {
@@ -114,15 +145,33 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     })
     .then(response => response.json())
     .then((response: any) => {
-      for(const message of response) {
-        this.messages.push({
-          conversationId: message.conversationId,
-          senderId: message.senderId,
-          timestamp: message.timestamp,
-          text: message.text,
-          aiAnswer: message.aiAnswer
-        })
+      if (response.length < 5) {
+        this.currMessagePage = -1; // Set it to this value to prevent any more GETs
       }
+        let newMessages: Array<Message> = [];
+
+        for (let i = response.length - 1; i >= 0; i--) {
+          const message = response[i];
+          
+          newMessages.push({
+            conversationId: message.conversationId,
+            senderId: message.senderId,
+            timestamp: message.timestamp,
+            text: message.text,
+            aiAnswer: message.aiAnswer
+          })
+        }
+
+        this.messages.unshift(...newMessages); // add new array of messages to the front of messages array
+      
+
+      // scrollBottom? Ok, it will scroll to the bottom after messages is updated
+      // scrollBottom = false? Ok, it will scroll to 21 px away from top (To allow user to scroll up once to get next page)
+      setTimeout(() => {
+        this.scrollDown(scrollBottom);
+      }, 0);
+      // When you pass 0 as the second parameter, it means the function will execute as soon as possible, but after the current thread of execution has completed.
+      // That is, after the VIEW of the app has been updated with the new messages array.
     })
     .catch(error => {
       console.error("Error while retrieving messages from MongoDB for this conversation: " + error);
