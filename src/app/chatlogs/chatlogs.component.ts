@@ -129,8 +129,12 @@ export class ChatlogsComponent implements OnInit, OnChanges {
         // save current conv id on previousConversationId:
         this.previousConversationId = this.conversationId;
 
-        // Retrieve past messages of this newly-opened conversation:
+        // Reset everything for new conversation:
         this.messages = [];
+        this.currMessagePage = 0;
+        this.nextMessagePageAlreadyCalled = true; // important, or else new conversation might call getMessagesFromMongoDB(false) from onScroll, triggering scrollDown(false) (taking the user 21 px from the top of the new conversation)
+        
+        // Retrieve past messages of this newly-opened conversation:
         this.getMessagesFromMongoDB(true); // scroll to bottom since it is initial GET of messages
       }
     }
