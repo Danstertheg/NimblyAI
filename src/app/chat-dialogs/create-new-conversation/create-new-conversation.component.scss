@@ -6,3 +6,18 @@
     display: flex;
     justify-content: center;
 }
+::ng-deep .mat-dialog-container {
+    overflow: hidden;
+    margin: 0 !important;
+    padding: 0px!important;
+    min-height: 0px;
+    min-width: 0px;
+    border-radius: 25px;
+  }
+  .create-btn{
+    background-color:#54c7ec;
+  }
+  .mat-input-element{
+    caret-color: #54c7ec;
+  }
+  

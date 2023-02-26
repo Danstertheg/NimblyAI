@@ -8,9 +8,11 @@ import { Conversation } from '../domains/conversation';
 })
 export class ChatboxComponent implements OnInit {
   currentConversationId: string = "0";
-
+  chatOptionsClass = "chat-options";
+  chatlogsClass = "chat-lofgs" 
   currentConversation!: Conversation;
-
+  hide = true;
+  shonen = false;
   constructor() { }
 
   ngOnInit(): void {
@@ -24,5 +26,19 @@ export class ChatboxComponent implements OnInit {
     this.currentConversationId = data.id;
     this.currentConversation = data.conv;
   }
-
+  mobileChatlogsView(mobileChatOpened:boolean){
+    console.log(mobileChatOpened)
+    if (mobileChatOpened){
+      this.chatOptionsClass = "hide";
+      this.chatlogsClass = "show";
+    }
+    else {
+      // return button must have been pressed to return settings 
+      this.mobileReturnChatOptions();
+    }
+  }
+  mobileReturnChatOptions(){
+    this.chatOptionsClass = "show";
+    this.chatlogsClass = "hide";
+  }
 }

@@ -20,13 +20,13 @@
 					<li ><a (click) = "einsteinChat()">Einstein Chat</a></li>
 					<!-- <li><a href="#">Einstein Docs</a></li> -->
 					<li class="with-submenu">
-						<a href="./accountPage">Account</a>
+						<a (click) = "accountPage()">Account</a>
 						<div class="submenu">
 							<ul class="submenu-inner" style = "list-style: none;
 							padding:0px;">
-								<li><a href="./accountPage">Account</a></li>
+								<li><a (click) = "accountPage()">Account</a></li>
 								<!-- <li><a href="#">Subscription</a></li> -->
-								<li><a href="#">FAQ</a></li>
+								<!-- <li><a href="#">FAQ</a></li> -->
 								<li><a (click) = "logout()">Sign out</a></li>
 							</ul>
 						</div>
@@ -40,13 +40,19 @@
 			</div>
 			<ng-container *ngIf = "onHamburger">
 				<ul class="hamburger-menu" style = "list-style: none;
+				
 							padding:0px;">
+							<div id="stars"></div>
+							<div id="stars2"></div>
+							<div id="stars3"></div>
+							<div id="stars4"></div>
+						
 								<li class = "hamburger-menu-title">Main Menu</li>
-								<li (click) = "einsteinWriter()"><a href = "./einsteinWriter">EinsteinWriter</a></li>
+								<li (click) = "einsteinWriter()">EinsteinWriter</li>
 								<!-- <li><a href="#">Subscription</a></li> -->
-								<li (click) = "einsteinChat()"><a href = "./einsteinChat">EinsteinChat</a></li>
-								<li (click) = "accountPage()"><a href = "./accountPage">Account</a></li>
-								<li (click) = "toggleMenu()" class = "hamburger-menu-close-btn"><a>Close</a></li>
+								<li (click) = "einsteinChat()">EinsteinChat</li>
+								<li (click) = "accountPage()">Account</li>
+								<li (click) = "toggleMenu()" class = "hamburger-menu-close-btn">Close</li>
 				</ul>
 			</ng-container>
 

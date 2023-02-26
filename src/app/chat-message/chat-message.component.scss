@@ -15,9 +15,13 @@
 
     p {
         padding: 8px;
+        
+
     }
 }
-
+p{
+    overflow-wrap: anywhere;
+}
 .ai-question {
     background: rgb(51, 51, 51);
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import { SpinnerOverlayComponentComponent } from '../spinner-overlay-component/spinner-overlay-component.component';
 
 @Component({
   selector: 'app-signup-page',
@@ -10,7 +12,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class SignupPageComponent implements OnInit {
   @Input() errorMessage: string = '';
   signupform: FormGroup;
-  constructor(private router: Router) {
+  constructor(private router: Router,private modalOpener: MatDialog) {
     this.signupform = new FormGroup({
       email: new FormControl(''),
       password: new FormControl('')
@@ -35,14 +37,16 @@ export class SignupPageComponent implements OnInit {
   xhr.onload = () => {
     // document.getElementById("spin").style.display = "none";
     if (xhr.status === 200) {
+      loader.close(SpinnerOverlayComponentComponent);
       // Sign up successful, redirect to login page
       this.redirectLogin();    
     } else {
       // Sign up failed, display error message
       const response = JSON.parse(xhr.responseText);
-      alert(response.message);
+      this.errorMessage = response.message;
     }
   };
+  var loader = this.modalOpener.open(SpinnerOverlayComponentComponent);
   // document.getElementById("spin").style.display = "block";
   xhr.send(JSON.stringify({ email: email, password: password }));
 

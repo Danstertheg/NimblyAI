@@ -26,7 +26,7 @@ const sessionToken = localStorage.getItem("sessionToken");
 export class ChatlogsComponent implements OnInit, OnChanges {
   // Reference to the chat container element
   @ViewChild('messageContainer') messageContainer!: ElementRef;
-
+  @Output() mobileChatEvent = new EventEmitter<boolean>();
   socket: any;
 
   // Conversation ID of this chat log component (inputted by parent) - initial value is "0"
@@ -111,6 +111,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
         }, 0)
         this.playMessageSound();        
       })
+      
     })
   }
 
@@ -163,11 +164,11 @@ export class ChatlogsComponent implements OnInit, OnChanges {
 
         for (let i = response.length - 1; i >= 0; i--) {
           const message = response[i];
-          
+          const messageTimestamp = new Date(message.timestamp).toLocaleString();
           newMessages.push({
             conversationId: message.conversationId,
             senderId: message.senderId,
-            timestamp: message.timestamp,
+            timestamp: messageTimestamp,
             text: message.text,
             aiAnswer: message.aiAnswer
           })
@@ -206,7 +207,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
   }
 
   postMessage(message: string, aiAnswer: string) {
-    const timestamp = new Date().toLocaleString();
+     const timestamp = new Date().toLocaleString();
 
     // Send message to Socket.io
     this.socket.emit("message", this.conversationId, this.myId, message, timestamp, aiAnswer);
@@ -220,7 +221,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
       },
       body: JSON.stringify({
         senderId: this.myId,
-        timestamp: timestamp,
+        // timestamp: timestamp,
         text: message,
         aiAnswer: aiAnswer
       })
@@ -310,4 +311,8 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     request.send(JSON.stringify(data));
   }
 
+
+  mobileReturnToChatOptionsBtn(){
+    this.mobileChatEvent.emit(false);
+  }
 }

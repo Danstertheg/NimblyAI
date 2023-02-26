@@ -41,7 +41,8 @@ export class HandleConversationRequestComponent implements OnInit {
           invitedUserId: this.convReq.invitedId,
           invitingUserId: this.convReq.invitingId,
           conversationId: this.convReq.conversationId,
-          convReqId: this.convReq._id
+          convReqId: this.convReq._id,
+          token:this.convReq.token,
         })
       }) 
       .then(response => {

@@ -1,7 +1,8 @@
 <!-- Chatlogs header (containing chat identifiers and buttons) -->
 <div class="chat-title" *ngIf="conversationId !== '0'">
+  <mat-icon fontIcon="arrow_back_ios" class = "return-btn showMobile" (click)="mobileReturnToChatOptionsBtn()"></mat-icon>
   <h3 class = "usernames">
-    <b>CHAT WITH: </b>
+    <!-- <b>CHAT WITH: </b> -->
     {{userIds}}
   </h3>
 
@@ -19,6 +20,12 @@
         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="exit_to_app"></mat-icon>
         Leave   
     </button>
+    <!-- <button mat-raised-button class = "return-btn showMobile" (click)="mobileReturnToChatOptionsBtn()">
+      <mat-icon fontIcon="arrow_back_ios"></mat-icon>
+    </button> -->
+
+
+    <!-- more_horiz -->
   </div>
 </div>
 
@@ -30,7 +37,7 @@
     </app-chat-message>
   </div>
 
-  <form [formGroup]="messageForm" class="chatInput">
+  <form [formGroup]="messageForm" class="chatInput" (keyup.enter)="handleMessage(false)">
     <textarea class="input" id="message" formControlName="message"></textarea>
     <button class="submit" type="button" (click)="handleMessage(false)"
       [disabled]="!this.socket.connected"

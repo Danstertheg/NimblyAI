@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import { PremiumModalComponent } from '../premium-modal/premium-modal/premium-modal.component';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-account-page',
   templateUrl: './account-page.component.html',
@@ -20,7 +22,7 @@ export class AccountPageComponent implements OnInit {
   lastBill = '';
   nextBill = '';
   changePwd: FormGroup;
-  constructor(private modalOpener: MatDialog) {
+  constructor(private modalOpener: MatDialog,private router: Router) {
     this.changePwd = new FormGroup({
       currentPassword: new FormControl(''),
       newPassword: new FormControl('')
@@ -155,7 +157,7 @@ export class AccountPageComponent implements OnInit {
       })
       .then(data => {
         if (data.logoutStatus === 'success') {
-          window.location.href = '';
+          this.router.navigate(['']);
         } else {
           throw new Error('Failed to log out');
         }

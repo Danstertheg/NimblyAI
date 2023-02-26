@@ -3,7 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { Conversation } from '../domains/conversation';
 import { ConversationRequest } from '../domains/conversation-request';
 import { CreateNewConversationComponent } from '../chat-dialogs/create-new-conversation/create-new-conversation.component';
+import io from "socket.io-client";
 
+// Socket Io (Glitch) URL:
+const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need to specify port 
 // Vercel API URL:
 const apiURL = "https://finaltest-ten.vercel.app"; // "http://localhost:5000"; 
 
@@ -15,9 +18,11 @@ const sessionToken = localStorage.getItem("sessionToken");
   styleUrls: ['./chat-options.component.scss']
 })
 export class ChatOptionsComponent implements OnInit {
+  socket: any;
   // Current conversation id (IF ANY) passed by parent (chatbox)
   @Input() currentConversationId?: string;
-
+  @Output() mobileChatEvent = new EventEmitter<boolean>();
+  chatlogs:boolean = true;
   // Event emitter to trigger parent function when current conversationId changes:
   @Output() currentConversationIdChange: EventEmitter<any> = new EventEmitter<any>();
 
@@ -38,9 +43,13 @@ export class ChatOptionsComponent implements OnInit {
   ngOnInit(): void {
     // GET: Conversation lists where myId is one of the ids in "userIds"
     //this.getConversations();
-
+    this.socket = io(serverUrl);
     // GET: Conversation Request lists for userId where myId is the invitedId
     this.getConversationRequests();
+
+    this.socket.on("createConversation", (convoId:string, withEmail:string) => {
+        
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -92,7 +101,8 @@ export class ChatOptionsComponent implements OnInit {
           _id: request._id, // used to respond to conversation request 
           conversationId: request.conversationId, // may be undefined
           invitedId: request.invitedId,
-          invitingId: request.invitingId
+          invitingId: request.invitingId,
+          token:request.token
         })
       }
     })
@@ -103,7 +113,9 @@ export class ChatOptionsComponent implements OnInit {
 
   setCurrentConversation(conversation: Conversation) {
     this.currentConversationId = conversation._id;
-
+    if (window.innerWidth <= 680){
+      this.mobileChatEvent.emit(this.chatlogs);
+    }
     // Emit alert so parent knows conversationId has just changed:
     this.currentConversationIdChange.emit(
       { id: this.currentConversationId, conv: conversation } // we need to pass the conversation object to chatlogs
@@ -113,4 +125,5 @@ export class ChatOptionsComponent implements OnInit {
   openCreateConversationDialog() {
     this.createConversationDialog.open(CreateNewConversationComponent);
   }
+
 }

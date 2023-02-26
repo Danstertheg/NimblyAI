@@ -35,7 +35,7 @@ export class CreateNewConversationComponent implements OnInit {
     const sessionToken = localStorage.getItem("sessionToken");
 
     // POST a conversation request for each email to add:
-    for (const email of this.usersToAdd) {
+    // for (const email of this.usersToAdd) {
       fetch(apiURL + "/api/conversation-request", {
         method: "POST",
         headers: {
@@ -43,7 +43,7 @@ export class CreateNewConversationComponent implements OnInit {
           "Authorization": `Bearer ${sessionToken}`
         },
         body: JSON.stringify({
-          invitedUserId: email,
+          invitedUsers: JSON.stringify(this.usersToAdd),
           invitingUserId: localStorage.getItem("email")
         })
       })
@@ -53,7 +53,7 @@ export class CreateNewConversationComponent implements OnInit {
       .catch(error => {
         console.error(error);
       });
-    }
+    // }
 
     // close dialog (this component)
     this.dialogRef.close();

@@ -7,14 +7,14 @@
   <form class="login" [formGroup] = "loginform">
     <h2>Welcome, User!</h2>
     <p>Please log in</p>
-    <input type="text" placeholder="email" formControlName = "email" />
+    <input type="email" placeholder="email" formControlName = "email" />
     <input type="password" placeholder="Password" formControlName = "password" />
     <input type="submit" value="Log In" (click) = "login()" />
     <div class="links">
       <a (click) = "forgotPasswordForm()">Forgot password</a>
       <a (click) = "redirectSignup()">Register</a>
     </div>
-    <p style = "width:100%;">{{errorMessage}}</p>
+    <p style = "width:100%;color:#9feaf9 !important;">{{errorMessage}}</p>
   </form>
 </ng-container>
 <ng-container *ngIf = "forgotPassword">

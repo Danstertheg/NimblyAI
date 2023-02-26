@@ -1,7 +1,8 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
-
+import {MatDialog} from '@angular/material/dialog';
+import { SpinnerOverlayComponentComponent } from '../spinner-overlay-component/spinner-overlay-component.component';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -13,7 +14,7 @@ export class LoginPageComponent implements OnInit {
   @Input() errorMessage: string = '';
   emailStatus:string = ''
   forgotPassword = false;
-  constructor(private router: Router) {
+  constructor(private router: Router,private modalOpener: MatDialog) {
     this.loginform = new FormGroup({
       email: new FormControl(''),
       password: new FormControl('')
@@ -41,6 +42,7 @@ export class LoginPageComponent implements OnInit {
 
     console.log("sending email to " + this.forgotPwdForm.value.forgotEmail);
     try {
+      var loader = this.modalOpener.open(SpinnerOverlayComponentComponent);
       const response = await fetch('https://finaltest-ten.vercel.app/api/forgot-password', {
         method: 'POST',
         body: JSON.stringify({
@@ -51,6 +53,7 @@ export class LoginPageComponent implements OnInit {
         },
       });
       if (response.ok) {
+        loader.close(SpinnerOverlayComponentComponent);
         // password reset link successfully sent
   
          const data = await response.json();
@@ -84,6 +87,7 @@ export class LoginPageComponent implements OnInit {
     let password = this.loginform.value.password;
     // Send a POST request to the server to log in the user
   try {
+    var loader = this.modalOpener.open(SpinnerOverlayComponentComponent);
     const response = await fetch('https://finaltest-ten.vercel.app/api/login', {
       method: 'POST',
       credentials: 'include',
@@ -97,6 +101,7 @@ export class LoginPageComponent implements OnInit {
     });
     if (response.ok) {
 
+      loader.close(SpinnerOverlayComponentComponent);
 
       const data = await response.json();
       
@@ -105,7 +110,7 @@ export class LoginPageComponent implements OnInit {
     }
 
 
-      localStorage.setItem('email', username);
+      localStorage.setItem('email', username.toLowerCase());
       // console.log(data.message);
       // console.log(data.error);
     

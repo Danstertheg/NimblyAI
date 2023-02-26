@@ -36,6 +36,7 @@
     margin:10px;
     // background-color: #9feaf9;
     background-color: #54c7ec;
+    color:#1b1c26 !important;
   }
   .submit:hover{
     background-color: #4cb3d4;
@@ -196,3 +197,31 @@
     overflow: hidden;
     text-overflow: ellipsis;
  }
+ @media (max-width: 600px) {
+		
+	.chat-title button{margin:1px;}
+	.usernames{
+		font-size: 12px !important;
+		width:30% !important;
+
+	}
+  .chatlogs{
+    min-width: 0px !important;
+  }
+  .showMobile{
+    display:inline !important;
+  }
+}
+.return-btn{
+  color:#54c7ec;
+  // background-color: #1b1c26; 
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  margin-left:15px;
+}
+.showMobile{
+  display:none;
+}

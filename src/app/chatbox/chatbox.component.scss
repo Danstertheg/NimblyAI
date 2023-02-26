@@ -263,3 +263,49 @@ main footer a{
   ::-webkit-scrollbar-thumb:hover {
     background: hotpink; 
   }
+
+
+
+
+
+  .chat-options{
+	width:25%;
+	min-width:315px;
+	height:100%;
+  }
+  .chatlogs{
+	width:75%;
+	min-width: 595px;
+	height:100%; 
+	background-color: #1b1c26;
+  }
+
+  @media (max-width: 600px) {
+		
+	
+	.usernames{
+		font-size: 12px !important;
+		width:30% !important;
+
+	}
+	.chatlogs{
+		width:100% !important;
+		min-width: 400px !important;
+		display:none;
+		}
+	.chat-options{
+	  width:100% !important;
+	}
+	.show{
+		display:block !important;
+	}
+	.hide{
+		display:none !important;
+	}
+}
+.show{
+	display:block; 
+}
+.hide{
+	display:block;
+}

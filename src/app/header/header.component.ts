@@ -68,7 +68,7 @@ fetch("https://finaltest-ten.vercel.app/api/user/check-paid-status", {
       })
       .then(data => {
         if (data.logoutStatus === 'success') {
-          window.location.href = '';
+          this.router.navigate(['']);
         } else {
           throw new Error('Failed to log out');
         }
