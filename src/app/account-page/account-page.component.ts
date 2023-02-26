@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 })
 export class AccountPageComponent implements OnInit {
   email = localStorage.getItem("email");
+  accountNavClass:string = "";
+  accountRenderingClass:string = "hideMobile";
   accountPage = true;
   securityPage = false;
   currentTab:string = 'Account';
@@ -28,8 +30,12 @@ export class AccountPageComponent implements OnInit {
       newPassword: new FormControl('')
     })
    }
+   mobileReturnToAccountNav(){
+    this.accountRenderingClass = "hideMobile";
+    this.accountNavClass = "show";
+   }
   
-  switchTitle(title:string){
+  switchTab(title:string){
     this.currentTab = title;
     if (title == "Account")
     {
@@ -40,7 +46,10 @@ export class AccountPageComponent implements OnInit {
       this.accountPage = false;
       this.securityPage = true;
     }
+    this.accountRenderingClass = "";
+    this.accountNavClass = "hideMobile";
   }
+
   ngOnInit(): void {
     localStorage.getItem("sessionToken");
     

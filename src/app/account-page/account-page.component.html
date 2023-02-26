@@ -1,20 +1,21 @@
 <app-header></app-header>
 <div class = "account">
-    <div class = "account-nav">
+    <div  class = "account-nav {{accountNavClass}}">
         <div class = "profile">
             <img alt = "profile" src = "./assets/icon.jpeg">
             <div class = "username">{{email}}</div>
         </div>
         <div class = "nav-buttons">
-            <div class = "btn" (click) = "switchTitle('Account')">Account</div>
-            <div class = "btn" (click) = "switchTitle('Security')">Security</div>
+            <div class = "btn" (click) = "switchTab('Account')">Account</div>
+            <div class = "btn" (click) = "switchTab('Security')">Security</div>
             <div class = "btn">FAQ</div>
             <div class = "btn" (click) = "logout()">Logout</div>
         </div>
     </div>
 
-    <div class = "account-rendering">
+    <div  class = "account-rendering {{accountRenderingClass}}">
         <div class = "account-card">
+            <mat-icon fontIcon="arrow_back_ios" class = "return-btn showMobile" (click)="mobileReturnToAccountNav()"></mat-icon>
             <div class = "account-card-title">{{currentTab}}</div>
             <ng-container *ngIf = 'accountPage'>
             <div class = "account-card-content">
@@ -24,8 +25,8 @@
                     <h2 style = "margin:5px;">Subscription</h2>
                     <h3 style = "margin:5px;margin-bottom:10px;" class = "premium-status">Current Status: {{premiumStatus}}</h3>
                     
-                    <span>{{lastBill}}</span>
-                    <span>{{nextBill}}</span>
+                    <!-- <span>{{lastBill}}</span>
+                    <span>{{nextBill}}</span> -->
                     <div class = "account-subscription-options">
                         <ng-container *ngIf = "isPaidUser">
                         <!-- <button>Pause Subscription</button> -->

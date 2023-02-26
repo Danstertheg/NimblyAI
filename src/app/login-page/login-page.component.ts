@@ -119,7 +119,7 @@ export class LoginPageComponent implements OnInit {
       localStorage.setItem('sessionToken', data.sessionToken);
     
       // console.log("sending session token" + JSON.stringify(data.sessionToken))
-      this.router.navigate(['/einsteinWriter'])
+      this.router.navigate(['/einsteinChat'])
 
     } else {
       const data = await response.json();

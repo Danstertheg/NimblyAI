@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
-
+import { Router } from '@angular/router';
 // Vercel API URL: 
 const apiURL = "https://finaltest-ten.vercel.app"; // "http://localhost:5000"; 
 
@@ -20,17 +20,17 @@ export class ExitConversationComponent implements OnInit {
   // This was set by parent after it used .open()
   parentComponent: any;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: string,
-    private dialogRef: MatDialogRef<ExitConversationComponent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: string, private dialogRef: MatDialogRef<ExitConversationComponent>, private router: Router) {
       this.conversationId = data;
   }
 
   ngOnInit(): void {
   }
 
-  confirmExit(confirm: boolean) {
+  async confirmExit(confirm: boolean) {
+
     if (confirm) {
-      fetch(apiURL + "/api/conversation/" + this.conversationId, {
+      await fetch(apiURL + "/api/conversation/" + this.conversationId, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -43,9 +43,10 @@ export class ExitConversationComponent implements OnInit {
       .then(response => {
         if (response.ok) {
           console.log('Conversation Exited successfully.');    
-          
-          // Change currentConversationId to default (0):
-          this.parentComponent.resetConversationId();
+         
+     
+            this.parentComponent.resetConversationId();
+            
 
         } else {
           throw new Error(`Failed to exit conversation (status ${response.status}). (DELETE to /conversation)`);
@@ -54,6 +55,10 @@ export class ExitConversationComponent implements OnInit {
       .catch(error => {
         console.error('An error occurred while exiting the conversation (DELETE to /conversation):', error);
       });
+      if (window.innerWidth <= 600 ){
+        // this.router.navigate(['/einsteinChat']);
+        location.reload();
+      }
     }
 
     this.dialogRef.close();

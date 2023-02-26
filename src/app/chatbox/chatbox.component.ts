@@ -9,7 +9,7 @@ import { Conversation } from '../domains/conversation';
 export class ChatboxComponent implements OnInit {
   currentConversationId: string = "0";
   chatOptionsClass = "chat-options";
-  chatlogsClass = "chat-lofgs" 
+  chatlogsClass = "chat-logs" 
   currentConversation!: Conversation;
   hide = true;
   shonen = false;

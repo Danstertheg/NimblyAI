@@ -129,3 +129,36 @@ input{
     font-size: 20px;
     box-shadow: 0px 0px 5px #1b1c26;
 }
+
+@media (max-width: 600px) {
+    .account-nav{
+        width:100%;
+    }
+    .account-rendering{
+        display: block;
+    }
+    .hideMobile{
+        display:none !important;
+    }
+    .show{
+        display:block;
+    }
+    .showMobile{
+        display:inline-block !important;
+    }
+}
+.hideMobile{
+    display:block;
+}
+.show{
+    display:block;
+}
+.show-flex{
+    display: flex;
+}
+.return-btn{
+    margin:25px;
+}
+.showMobile{
+    display:none;
+}
