@@ -3,8 +3,11 @@
 //   src: url(https://assets.codepen.io/9632/RocherColorGX.woff2);
 // }
 
-
+body{
+  min-height: 540px;
+}
 .landing-banner{
+  min-height: 540px;
     width:100%;
   //   font-family: Rocher;
   // base-palette: 4;
@@ -22,8 +25,8 @@
 .logo-wrapper{
     background-color: #9feaf9;
     border-radius: 50%;
-    height:200px;
-    width:200px;
+    min-height:200px;
+    min-width:200px;
     overflow: hidden;
     // position: relative;
     // bottom:150px;

@@ -13,18 +13,26 @@ const apiURL = "https://finaltest-ten.vercel.app"; // "http://localhost:5000";
 export class AddUserToConversationComponent implements OnInit {
   // Passed in from chatlogs that triggered this dialog. Set In constructor
   conversationId: string;
-
+  errorMessage: string = "";
   newUserEmail = "";
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: string,
     private dialogRef: MatDialogRef<AddUserToConversationComponent>) { 
-    this.conversationId = data;
+          this.conversationId = data;
   }
 
   ngOnInit(): void {
   }
 
   sendRequestToUser() {
+    let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+    if (regex.test(this.newUserEmail) == false){
+      this.errorMessage = "Please enter a valid email";
+      return;
+    }
+    if (this.newUserEmail.toLowerCase() !== localStorage.getItem("email")){
+      this.errorMessage = "You cannot add yourself to a conversation";
+    }
     if (this.newUserEmail !== "") { // UNCOMMENT THIS L8ER PLZ: && this.newUserEmail !== localStorage.getItem("email")) {
       const sessionToken = localStorage.getItem("sessionToken");
 

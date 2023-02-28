@@ -2,16 +2,19 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitte
 import { MatDialog } from '@angular/material/dialog'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import io from "socket.io-client";
+
 import { Message } from '../domains/message';
+import { CachedMessage } from '../domains/cachedBuffer';
 import { AddUserToConversationComponent } from '../chat-dialogs/add-user-to-conversation/add-user-to-conversation.component';
 import { ExitConversationComponent } from '../chat-dialogs/exit-conversation/exit-conversation.component';
 import { SpinnerOverlayComponentComponent } from '../spinner-overlay-component/spinner-overlay-component.component';
 import { Conversation } from '../domains/conversation';
 import { GetUserIdsStringFromArray } from '../chat-option/chat-option.component';
 
-// Socket Io (Glitch) URL:
-const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need to specify port 
 
+// Socket Io (Glitch) URL:
+// const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need to specify port 
+const serverUrl = "https://nimbly.glitch.me";
 // Vercel API URL:
 const apiURL = "https://finaltest-ten.vercel.app"; // "http://localhost:5000"; 
 
@@ -28,7 +31,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
   @ViewChild('messageContainer') messageContainer!: ElementRef;
   @Output() mobileChatEvent = new EventEmitter<boolean>();
   socket: any;
-
+  
   // Conversation ID of this chat log component (inputted by parent) - initial value is "0"
   @Input() conversationId!: string;
   @Input() conversation!: Conversation;
@@ -39,7 +42,9 @@ export class ChatlogsComponent implements OnInit, OnChanges {
   // Current page of messages:
   currMessagePage = 0;
   private nextMessagePageAlreadyCalled = false;
-
+  errorMessage:String =""
+  
+  
   // Event emitter to trigger parent function when current conversationId changes:
   @Output() currentConversationIdChange: EventEmitter<string> = new EventEmitter<string>();
 
@@ -49,6 +54,8 @@ export class ChatlogsComponent implements OnInit, OnChanges {
   // User's unique identifier is their email
   myId = localStorage.getItem("email") || "";
 
+  messageBuffer: Array<CachedMessage> = [];
+
   // Message array to be pulled from DB
   messages: Array<Message> = [];
   
@@ -56,6 +63,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
   messageForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private dialogOpener: MatDialog) {
+    
     this.messageForm = this.formBuilder.group({
       message: ['', Validators.required],
     });
@@ -91,7 +99,13 @@ export class ChatlogsComponent implements OnInit, OnChanges {
   }
   ngOnInit(): void {
     this.socket = io(serverUrl);
-
+    // Set the socket.io reconnection properties
+    this.socket.io.reconnectionAttempts = 3;
+    this.socket.io.reconnectionDelay = 1000;
+    this.socket.io.timeout = 5000;
+    this.socket.on("disconnect", () => {
+      this.errorMessage = "Internet Connection Unstable... "
+    })
     this.socket.on("connect", () => {
       console.log("Successfully connected to glitch server!");      
 
@@ -111,10 +125,28 @@ export class ChatlogsComponent implements OnInit, OnChanges {
         }, 0)
         this.playMessageSound();        
       })
-      
-    })
+      // Handle reconnection
+  this.socket.on('reconnect', () => {
+    console.log('Reconnected to server');
+    this.errorMessage = "";
+     // Retrieve cached messages from local storage or memory
+    const cachedMessages = this.getCachedMessages();
+    for (let idx in cachedMessages){
+      this.sendMessage(cachedMessages[idx].message,cachedMessages[idx].forAI);
+    }
+    this.getMessagesFromMongoDB(true);
+  });
+});
+    // })
   }
-
+  getCachedMessages(){
+    return this.messageBuffer;
+  }
+  storeCachedMessage(message:string,forAi:boolean) {
+    this.messageBuffer.push({message: message, forAI:forAi})
+    // Store the message in an array or a localStorage object
+    // ...
+  }
   ngOnChanges(changes: SimpleChanges) {
     // If conversationId changes (set by parent), get messages again:
     // This also happens on initial load!
@@ -190,28 +222,59 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     });
   }
 
-  handleMessage(forAI: boolean) {
-    const message = this.messageForm.get('message')?.value;
-
+  sendMessage(message:string, forAI:boolean){
     let aiAnswer = ""; // stays empty if is wasn't a question for AI
     // CHECK IF IT WAS A QUESTION FOR AI, IF SO:
       // Call server.js to contact AI and get an answer before sending to socket.io
 
     if (message !== "") {
       // Asking the AI:
+      if (this.socket.connect){
       if (forAI) {
         this.openAI(message);
       } else 
         this.postMessage(message, aiAnswer);
     }
+    else{
+      this.storeCachedMessage(message, forAI);
+      // this.messageForm.get('message')?.setValue("Lost connection...");
+    }
+  }
+  else{
+
+  }
+}
+  handleMessage(forAI: boolean) {
+ 
+   const message = this.messageForm.get('message')?.value;
+    this.sendMessage(message,forAI);
+  //   let aiAnswer = ""; // stays empty if is wasn't a question for AI
+  //   // CHECK IF IT WAS A QUESTION FOR AI, IF SO:
+  //     // Call server.js to contact AI and get an answer before sending to socket.io
+
+  //   if (message !== "") {
+  //     // Asking the AI:
+  //     if (this.socket.connect){
+  //     if (forAI) {
+  //       this.openAI(message);
+  //     } else 
+  //       this.postMessage(message, aiAnswer);
+  //   }
+  //   else{
+  //     this.storeCachedMessage(message, forAI);
+  //     // this.messageForm.get('message')?.setValue("Lost connection...");
+  //   }
+  // }
+  // else{
+
+  // }
   }
 
   postMessage(message: string, aiAnswer: string) {
      const timestamp = new Date().toLocaleString();
-
+  
     // Send message to Socket.io
     this.socket.emit("message", this.conversationId, this.myId, message, timestamp, aiAnswer);
-
     // Post message to MongoDb "Messages" collection:
     fetch(apiURL + "/api/messages/" + this.conversationId, {
       method: "POST",
@@ -237,9 +300,8 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     .catch(error => {
       console.error('An error occurred while accepting the conversation request (POST to /conversation):', error);
     });
-
-    // clear input field:
-    this.messageForm.get('message')?.setValue("");
+     // clear input field:
+     this.messageForm.get('message')?.setValue("");
   }
 
   openAddUserToConvDialog() {
@@ -275,13 +337,14 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     request.setRequestHeader('Authorization', `Bearer ${sessionToken}`);
 
     request.onload = () =>  {
+      loader.close(SpinnerOverlayComponentComponent);
       if (request.status >= 200 && request.status < 400) {
         // Success!
         const response = JSON.parse(request.responseText);
         const completedText = response.completedText;
 
         // close loading modal:
-        loader.close(SpinnerOverlayComponentComponent);
+        
 
         if (response.credits){
           console.log(response.credits + " new credit amount")
@@ -294,11 +357,15 @@ export class ChatlogsComponent implements OnInit, OnChanges {
         this.postMessage(prompt, completedText);
       } else {
         // There was an error
+        const completedText = request.responseText;
+        this.postMessage(prompt, completedText);
         console.error("ERROR when sending to OpenAI: " + request.responseText);
       }
     };
 
     request.onerror = function() {
+      loader.close(SpinnerOverlayComponentComponent);
+
       console.error('An error occurred while making the request');
     };
 

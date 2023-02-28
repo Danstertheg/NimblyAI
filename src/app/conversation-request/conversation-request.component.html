@@ -1,7 +1,10 @@
 <div class = "chatOption" 
     (click)="openHandleConversationRequestDialog()"
 >
-    <div class = "img-wrapper"></div>
+    <div class = "img-wrapper">
+        <img src = "./assets/icon2.jpeg" style = "height:100%;width:100%;">
+    </div>
     
-    <span>{{conversationRequest.invitingId}}</span>
+    <span class = "usernames">{{conversationRequest.invitingId}}</span>
+    <div style = "float:right;color:#999;font-size: 12px;position:relative;top:40px;margin-left:auto;text-align: right;margin-right:3px;">Received</div>
 </div>

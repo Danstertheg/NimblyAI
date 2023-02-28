@@ -6,7 +6,8 @@ import { CreateNewConversationComponent } from '../chat-dialogs/create-new-conve
 import io from "socket.io-client";
 
 // Socket Io (Glitch) URL:
-const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need to specify port 
+// const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need to specify port 
+const serverUrl = "https://nimbly.glitch.me"
 // Vercel API URL:
 const apiURL = "https://finaltest-ten.vercel.app"; // "http://localhost:5000"; 
 
@@ -28,7 +29,7 @@ export class ChatOptionsComponent implements OnInit {
 
   // User's unique identifier is their email
   myId = localStorage.getItem("email");
-
+  errorMessage:string = "";
   // Array of conversations retrieved from DB
   conversations: Array<Conversation> = [];
 
@@ -37,7 +38,7 @@ export class ChatOptionsComponent implements OnInit {
 
   // To know which of the two options in the mat-button-toggle is active (conversations OR requests)
   selectedOptionForConversations = "conversations";
-
+  requestAmount = 0
   constructor(private createConversationDialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -46,12 +47,60 @@ export class ChatOptionsComponent implements OnInit {
     this.socket = io(serverUrl);
     // GET: Conversation Request lists for userId where myId is the invitedId
     this.getConversationRequests();
+    let authToken = localStorage.getItem("sessionToken");
+    let email = localStorage.getItem("email");
+    this.socket.emit("listenRequests", email, authToken);
+    this.socket.on("receivedRequest", (invitationToken:string) => {
+      console.log("received invitation token id from socket server " + invitationToken)
+      this.getConversationRequests(); // all requests are reloaded with this previous implementation
+      // this.getConvReqByToken(invitationToken) // only the new one that was sent by another user is loaded 
+    });
+    this.socket.on('reconnect', () => {
+      console.log('Reconnected to server');
+      this.getConversationRequests();
+      this.getConversations();
+      //actively listen for requests, and conversation updates
+      this.socket.emit("listenRequests", email, authToken);
 
-    this.socket.on("createConversation", (convoId:string, withEmail:string) => {
-        
+      
+      this.errorMessage = "";
+       // Retrieve conversations, 
+
+    });
+ 
+
+  }
+  openChats(){
+    this.selectedOptionForConversations = "conversations";
+  }
+  getConvReqByToken(invitationToken:string){
+    const sessionToken = localStorage.getItem("sessionToken");
+    fetch(apiURL + "/api/conversation-request/" + this.myId, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${sessionToken}`
+      },
+      body: JSON.stringify({
+        invitationToken:invitationToken
+      })
+    })
+    .then(response => response.json())
+    .then((request: any) => {
+      console.log(request)
+      // for(const request of response) {
+        this.conversationRequests.push({
+          _id: request._id, // used to respond to conversation request 
+          conversationId: request.conversationId, // may be undefined
+          invitedId: request.invitedId,
+          invitingId: request.invitingId,
+          token:request.token
+        })
+      // }
+    })
+    .catch(error => {
+      console.error(error);
     });
   }
-
   ngOnChanges(changes: SimpleChanges) {
     // If currentConversationId changes (set by parent), get conversations again:
     if ('currentConversationId' in changes) {
@@ -105,6 +154,7 @@ export class ChatOptionsComponent implements OnInit {
           token:request.token
         })
       }
+      this.requestAmount = this.conversationRequests.length;
     })
     .catch(error => {
       console.error(error);

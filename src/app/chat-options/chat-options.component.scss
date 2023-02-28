@@ -159,3 +159,24 @@
 ::-webkit-scrollbar-thumb:hover {
   background: hotpink; 
 }
+
+mat-button-toggle-group{
+  overflow: visible !important;
+}
+.request-alert{
+  z-index: 99;
+  background-color:firebrick;
+  border-radius: 50%;
+  width:20px;
+  height:20px;
+  justify-content: center;
+  text-align: center;
+  margin:0px;
+  padding:0px;
+  display: flex;
+  position: relative;
+  left:27px;
+  bottom: 7px;
+  float: right;
+  align-items: center;
+}

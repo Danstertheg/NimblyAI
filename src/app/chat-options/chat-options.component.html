@@ -16,7 +16,7 @@
             class="toggle-buttons"
         >
             <mat-button-toggle value="conversations">Conversations</mat-button-toggle>
-            <mat-button-toggle value="requests">Requests</mat-button-toggle>
+            <mat-button-toggle value="requests">Requests <div  *ngIf = "requestAmount !== 0" class = "request-alert">{{requestAmount}}</div></mat-button-toggle>
         </mat-button-toggle-group>
     </div>
 </div>
@@ -64,7 +64,7 @@
             *ngFor="let request of conversationRequests"
             [conversationRequest]="request"
 
-            (refreshConvReqsEmitter) = "getConversationRequests(); getConversations()"
+            (refreshConvReqsEmitter) = "getConversationRequests(); getConversations(); openChats()"
 
         ></app-conversation-request>
 

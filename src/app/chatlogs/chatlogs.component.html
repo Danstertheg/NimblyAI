@@ -35,6 +35,7 @@
     <app-chat-message *ngFor="let message of messages" 
       [message]="message">
     </app-chat-message>
+    <p *ngIf = "errorMessage != '' " style = "text-align: center;width:100%;color:firebrick">{{errorMessage}}</p>
   </div>
 
   <form [formGroup]="messageForm" class="chatInput" (keyup.enter)="handleMessage(false)">

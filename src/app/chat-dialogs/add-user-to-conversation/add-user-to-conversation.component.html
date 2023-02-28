@@ -7,6 +7,7 @@
         <mat-label>User email</mat-label>
         <input matInput placeholder="Ex. chandler@hotmail.com" [(ngModel)]="newUserEmail">
     </mat-form-field>
+    <p style ="color: firebrick; width: 100%;text-align: center;">{{errorMessage}}</p>
 </div>
 <div mat-dialog-actions class="dialog-submit-button">
     <button mat-raised-button color="primary" (click)="sendRequestToUser()">Add User</button>

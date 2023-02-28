@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
-
+body{
+  min-height: 540px;
+}
 .signin-page {
+  min-height: 540px;
     width:100%;
     height:100%;
     display:flex;
@@ -24,7 +27,7 @@
 }
 
 .signin {
-  
+
   padding: 40px 50px;
   max-width: 300px;
   border-radius: 5px;

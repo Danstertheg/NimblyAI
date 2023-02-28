@@ -11,10 +11,10 @@
             <!-- Why? Because when a form is submitted, data is sent to Angular server in key-value pair, the 'name' is the key, the input value is the value -->
             <input matInput placeholder="Ex. jimmy@yahoo.com" name="inputField" [(ngModel)]="currUserEmail">
         </mat-form-field>
-
-        <button type="submit" mat-icon-button color="secondary">
+        <p style = "color:firebrick;margin-top:0px;">{{errorMessage}}</p>
+        <button type="submit" mat-icon-button color="secondary" style = "background-color:#54c7ec;border: 1px solid black">
             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
-        </button>
+            </button> Click to add
     </form>
 
     <!-- List what users have been inputted so far -->

@@ -35,9 +35,10 @@ export class SignupPageComponent implements OnInit {
   xhr.open('POST', 'https://finaltest-ten.vercel.app/api/signup');
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = () => {
+    loader.close(SpinnerOverlayComponentComponent);
+
     // document.getElementById("spin").style.display = "none";
     if (xhr.status === 200) {
-      loader.close(SpinnerOverlayComponentComponent);
       // Sign up successful, redirect to login page
       this.redirectLogin();    
     } else {

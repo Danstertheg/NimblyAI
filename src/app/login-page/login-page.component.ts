@@ -123,11 +123,12 @@ export class LoginPageComponent implements OnInit {
 
     } else {
       const data = await response.json();
-  
+      loader.close(SpinnerOverlayComponentComponent);
       this.errorMessage = 'Invalid username or password';
 
     }
   } catch (error) {
+
     this.errorMessage = 'An error occured please try again later';
 
   }
