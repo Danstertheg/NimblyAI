@@ -12,10 +12,14 @@ export class ChatMessageComponent implements OnInit {
 
   // Message itself:
   @Input() message!: Message;
-
+  @Input() messageStatus! : String;
+  @Input() loadingClass :String = "";
   constructor() { }
 
   ngOnInit(): void {
+    if (this.messageStatus == "sending"){
+      this.loadingClass = "loading"
+    }
   }
 
 }

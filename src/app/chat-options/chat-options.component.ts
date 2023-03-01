@@ -55,7 +55,7 @@ export class ChatOptionsComponent implements OnInit {
       this.getConversationRequests(); // all requests are reloaded with this previous implementation
       // this.getConvReqByToken(invitationToken) // only the new one that was sent by another user is loaded 
     });
-    this.socket.on('reconnect', () => {
+    this.socket.on('connect', () => {
       console.log('Reconnected to server');
       this.getConversationRequests();
       this.getConversations();

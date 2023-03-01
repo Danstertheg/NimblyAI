@@ -33,20 +33,22 @@
 <div class="chatlogs" *ngIf="conversationId !== '0'">
   <div #messageContainer class="logs" (scroll)="onScroll($event)">
     <app-chat-message *ngFor="let message of messages" 
-      [message]="message">
+      [message]="message"
+      [messageStatus]="message.messageStatus"
+      >
     </app-chat-message>
     <p *ngIf = "errorMessage != '' " style = "text-align: center;width:100%;color:firebrick">{{errorMessage}}</p>
   </div>
-
+<!--[disabled]="!this.socket.connected"-->
   <form [formGroup]="messageForm" class="chatInput" (keyup.enter)="handleMessage(false)">
     <textarea class="input" id="message" formControlName="message"></textarea>
     <button class="submit" type="button" (click)="handleMessage(false)"
-      [disabled]="!this.socket.connected"
+      
     >
       Send
     </button>
 
-    <button class="submit ai" [disabled]="!this.socket.connected"
+    <button class="submit ai" 
       (click)="handleMessage(true)"
     >
       AI

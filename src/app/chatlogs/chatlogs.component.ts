@@ -106,46 +106,98 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     this.socket.on("disconnect", () => {
       this.errorMessage = "Internet Connection Unstable... "
     })
-    this.socket.on("connect", () => {
-      console.log("Successfully connected to glitch server!");      
+    this.socket.on('connect_error', (error:string) => {
+      console.log(error)
+    this.errorMessage = 'Failed to reconnect. Please check your internet connection and try again';
+    })
+    this.socket.on("connect", async () => {
+      this.errorMessage = ""
+      console.log("Successfully connected to glitch server!");  
+      if(this.conversationId !== "0"){
+        //connecting back from a disconnection most likely...
+        // if (this.previousConversationId !== "-1")
+        //   this.socket.emit("leave", this.previousConversationId, this.myId);
+        this.messages = [];
+        this.currMessagePage = 0;
+        this.nextMessagePageAlreadyCalled = true;
+        await this.getMessagesFromMongoDB(false);
+        this.socket.emit("join", this.conversationId, this.myId);
+         // Retrieve cached messages from local storage or memory
+         const cachedMessages = this.getCachedMessages();
+         // send any messages to the disconnected
+         console.log("reconnected, attempting to send disconnected messages: "  + cachedMessages)
+         console.log(this.messageBuffer)
+         for (let idx in cachedMessages){
+          console.log("idx " + idx)
+          let msgResult = await this.sendMessage(cachedMessages[idx].message,cachedMessages[idx].forAI);
+          if (msgResult == "sent")
+            this.messageBuffer.splice(Number(idx), 1);
+        }
+    
 
-      // How client should react when a new message arrives (including one of their own being broadcasted):
-      this.socket.on("message", (senderEmail: string, timestamp: string, text: string, aiAnswer?: string) => {
-        // Add to local array of messages
-        this.messages.push({
-          conversationId: this.conversationId,
-          senderId: senderEmail,
-          timestamp: timestamp,
-          text: text,
-          aiAnswer: aiAnswer
-        })
+      }
 
-        setTimeout(() => {
-          this.scrollDown(true);
-        }, 0)
-        this.playMessageSound();        
-      })
+       // How client should react when a new message arrives (including one of their own being broadcasted):
+       
       // Handle reconnection
-  this.socket.on('reconnect', () => {
-    console.log('Reconnected to server');
-    this.errorMessage = "";
-     // Retrieve cached messages from local storage or memory
-    const cachedMessages = this.getCachedMessages();
-    for (let idx in cachedMessages){
-      this.sendMessage(cachedMessages[idx].message,cachedMessages[idx].forAI);
-    }
-    this.getMessagesFromMongoDB(true);
-  });
-});
+  // this.socket.on('reconnect', () => {
+  //   console.log('Reconnected to server');
+  //   this.errorMessage = "";
+    
+  // });
+    });
+     
+    this.socket.on("message", (senderEmail: string, timestamp: string, text: string, aiAnswer?: string) => {
+      // Add to local array of messages
+      this.messages.push({
+        conversationId: this.conversationId,
+        messageStatus:'sent',
+        senderId: senderEmail,
+        timestamp: timestamp,
+        text: text,
+        aiAnswer: aiAnswer
+      })
+
+      setTimeout(() => {
+        this.scrollDown(true);
+      }, 0)
+      this.playMessageSound();        
+    })
     // })
   }
   getCachedMessages(){
     return this.messageBuffer;
   }
   storeCachedMessage(message:string,forAi:boolean) {
+    console.log()
+    // store in array that well be sent later
     this.messageBuffer.push({message: message, forAI:forAi})
+    // display some type of message for the disconnected user to see his message pending...
+    let senderEmail = String(localStorage.getItem("email"));
+    if (!forAi){
+    this.messages.push({
+      conversationId: this.conversationId,
+      messageStatus:'sending',
+      senderId: senderEmail,
+      timestamp: '',
+      text: message,
+      aiAnswer: ''
+    })
+  }
+  else{
+    this.messages.push({
+      conversationId: this.conversationId,
+      messageStatus:'sending',
+      senderId: senderEmail,
+      timestamp: '',
+      text: message,
+      aiAnswer: 'pending'
+    })
+  }
     // Store the message in an array or a localStorage object
     // ...
+        // clear input field:
+        this.messageForm.get('message')?.setValue("");
   }
   ngOnChanges(changes: SimpleChanges) {
     // If conversationId changes (set by parent), get messages again:
@@ -178,7 +230,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     }
   }
 
-  getMessagesFromMongoDB(scrollBottom: boolean) {
+  async getMessagesFromMongoDB(scrollBottom: boolean) {
     console.log("getting page of messages: " + this.currMessagePage);
 
     fetch(apiURL + "/api/messages/" + this.conversationId + "?page=" + this.currMessagePage, {
@@ -199,6 +251,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
           const messageTimestamp = new Date(message.timestamp).toLocaleString();
           newMessages.push({
             conversationId: message.conversationId,
+            messageStatus: 'sent',
             senderId: message.senderId,
             timestamp: messageTimestamp,
             text: message.text,
@@ -211,6 +264,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
 
       // scrollBottom? Ok, it will scroll to the bottom after messages is updated
       // scrollBottom = false? Ok, it will scroll to 21 px away from top (To allow user to scroll up once to get next page)
+      // this.playMessageSound();
       setTimeout(() => {
         this.scrollDown(scrollBottom);
       }, 0);
@@ -222,32 +276,33 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     });
   }
 
-  sendMessage(message:string, forAI:boolean){
+ async sendMessage(message:string, forAI:boolean){
     let aiAnswer = ""; // stays empty if is wasn't a question for AI
     // CHECK IF IT WAS A QUESTION FOR AI, IF SO:
       // Call server.js to contact AI and get an answer before sending to socket.io
-
+  let msgResult:string = "success"
     if (message !== "") {
       // Asking the AI:
-      if (this.socket.connect){
+      if (this.socket.connected){
       if (forAI) {
         this.openAI(message);
       } else 
-        this.postMessage(message, aiAnswer);
+        msgResult = await this.postMessage(message, aiAnswer);
     }
     else{
+      console.log("not connected to internet, cannot send message: " + message + ": going to attempt to store")
       this.storeCachedMessage(message, forAI);
       // this.messageForm.get('message')?.setValue("Lost connection...");
     }
   }
-  else{
+  return msgResult
 
-  }
 }
-  handleMessage(forAI: boolean) {
+  async handleMessage(forAI: boolean) {
  
    const message = this.messageForm.get('message')?.value;
-    this.sendMessage(message,forAI);
+    let msgResult = await this.sendMessage(message,forAI);
+    this.messageForm.get('message')?.setValue("");
   //   let aiAnswer = ""; // stays empty if is wasn't a question for AI
   //   // CHECK IF IT WAS A QUESTION FOR AI, IF SO:
   //     // Call server.js to contact AI and get an answer before sending to socket.io
@@ -270,13 +325,13 @@ export class ChatlogsComponent implements OnInit, OnChanges {
   // }
   }
 
-  postMessage(message: string, aiAnswer: string) {
+  async postMessage(message: string, aiAnswer: string) {
      const timestamp = new Date().toLocaleString();
   
     // Send message to Socket.io
     this.socket.emit("message", this.conversationId, this.myId, message, timestamp, aiAnswer);
     // Post message to MongoDb "Messages" collection:
-    fetch(apiURL + "/api/messages/" + this.conversationId, {
+    await fetch(apiURL + "/api/messages/" + this.conversationId, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -292,16 +347,18 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     .then(response => {
       if (response.ok) {
         console.log('Message sent successfully.');
-
+        return "sent"
       } else {
-        throw new Error(`Failed to send message to MongoDB (status ${response.status}). (POST to /messages)`);
+        // throw new Error(`Failed to send message to MongoDB (status ${response.status}). (POST to /messages)`);
+        return "failed to send message"
       }
     })
     .catch(error => {
-      console.error('An error occurred while accepting the conversation request (POST to /conversation):', error);
+      return "failed to send message";
+      // console.error('An error occurred while accepting the conversation request (POST to /conversation):', error);
     });
      // clear input field:
-     this.messageForm.get('message')?.setValue("");
+     return "failed to send message"
   }
 
   openAddUserToConvDialog() {

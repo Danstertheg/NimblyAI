@@ -1,6 +1,7 @@
 <!-- Component for a single message (both for a sender and recipient) -->
-<div class = "log" *ngIf="message.aiAnswer === ''">
-    <div class="container" [class.darker] = "message.senderId === myId">
+<div class = "log"  *ngIf="message.aiAnswer === ''">
+    
+    <div class="container" style = "overflow: visible !important;" [class.darker] = "message.senderId === myId">
      
         <img [src]="message.senderId === myId ? '/../assets/icon2.jpeg' : '../../assets/icon.jpeg'" 
             alt="Avatar" 
@@ -10,12 +11,16 @@
 
         <p>{{message.text}}</p>
 
-        <span *ngIf="message.senderId !== myId" class='time-left'>{{message.senderId.split('@')[0]}}</span>
+        <span *ngIf="message.senderId !== myId" class='time-left' style = "width:100%;" >{{message.senderId.split('@')[0]}}</span>
         
-        <span [class]="message.senderId === myId ? 'time-left' : 'time-right'">
+        <span [class]="message.senderId === myId ? 'time-left' : 'time-right'" style = "width:100%;">
             {{message.timestamp}}
         </span>
+        <div *ngIf="message.senderId == myId" class = {{loadingClass}} style = "float:right;color: #999 !important;position: relative; top:20px">{{messageStatus}}</div>
+        <div *ngIf="message.senderId !== myId" class = {{loadingClass}} style = "float:left;color: #999 !important;position: relative; top:20px">{{messageStatus}}</div>
     </div>
+    
+    
 </div>
 
 <!-- For AI-answers: -->
@@ -26,7 +31,7 @@
             {{message.text}}
         </p>
     </div>
-    <p> 
+    <p class = {{loadingClass}}> 
         <!-- <img src = "./assets/icon.jpeg" height = "50px" width = "50px" style = "border-radius: 50%;position: relative;float:left">  -->
         {{message.aiAnswer}}
     </p>
