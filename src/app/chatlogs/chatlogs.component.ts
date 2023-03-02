@@ -196,6 +196,9 @@ export class ChatlogsComponent implements OnInit, OnChanges {
   }
     // Store the message in an array or a localStorage object
     // ...
+    setTimeout(() => {
+      this.scrollDown(true);
+    }, 0)
         // clear input field:
         this.messageForm.get('message')?.setValue("");
   }
@@ -394,7 +397,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     request.setRequestHeader('Authorization', `Bearer ${sessionToken}`);
 
     request.onload = () =>  {
-      loader.close(SpinnerOverlayComponentComponent);
+      // loader.close(SpinnerOverlayComponentComponent);
       if (request.status >= 200 && request.status < 400) {
         // Success!
         const response = JSON.parse(request.responseText);
@@ -421,7 +424,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     };
 
     request.onerror = function() {
-      loader.close(SpinnerOverlayComponentComponent);
+      // loader.close(SpinnerOverlayComponentComponent);
 
       console.error('An error occurred while making the request');
     };
@@ -430,7 +433,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
       model: engine,
       prompt: prompt
     };
-    var loader = this.dialogOpener.open(SpinnerOverlayComponentComponent);
+    // var loader = this.dialogOpener.open(SpinnerOverlayComponentComponent);
     
     request.send(JSON.stringify(data));
   }

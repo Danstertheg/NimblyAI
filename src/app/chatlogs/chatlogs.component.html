@@ -37,7 +37,7 @@
       [messageStatus]="message.messageStatus"
       >
     </app-chat-message>
-    <p *ngIf = "errorMessage != '' " style = "text-align: center;width:100%;color:firebrick">{{errorMessage}}</p>
+    <p *ngIf = "errorMessage != '' " style = "text-align: center;width:100%;color:firebrick;padding:0px;">{{errorMessage}}</p>
   </div>
 <!--[disabled]="!this.socket.connected"-->
   <form [formGroup]="messageForm" class="chatInput" (keyup.enter)="handleMessage(false)">

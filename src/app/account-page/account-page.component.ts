@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class AccountPageComponent implements OnInit {
   email = localStorage.getItem("email");
   accountNavClass:string = "";
-  accountRenderingClass:string = "hideMobile";
+  accountRenderingClass:string = "hideMobile-flex";
   accountPage = true;
   securityPage = false;
   currentTab:string = 'Account';
@@ -30,8 +30,10 @@ export class AccountPageComponent implements OnInit {
       newPassword: new FormControl('')
     })
    }
+
    mobileReturnToAccountNav(){
-    this.accountRenderingClass = "hideMobile";
+
+    this.accountRenderingClass = "hideMobile-flex";
     this.accountNavClass = "show";
    }
   
@@ -156,8 +158,8 @@ export class AccountPageComponent implements OnInit {
       throw new Error(data.error);
     }
   }
-  logout() {
-    fetch('https://finaltest-ten.vercel.app/api/logout')
+  async logout() {
+    await fetch('https://finaltest-ten.vercel.app/api/logout')
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -166,6 +168,7 @@ export class AccountPageComponent implements OnInit {
       })
       .then(data => {
         if (data.logoutStatus === 'success') {
+          localStorage.clear();
           this.router.navigate(['']);
         } else {
           throw new Error('Failed to log out');

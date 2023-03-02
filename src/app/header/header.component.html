@@ -1,7 +1,7 @@
 <header class="header">
 	<div class="container">
 		<div class="row-wrap">
-			<div class="logo-wrap">
+			<div class="logo-wrap" (click) = "goHome()">
 				<img src="./assets/icon.jpeg" height="50px" width = "50px" style="margin-right: 10px;margin-left: 0px;margin-bottom: 0px;margin-top: 0px;position: relative;left:0;border-radius:50%;">
 				<span class="logo">Nimbly AI</span>
 				<!-- <img src="./assets/baby-back.gif" height = "5px" width="5px"> -->
@@ -10,14 +10,14 @@
 
 				<ul class="nav-list">
 					<ng-container *ngIf = "!premiumStatus">
-					<li>
+					<li style = "cursor: pointer;">
 						<a (click) = "openGetPremiumModal()">
 						<!-- <i class="fa-solid fa-star"></i> -->
 						Premium</a>
 					</li>
 				</ng-container>
-					<li ><a (click) = "einsteinWriter()" >Nimbly Tool</a></li>
-					<li ><a (click) = "einsteinChat()">Nimbly Chat</a></li>
+					<li style ="cursor: pointer;" ><a (click) = "einsteinWriter()" >Nimbly Tool</a></li>
+					<li style = "cursor: pointer;"><a (click) = "einsteinChat()">Nimbly Chat</a></li>
 					<!-- <li><a href="#">Einstein Docs</a></li> -->
 					<li class="with-submenu">
 						<a (click) = "accountPage()">Account</a>

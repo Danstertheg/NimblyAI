@@ -46,7 +46,7 @@ export class ChatOptionsComponent implements OnInit {
     //this.getConversations();
     this.socket = io(serverUrl);
     // GET: Conversation Request lists for userId where myId is the invitedId
-    this.getConversationRequests();
+    // this.getConversationRequests();
     let authToken = localStorage.getItem("sessionToken");
     let email = localStorage.getItem("email");
     this.socket.emit("listenRequests", email, authToken);
@@ -58,7 +58,7 @@ export class ChatOptionsComponent implements OnInit {
     this.socket.on('connect', () => {
       console.log('Reconnected to server');
       this.getConversationRequests();
-      this.getConversations();
+      // this.getConversations();
       //actively listen for requests, and conversation updates
       this.socket.emit("listenRequests", email, authToken);
 
@@ -110,6 +110,7 @@ export class ChatOptionsComponent implements OnInit {
   }
 
   getConversations() {
+    console.log("getting conversations")
     // Reset array:
     this.conversations = [];
 

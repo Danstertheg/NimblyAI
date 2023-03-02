@@ -43,6 +43,7 @@ import { CreateNewConversationComponent } from './chat-dialogs/create-new-conver
 import { HandleConversationRequestComponent } from './chat-dialogs/handle-conversation-request/handle-conversation-request.component';
 import { AddUserToConversationComponent } from './chat-dialogs/add-user-to-conversation/add-user-to-conversation.component';
 import { ExitConversationComponent } from './chat-dialogs/exit-conversation/exit-conversation.component';
+import { NavigationPageComponent } from './navigation-page/navigation-page.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { ExitConversationComponent } from './chat-dialogs/exit-conversation/exit
     HandleConversationRequestComponent,
     AddUserToConversationComponent,
     ExitConversationComponent,
+    NavigationPageComponent,
    
 
     

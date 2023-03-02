@@ -47,6 +47,10 @@ fetch("https://finaltest-ten.vercel.app/api/user/check-paid-status", {
   });
     
   }
+  goHome(){
+    this.router.navigate(['/navigationPage']);
+
+  }
   einsteinWriter(){
     this.router.navigate(['/einsteinWriter']);
 
@@ -58,8 +62,8 @@ fetch("https://finaltest-ten.vercel.app/api/user/check-paid-status", {
   accountPage(){
     this.router.navigate(['./accountPage']);
   }
-  logout() {
-    fetch('https://finaltest-ten.vercel.app/api/logout')
+  async logout() {
+   await fetch('https://finaltest-ten.vercel.app/api/logout')
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -68,6 +72,7 @@ fetch("https://finaltest-ten.vercel.app/api/user/check-paid-status", {
       })
       .then(data => {
         if (data.logoutStatus === 'success') {
+          localStorage.clear()
           this.router.navigate(['']);
         } else {
           throw new Error('Failed to log out');

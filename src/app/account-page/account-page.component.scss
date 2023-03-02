@@ -48,7 +48,7 @@ text-align: center;
     color:#9feaf9;
 }
 &:active{
-    border:none;
+    // border:none;
 }
 }
 
@@ -135,7 +135,13 @@ input{
         width:100%;
     }
     .account-rendering{
+        width:100%;
+        min-width: 0px !important;
         display: block;
+    }
+    .account-card{
+        min-width: 0px !important;
+        width:100%;
     }
     .hideMobile{
         display:none !important;
@@ -144,10 +150,16 @@ input{
         display:block;
     }
     .showMobile{
-        display:inline-block !important;
+        display:flex !important;
+    }
+    .hideMobile-flex{
+        display: none !important;
     }
 }
 .hideMobile{
+    display:block;
+}
+.hideMobile-flex{
     display:flex;
 }
 .show{

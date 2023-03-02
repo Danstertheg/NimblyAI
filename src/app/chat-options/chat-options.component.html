@@ -40,13 +40,15 @@
     
     <!-- Display the conversation list if that is toggled (starting value of selectedOptionForConversations) -->
     <div class = "options" *ngIf="selectedOptionForConversations === 'conversations'">
+        <div *ngIf="this.socket.connected">
         <app-chat-option 
             *ngFor="let conversation of conversations"
             [conversation]="conversation"
             (click)="setCurrentConversation(conversation)"
         ></app-chat-option>
-        
-        <p class="empty-message" *ngIf="conversations.length === 0">You don't have any conversations. Why not start one?</p>
+        </div>
+        <p class="empty-message" *ngIf="conversations.length === 0 && this.socket.connected">You don't have any conversations. Why not start one?</p>
+        <p class="empty-message" *ngIf="!this.socket.connected">No internet connection =(</p>
     </div>
 
     <!-- Display the request list if that is toggled -->
