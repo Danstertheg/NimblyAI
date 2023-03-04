@@ -42,7 +42,7 @@ export class LandingBannerComponent implements OnInit {
       const data = await response.json();
       
       if (data.message == "Authenticated") {
-        this.router.navigate(['/einsteinChat'])
+        this.router.navigate(['/navigationPage'])
       }
       }
     }

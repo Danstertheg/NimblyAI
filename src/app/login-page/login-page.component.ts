@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import { SpinnerOverlayComponentComponent } from '../spinner-overlay-component/spinner-overlay-component.component';
+import io from "socket.io-client";
+const serverUrl = "https://nimbly.glitch.me";
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -12,9 +14,11 @@ export class LoginPageComponent implements OnInit {
   loginform: FormGroup;
   forgotPwdForm: FormGroup;
   @Input() errorMessage: string = '';
-  emailStatus:string = ''
+  emailStatus:string = '';
+  socket: any;
   forgotPassword = false;
   constructor(private router: Router,private modalOpener: MatDialog) {
+    this.socket = io(serverUrl);
     this.loginform = new FormGroup({
       email: new FormControl(''),
       password: new FormControl('')
@@ -39,10 +43,14 @@ export class LoginPageComponent implements OnInit {
   forgotEmail = "";
   async submitForgotPassword(){
     // this.forgotEmail = "test@gmail.com" 
-
+    if (!this.socket.connected){
+      this.emailStatus = "Error establishing connection to server. Please try again.";
+      return
+    }
     console.log("sending email to " + this.forgotPwdForm.value.forgotEmail);
+    var loader = this.modalOpener.open(SpinnerOverlayComponentComponent);
     try {
-      var loader = this.modalOpener.open(SpinnerOverlayComponentComponent);
+      
       const response = await fetch('https://finaltest-ten.vercel.app/api/forgot-password', {
         method: 'POST',
         body: JSON.stringify({
@@ -71,13 +79,13 @@ export class LoginPageComponent implements OnInit {
   
       } else {
         const data = await response.json();
-    
+        loader.close(SpinnerOverlayComponentComponent);
         this.errorMessage = 'Invalid username or password';
   
       }
     } catch (error) {
       this.errorMessage = 'An error occured please try again later';
-  
+      loader.close(SpinnerOverlayComponentComponent);
     }
     
   }
@@ -85,9 +93,14 @@ export class LoginPageComponent implements OnInit {
     // console.log(this.loginform.value);
     let username = this.loginform.value.email;
     let password = this.loginform.value.password;
+    if (!this.socket.connected)
+    {
+      this.errorMessage = "Error establishing connection to server. Please try again.";
+      return
+    }
     // Send a POST request to the server to log in the user
-  try {
     var loader = this.modalOpener.open(SpinnerOverlayComponentComponent);
+  try {
     const response = await fetch('https://finaltest-ten.vercel.app/api/login', {
       method: 'POST',
       credentials: 'include',
@@ -108,17 +121,8 @@ export class LoginPageComponent implements OnInit {
       if (data.sessionToken) {
       // console.log(data.sessionToken);
     }
-
-
       localStorage.setItem('email', username.toLowerCase());
-      // console.log(data.message);
-      // console.log(data.error);
-    
-      // If the login was successful, redirect the user to the home page
-      
       localStorage.setItem('sessionToken', data.sessionToken);
-    
-      // console.log("sending session token" + JSON.stringify(data.sessionToken))
       this.router.navigate(['/navigationPage'])
 
     } else {
@@ -130,7 +134,7 @@ export class LoginPageComponent implements OnInit {
   } catch (error) {
 
     this.errorMessage = 'An error occured please try again later';
-
+    loader.close(SpinnerOverlayComponentComponent);
   }
   }
 }

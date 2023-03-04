@@ -61,7 +61,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
   
   // Handle for form to send message
   messageForm: FormGroup;
-
+  pendingUsers: Array<String> = [];
   constructor(private formBuilder: FormBuilder, private dialogOpener: MatDialog) {
     
     this.messageForm = this.formBuilder.group({
@@ -106,11 +106,21 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     this.socket.on("disconnect", () => {
       this.errorMessage = "Internet Connection Unstable... "
     })
+    this.socket.on("sendJoinedMessage", async () => {
+      console.log("saying hello to the room")
+      await this.sendMessage("Has Joined.",false);
+      // send a hello message to everyone saying you have joined automatically
+      
+    })
+    this.socket.on("joined",(userList:any) =>{
+
+    })
     this.socket.on('connect_error', (error:string) => {
       console.log(error)
     this.errorMessage = 'Failed to reconnect. Please check your internet connection and try again';
     })
     this.socket.on("connect", async () => {
+      this.socket.emit("listenRequests", this.myId, sessionToken);
       this.errorMessage = ""
       console.log("Successfully connected to glitch server!");  
       if(this.conversationId !== "0"){
@@ -121,7 +131,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
         this.currMessagePage = 0;
         this.nextMessagePageAlreadyCalled = true;
         await this.getMessagesFromMongoDB(false);
-        this.socket.emit("join", this.conversationId, this.myId);
+        this.socket.emit("join", this.conversationId, this.myId,this.conversation.token,sessionToken);
          // Retrieve cached messages from local storage or memory
          const cachedMessages = this.getCachedMessages();
          // send any messages to the disconnected
@@ -146,7 +156,14 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     
   // });
     });
-     
+     this.socket.on("pending_users",(pendingUsers:any)=>{
+      this.pendingUsers = [];
+      for (let idx = 0; idx < pendingUsers.length; idx++)
+      {
+        this.pendingUsers[idx] = pendingUsers[idx].invitedId;
+      }
+      console.log(this.pendingUsers)
+     })
     this.socket.on("message", (senderEmail: string, timestamp: string, text: string, aiAnswer?: string) => {
       // Add to local array of messages
       this.messages.push({
@@ -207,12 +224,13 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     // This also happens on initial load!
     if ('conversationId' in changes) {
       if (this.conversationId !== "0") {
+        this.pendingUsers = [];
         // If there was a previous conv, leave its room on Socket IO:
         if (this.previousConversationId !== "-1")
           this.socket.emit("leave", this.previousConversationId, this.myId);
-
+        const sessionToken = localStorage.getItem("sessionToken")
         // Join new conversation's room on Socket IO
-        this.socket.emit("join", this.conversationId, this.myId);
+        this.socket.emit("join", this.conversationId, this.myId,this.conversation.token,sessionToken);
 
         // save current conv id on previousConversationId:
         this.previousConversationId = this.conversationId;
@@ -230,6 +248,9 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     if ('conversation' in changes && this.conversation) {
       // Fill userIds with IDs of all users except current one:
       this.userIds = GetUserIdsStringFromArray(this.conversation.userIds, this.myId);
+    }
+    else{
+      
     }
   }
 
@@ -396,7 +417,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     request.setRequestHeader('Content-Type', 'application/json');
     request.setRequestHeader('Authorization', `Bearer ${sessionToken}`);
 
-    request.onload = () =>  {
+    request.onload = async () =>  {
       // loader.close(SpinnerOverlayComponentComponent);
       if (request.status >= 200 && request.status < 400) {
         // Success!
@@ -414,11 +435,11 @@ export class ChatlogsComponent implements OnInit, OnChanges {
         }
 
         console.log("AI Responded to '" + prompt + "': " + completedText)
-        this.postMessage(prompt, completedText);
+        await this.postMessage(prompt, completedText);
       } else {
         // There was an error
         const completedText = request.responseText;
-        this.postMessage(prompt, completedText);
+        await this.postMessage(prompt, completedText);
         console.error("ERROR when sending to OpenAI: " + request.responseText);
       }
     };

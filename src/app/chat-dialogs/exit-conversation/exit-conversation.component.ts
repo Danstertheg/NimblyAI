@@ -2,6 +2,9 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+
+import io from "socket.io-client";
+const serverUrl = "https://nimbly.glitch.me";
 // Vercel API URL: 
 const apiURL = "https://finaltest-ten.vercel.app"; // "http://localhost:5000"; 
 
@@ -13,9 +16,10 @@ const sessionToken = localStorage.getItem("sessionToken");
   styleUrls: ['./exit-conversation.component.scss', '../create-new-conversation/create-new-conversation.component.scss']
 })
 export class ExitConversationComponent implements OnInit {
+  errorMessage:string = "";
   // set by parent:
   conversationId: string;
-
+  socket:any;
   // Reference to component to opened this dialog 
   // This was set by parent after it used .open()
   parentComponent: any;
@@ -25,11 +29,17 @@ export class ExitConversationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.socket = io(serverUrl);
   }
 
   async confirmExit(confirm: boolean) {
-
+    if (!this.socket.connected){
+      this.errorMessage = "Error establishing connection to the server. Please try again";
+      // return;
+    }
+    else{
     if (confirm) {
+      
       await fetch(apiURL + "/api/conversation/" + this.conversationId, {
         method: "DELETE",
         headers: {
@@ -63,4 +73,6 @@ export class ExitConversationComponent implements OnInit {
 
     this.dialogRef.close();
   }
+  }
+
 }

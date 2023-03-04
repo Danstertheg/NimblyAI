@@ -1,7 +1,8 @@
 <div style = "padding:24px;">
 <h1 mat-dialog-title>Are you sure you want to leave this conversation?</h1>
 <div mat-dialog-actions class="dialog-submit-button">
-    <button mat-raised-button color="primary" (click)="confirmExit(true)">Yes</button>
-    <button mat-raised-button color="secondary" (click)="confirmExit(false)">Cancel</button>
+    <button type = "submit" mat-raised-button color="primary" (click)="confirmExit(true)">Yes</button>
+    <button type = "submit" mat-raised-button color="secondary" (click)="confirmExit(false)">Cancel</button>
 </div>
+<p style = "color:firebrick">{{errorMessage}}</p>
 </div>

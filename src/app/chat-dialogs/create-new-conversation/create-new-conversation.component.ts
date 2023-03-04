@@ -53,6 +53,10 @@ export class CreateNewConversationComponent implements OnInit {
       this.errorMessage = "Users to add cannot be empty";
       return
     }
+    if (!this.socket.connected){
+      this.errorMessage = "Error establishing connection. Please try again.";
+      return
+    }
     const authToken = localStorage.getItem("sessionToken");
 
     // POST a conversation request for each email to add:

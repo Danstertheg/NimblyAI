@@ -3,7 +3,11 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import { SpinnerOverlayComponentComponent } from '../spinner-overlay-component/spinner-overlay-component.component';
+import io from "socket.io-client";
 
+// Socket Io (Glitch) URL:
+// const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need to specify port 
+const serverUrl = "https://nimbly.glitch.me"
 @Component({
   selector: 'app-text-area-input',
   templateUrl: './text-area-input.component.html',
@@ -11,6 +15,7 @@ import { SpinnerOverlayComponentComponent } from '../spinner-overlay-component/s
 })
 @Injectable()
 export class TextAreaInputComponent implements OnInit {
+  socket:any;
   @Input() AIresponse: string = '';
   @Input() tabOne: boolean = true;
   @Input() tabTwo: boolean = false;
@@ -20,6 +25,7 @@ export class TextAreaInputComponent implements OnInit {
   // AITab: FormGroup;
   // AITabZero: FormGroup;
   constructor(private modalOpener: MatDialog) { 
+    this.socket = io(serverUrl);
     this.AIWriter = new FormGroup({
       AIInput: new FormControl('')
     });
@@ -39,8 +45,8 @@ export class TextAreaInputComponent implements OnInit {
   get input(){
     return this.AIWriter.value.AIInput;
   }
-  ngOnInit(): void {
-    fetch("https://finaltest-ten.vercel.app/api/user/creditBalance", {
+  async ngOnInit(){
+    await fetch("https://finaltest-ten.vercel.app/api/user/creditBalance", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -53,6 +59,7 @@ export class TextAreaInputComponent implements OnInit {
           this.creditAmount = data.credits;
         })
         .catch(error => {
+          this.creditAmount = 0;
           console.error("Error:", error);
         });
   }
@@ -101,7 +108,13 @@ export class TextAreaInputComponent implements OnInit {
     this.tabOne = false;
       this.tabTwo = true;
   }
-  openAI(promptz : string){
+  async openAI(promptz : string){
+    if (!this.socket.connected){
+      this.AIresponse = "Error establishing connection to the server. Please try again.";
+      this.tabOne = false;
+      this.tabTwo = true;
+      return
+    }
     let prompt = promptz + this.AIWriter.value.AIInput;
     let engine = 'text-davinci-002';
     let sessionToken = localStorage.getItem("sessionToken");
@@ -130,7 +143,7 @@ export class TextAreaInputComponent implements OnInit {
       // document.getElementById("loader").innerHTML = '';
     } else {
       // There was an error
-      console.error(request.responseText);
+      this.AIresponse = request.responseText
     }
   };
 

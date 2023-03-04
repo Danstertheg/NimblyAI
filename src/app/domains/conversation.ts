@@ -2,4 +2,5 @@
 export interface Conversation {
     _id: string;
     userIds: string[];
+    token:string;
 }

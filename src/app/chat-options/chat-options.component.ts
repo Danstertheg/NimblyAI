@@ -1,9 +1,11 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges,ViewChild} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Conversation } from '../domains/conversation';
 import { ConversationRequest } from '../domains/conversation-request';
 import { CreateNewConversationComponent } from '../chat-dialogs/create-new-conversation/create-new-conversation.component';
 import io from "socket.io-client";
+import {Clipboard} from '@angular/cdk/clipboard';
+import { MatTooltip } from '@angular/material/tooltip';
 
 // Socket Io (Glitch) URL:
 // const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need to specify port 
@@ -20,6 +22,7 @@ const sessionToken = localStorage.getItem("sessionToken");
 })
 export class ChatOptionsComponent implements OnInit {
   socket: any;
+  needToLoad = false;
   // Current conversation id (IF ANY) passed by parent (chatbox)
   @Input() currentConversationId?: string;
   @Output() mobileChatEvent = new EventEmitter<boolean>();
@@ -40,8 +43,21 @@ export class ChatOptionsComponent implements OnInit {
   selectedOptionForConversations = "conversations";
   requestAmount = 0
   constructor(private createConversationDialog: MatDialog) { }
+  invite:string = `
+Hi there!
 
-  ngOnInit(): void {
+    Wanna try something new? Join me on NimblyAI for some fun conversations and idea sharing!
+    It's super easy to sign up at https://nimblyai.com. Let's connect and start chatting! You can start a conversation with me 
+    using my email address ${localStorage.getItem("email")}.
+  
+See you on the platform.`;
+
+  @ViewChild(MatTooltip) tooltip?: MatTooltip;
+  showToolTip(){
+    this.tooltip?.show()
+  }
+  async ngOnInit() {
+    this.tooltip?.hide()
     // GET: Conversation lists where myId is one of the ids in "userIds"
     //this.getConversations();
     this.socket = io(serverUrl);
@@ -50,15 +66,33 @@ export class ChatOptionsComponent implements OnInit {
     let authToken = localStorage.getItem("sessionToken");
     let email = localStorage.getItem("email");
     this.socket.emit("listenRequests", email, authToken);
+    this.socket.on("acceptRequestStatus", (status:string,conversation:any) => {
+      if (status == "success"){
+        console.log("request was successfully sent ;D")
+        this.getConversations();
+        //if accepted, it needs to reload, this function is currently used by sender and sendee
+        this.getConversationRequests();
+        console.log(conversation);
+        let conv:Conversation = conversation; 
+        this.setCurrentConversation(conv);
+        
+      }
+      
+    })
     this.socket.on("receivedRequest", (invitationToken:string) => {
       console.log("received invitation token id from socket server " + invitationToken)
       this.getConversationRequests(); // all requests are reloaded with this previous implementation
       // this.getConvReqByToken(invitationToken) // only the new one that was sent by another user is loaded 
     });
-    this.socket.on('connect', () => {
+    this.socket.on('disconnect', async () => {
+      this.needToLoad = true;
+    })
+    this.socket.on('connect', async () => {
+      if (this.needToLoad){
+        await this.getConversations();
+      }
       console.log('Reconnected to server');
-      this.getConversationRequests();
-      // this.getConversations();
+      await this.getConversationRequests();
       //actively listen for requests, and conversation updates
       this.socket.emit("listenRequests", email, authToken);
 
@@ -101,20 +135,20 @@ export class ChatOptionsComponent implements OnInit {
       console.error(error);
     });
   }
-  ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges(changes: SimpleChanges) {
     // If currentConversationId changes (set by parent), get conversations again:
     if ('currentConversationId' in changes) {
       if (this.currentConversationId === '0')
-        this.getConversations();
+        await this.getConversations();
     }
   }
 
-  getConversations() {
+  async getConversations() {
     console.log("getting conversations")
     // Reset array:
     this.conversations = [];
-
-    fetch(apiURL + "/api/conversation/" + this.myId, {
+    const sessionToken = localStorage.getItem("sessionToken");
+    await fetch(apiURL + "/api/conversation/" + this.myId, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${sessionToken}`
@@ -123,9 +157,11 @@ export class ChatOptionsComponent implements OnInit {
     .then(response => response.json())
     .then((response: any) => {
       for(const conv of response) {
+        //good it is pushing items correctly from chat options here 
         this.conversations.push({
           _id: conv._id,
-          userIds: conv.userIds
+          userIds: conv.userIds,
+          token:conv.token
         })
       }
     })
@@ -134,11 +170,11 @@ export class ChatOptionsComponent implements OnInit {
     });
   }
 
-  getConversationRequests() {
+  async getConversationRequests() {
     // Reset array
     this.conversationRequests = [];
-
-    fetch(apiURL + "/api/conversation-request/" + this.myId, {
+    const sessionToken = localStorage.getItem("sessionToken");
+    await fetch(apiURL + "/api/conversation-request/" + this.myId, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${sessionToken}`
@@ -164,15 +200,26 @@ export class ChatOptionsComponent implements OnInit {
 
   setCurrentConversation(conversation: Conversation) {
     this.currentConversationId = conversation._id;
+    // this.currentConversation = conversation;
     if (window.innerWidth <= 680){
       this.mobileChatEvent.emit(this.chatlogs);
     }
     // Emit alert so parent knows conversationId has just changed:
     this.currentConversationIdChange.emit(
-      { id: this.currentConversationId, conv: conversation } // we need to pass the conversation object to chatlogs
+      { id: this.currentConversationId, conv:conversation} // we need to pass the conversation object to chatlogs
+      
     );
   }
-
+  setCurrentConversationById(conversationId: string) {
+    this.currentConversationId = conversationId;
+    if (window.innerWidth <= 680){
+      this.mobileChatEvent.emit(this.chatlogs);
+    }
+    // Emit alert so parent knows conversationId has just changed:
+    this.currentConversationIdChange.emit(
+      { id: this.currentConversationId } // we need to pass the conversation object to chatlogs
+    );
+  }
   openCreateConversationDialog() {
     this.createConversationDialog.open(CreateNewConversationComponent);
   }

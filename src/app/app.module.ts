@@ -8,6 +8,9 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+
+
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -44,6 +47,10 @@ import { HandleConversationRequestComponent } from './chat-dialogs/handle-conver
 import { AddUserToConversationComponent } from './chat-dialogs/add-user-to-conversation/add-user-to-conversation.component';
 import { ExitConversationComponent } from './chat-dialogs/exit-conversation/exit-conversation.component';
 import { NavigationPageComponent } from './navigation-page/navigation-page.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { SuccessfulRequestSendComponent } from './chat-dialogs/successful-request-send/successful-request-send.component';
+import { SuccessSignupMsgComponent } from './success-signup-msg/success-signup-msg.component';
 
 @NgModule({
   declarations: [
@@ -77,8 +84,9 @@ import { NavigationPageComponent } from './navigation-page/navigation-page.compo
     AddUserToConversationComponent,
     ExitConversationComponent,
     NavigationPageComponent,
-   
-
+    SuccessfulRequestSendComponent,
+    SuccessSignupMsgComponent,
+    
     
   ],
   imports: [
@@ -95,7 +103,9 @@ import { NavigationPageComponent } from './navigation-page/navigation-page.compo
     MatIconModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    ClipboardModule,
+    MatTooltipModule
   ],
   providers: [
     TextAreaInputComponent,

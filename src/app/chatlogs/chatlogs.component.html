@@ -32,6 +32,7 @@
 <!-- Messages: -->
 <div class="chatlogs" *ngIf="conversationId !== '0'">
   <div #messageContainer class="logs" (scroll)="onScroll($event)">
+    <p *ngIf="pendingUsers.toString() != ''"> Pending Invite: {{pendingUsers.toString()}}</p>
     <app-chat-message *ngFor="let message of messages" 
       [message]="message"
       [messageStatus]="message.messageStatus"

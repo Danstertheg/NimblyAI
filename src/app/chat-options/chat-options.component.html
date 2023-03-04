@@ -8,6 +8,9 @@
             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
             Create New Conversation
         </button>
+        
+        <mat-icon (click) = "showToolTip()" matTooltip="Copy Invitation Link"  matTooltipHideDelay="0" class = "showMobile invite-link" cdkCopyToClipboard = {{invite}} aria-hidden = "false" aria-label="Invitation Link Icon"  fontIcon="insert_link"></mat-icon>
+
     </div>
 
     <div class="conversation-toggle">

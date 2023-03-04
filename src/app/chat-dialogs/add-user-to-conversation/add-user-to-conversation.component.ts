@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
-
+import io from "socket.io-client";
+const serverUrl = "https://nimbly.glitch.me";
 // Vercel API URL:
 const apiURL = "https://finaltest-ten.vercel.app"; // "http://localhost:5000"; 
 
@@ -15,13 +16,14 @@ export class AddUserToConversationComponent implements OnInit {
   conversationId: string;
   errorMessage: string = "";
   newUserEmail = "";
-
+  socket: any;
   constructor(@Inject(MAT_DIALOG_DATA) public data: string,
     private dialogRef: MatDialogRef<AddUserToConversationComponent>) { 
           this.conversationId = data;
   }
 
   ngOnInit(): void {
+    this.socket = io(serverUrl);
   }
 
   sendRequestToUser() {
@@ -32,6 +34,9 @@ export class AddUserToConversationComponent implements OnInit {
     }
     if (this.newUserEmail.toLowerCase() !== localStorage.getItem("email")){
       this.errorMessage = "You cannot add yourself to a conversation";
+    }
+    if (!this.socket.connected){
+      this.errorMessage = "Error establishing connectiong to the server. Please try again";
     }
     if (this.newUserEmail !== "") { // UNCOMMENT THIS L8ER PLZ: && this.newUserEmail !== localStorage.getItem("email")) {
       const sessionToken = localStorage.getItem("sessionToken");

@@ -210,38 +210,64 @@
           // justify-content: center;
       }
       .button-bottom{
-          width:100px;
-          min-width:100px;
-          // box-shadow: 5px 1px  5px #9feaf9;
-          background-color: #1b1c26;  
-          // border: 1px solid #9feaf9;
-          // color:#9feaf9;
+          // width:100px;
+          // min-width:100px;
+          // // box-shadow: 5px 1px  5px #9feaf9;
+          // background-color: #1b1c26;  
+          // // border: 1px solid #9feaf9;
+          // // color:#9feaf9;
+          // font-size: 15px;
+          // font-family: monospace;
+          // font-weight: 600;
+          // color:#1b1c26;
+          // // box-shadow: 5px 0px 0px #888888;
+          // border:4px solid #888888;
+          // // border:4px solid rgb(53, 59, 71);
+          // outline:none;
+          // background-color:#54c7ec;
+          // border-radius: 10px;
+          // margin-left:5px;
+          // margin-right: 5px;
+          // transition: .13s ease-in-out;
+          // cursor:pointer;
+          width: 100px;
+          min-width: 100px;
           font-size: 15px;
-          font-family: monospace;
-          font-weight: 600;
-          color:#1b1c26;
-          // box-shadow: 5px 0px 0px #888888;
-          border:4px solid #888888;
-          // border:4px solid rgb(53, 59, 71);
-          outline:none;
-          background-color:#54c7ec;
-          border-radius: 10px;
-          margin-left:5px;
+          // font-family: ;
+          font-weight: 400;
+          color: #fff;
+          border:1px solid #D80286;
+          // margin-right:10px;
+          // margin-left:10px;
+          outline: none;
+          // background-color: #1b1c26;
+          
+          background-color: #1b1c26;
+          // border-radius: 10px;
+          margin-left: 5px;
           margin-right: 5px;
-          transition: .13s ease-in-out;
-          cursor:pointer;
+          transition: 0.13s ease-in-out;
+          cursor: pointer;
+          // border: 1px solid #54c7ec;
+          margin: 5px;
+          height: 50px;
+          // box-shadow: hotpink 15px 0px 100px;
+
+          box-shadow: inset 0 0 0 0 #D80286;
+          -webkit-transition: ease-out 0.4s;
+          -moz-transition: ease-out 0.4s;
+          transition: ease-out 0.4s;
           &:active{
-            // box-shadow:none;
-            border-color: #9feaf9;
-            background-color: #9feaf9;
+              opacity: 0.7;
           }
+          &:hover{
+            box-shadow: inset 400px 0 0 0 #D80286;
+          }
+         
           
 
       }
-      .button-bottom:hover{
-          background-color:#9feaf9;
-          color:#1b1c26;
-      }
+      
       .button-inverse{
           width:100px;
           min-width:100px;
