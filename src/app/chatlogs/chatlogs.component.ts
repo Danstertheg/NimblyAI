@@ -165,12 +165,14 @@ export class ChatlogsComponent implements OnInit, OnChanges {
       console.log(this.pendingUsers)
      })
     this.socket.on("message", (senderEmail: string, timestamp: string, text: string, aiAnswer?: string) => {
+
+      const messageTimestamp = new Date(timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});;
       // Add to local array of messages
       this.messages.push({
         conversationId: this.conversationId,
         messageStatus:'sent',
         senderId: senderEmail,
-        timestamp: timestamp,
+        timestamp: messageTimestamp,
         text: text,
         aiAnswer: aiAnswer
       })
@@ -269,18 +271,53 @@ export class ChatlogsComponent implements OnInit, OnChanges {
         this.currMessagePage = -1; // Set it to this value to prevent any more GETs
       }
         let newMessages: Array<Message> = [];
-
+        
+        
         for (let i = response.length - 1; i >= 0; i--) {
           const message = response[i];
-          const messageTimestamp = new Date(message.timestamp).toLocaleString();
+          const inputDate = new Date(message.timestamp); // Convert the input date string to a Date object
+
+          const today = new Date(); // Get the current date object
+
+          // Check if the input date is the same as today
+          if (inputDate.getDate() === today.getDate() &&
+            inputDate.getMonth() === today.getMonth() &&
+            inputDate.getFullYear() === today.getFullYear()) {
+
+          // If the input date is today, print only the time
+          const timeString = inputDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
           newMessages.push({
             conversationId: message.conversationId,
             messageStatus: 'sent',
             senderId: message.senderId,
-            timestamp: messageTimestamp,
+            timestamp: timeString,
             text: message.text,
             aiAnswer: message.aiAnswer
           })
+
+        } else {
+
+          // If the input date is not today, print the full date and time
+          const dateTimeString = inputDate.toLocaleString();
+          newMessages.push({
+            conversationId: message.conversationId,
+            messageStatus: 'sent',
+            senderId: message.senderId,
+            timestamp: dateTimeString,
+            text: message.text,
+            aiAnswer: message.aiAnswer
+          })
+
+}
+          // const messageTimestamp = new Date(message.timestamp).toLocaleString();
+          // newMessages.push({
+          //   conversationId: message.conversationId,
+          //   messageStatus: 'sent',
+          //   senderId: message.senderId,
+          //   timestamp: messageTimestamp,
+          //   text: message.text,
+          //   aiAnswer: message.aiAnswer
+          // })
         }
 
         this.messages.unshift(...newMessages); // add new array of messages to the front of messages array
@@ -311,7 +348,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
       if (forAI) {
         this.openAI(message);
       } else 
-        msgResult = await this.postMessage(message, aiAnswer);
+        await this.postMessage(message, aiAnswer);
     }
     else{
       console.log("not connected to internet, cannot send message: " + message + ": going to attempt to store")
@@ -350,39 +387,40 @@ export class ChatlogsComponent implements OnInit, OnChanges {
   }
 
   async postMessage(message: string, aiAnswer: string) {
-     const timestamp = new Date().toLocaleString();
-  
+     const timestamp = new Date().toUTCString();
+    let sessionToken = localStorage.getItem("sessionToken")
     // Send message to Socket.io
-    this.socket.emit("message", this.conversationId, this.myId, message, timestamp, aiAnswer);
+    this.socket.emit("message", this.conversationId, this.myId, message, timestamp, aiAnswer,sessionToken);
     // Post message to MongoDb "Messages" collection:
-    await fetch(apiURL + "/api/messages/" + this.conversationId, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${sessionToken}`
-      },
-      body: JSON.stringify({
-        senderId: this.myId,
-        // timestamp: timestamp,
-        text: message,
-        aiAnswer: aiAnswer
-      })
-    }) 
-    .then(response => {
-      if (response.ok) {
-        console.log('Message sent successfully.');
-        return "sent"
-      } else {
-        // throw new Error(`Failed to send message to MongoDB (status ${response.status}). (POST to /messages)`);
-        return "failed to send message"
-      }
-    })
-    .catch(error => {
-      return "failed to send message";
-      // console.error('An error occurred while accepting the conversation request (POST to /conversation):', error);
-    });
+    
+    // await fetch(apiURL + "/api/messages/" + this.conversationId, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "Authorization": `Bearer ${sessionToken}`
+    //   },
+    //   body: JSON.stringify({
+    //     senderId: this.myId,
+    //     // timestamp: timestamp,
+    //     text: message,
+    //     aiAnswer: aiAnswer
+    //   })
+    // }) 
+    // .then(response => {
+    //   if (response.ok) {
+    //     console.log('Message sent successfully.');
+    //     return "sent"
+    //   } else {
+    //     // throw new Error(`Failed to send message to MongoDB (status ${response.status}). (POST to /messages)`);
+    //     return "failed to send message"
+    //   }
+    // })
+    // .catch(error => {
+    //   return "failed to send message";
+    //   // console.error('An error occurred while accepting the conversation request (POST to /conversation):', error);
+    // });
      // clear input field:
-     return "failed to send message"
+    //  return "failed to send message"
   }
 
   openAddUserToConvDialog() {
@@ -446,13 +484,14 @@ export class ChatlogsComponent implements OnInit, OnChanges {
 
     request.onerror = function() {
       // loader.close(SpinnerOverlayComponentComponent);
-
       console.error('An error occurred while making the request');
     };
-
+   
+   
     const data = {
       model: engine,
-      prompt: prompt
+      prompt: 
+      ` the following is the past messages of the chat in an array for context ` + JSON.stringify(this.messages) + ` Please do not mention your characterstics unless specifically asked to, please reply to the following text to the best of your ability: ` + prompt
     };
     // var loader = this.dialogOpener.open(SpinnerOverlayComponentComponent);
     

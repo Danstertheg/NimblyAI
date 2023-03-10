@@ -6,7 +6,6 @@ import { SpinnerOverlayComponentComponent } from '../spinner-overlay-component/s
 import io from "socket.io-client";
 
 // Socket Io (Glitch) URL:
-// const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need to specify port 
 const serverUrl = "https://nimbly.glitch.me"
 @Component({
   selector: 'app-text-area-input',

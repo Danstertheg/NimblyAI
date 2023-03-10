@@ -9,6 +9,7 @@ import { NavigationPageComponent } from './navigation-page/navigation-page.compo
 import { PremiumPageComponent } from './premium-page/premium-page.component';
 import { SignupPageComponent } from './signup-page/signup-page.component';
 import { ThankYouPageComponent } from './thank-you-page/thank-you-page.component';
+import { VerificationPageComponent } from './verification-page/verification-page.component';
 
 const routes: Routes = [  
   {path: 'einsteinWriter', component: EinsteinWriterComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
   {path: 'premiumPage', component:PremiumPageComponent},
   {path: 'thankYouPage', component:ThankYouPageComponent},
   {path: 'accountPage', component:AccountPageComponent},
-  {path: 'navigationPage', component:NavigationPageComponent}
+  {path: 'navigationPage', component:NavigationPageComponent},
+  {path: 'verificationPage', component:VerificationPageComponent}
 ];
 
 @NgModule({

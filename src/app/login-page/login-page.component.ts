@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import { SpinnerOverlayComponentComponent } from '../spinner-overlay-component/spinner-overlay-component.component';
+import { SuccessSignupMsgComponent } from '../success-signup-msg/success-signup-msg.component';
 import io from "socket.io-client";
+
 const serverUrl = "https://nimbly.glitch.me";
 @Component({
   selector: 'app-login-page',
@@ -111,26 +113,50 @@ export class LoginPageComponent implements OnInit {
       headers: {
         'Content-Type': 'application/json',
       },
-    });
-    if (response.ok) {
-
+    }).then(response => response.json())
+    .then(data => {
       loader.close(SpinnerOverlayComponentComponent);
+      console.log(data)
+      console.log(data.message)
+      console.log(data.reason)
+      console.log(data.status)
+      if (data.status == "SUCCESS"){
+        localStorage.setItem('email', username.toLowerCase());
+        localStorage.setItem('sessionToken', data.sessionToken);
+        this.router.navigate(['/navigationPage'])  
+      }
+      else if (data.status == "FAIL"){
+        if (data.reason == "NOT_VERIFIED"){
+          var verifyModal = this.modalOpener.open(SuccessSignupMsgComponent,{data: { email: username }});
+          this.errorMessage = "Please verify your email."
+          // not verified user, verify email....
+        }
+        else {
+          this.errorMessage = 'Invalid username or password'
+        }
+      }
+    })
+    // if (response.ok) {
 
-      const data = await response.json();
+
       
-      if (data.sessionToken) {
-      // console.log(data.sessionToken);
-    }
-      localStorage.setItem('email', username.toLowerCase());
-      localStorage.setItem('sessionToken', data.sessionToken);
-      this.router.navigate(['/navigationPage'])
 
-    } else {
-      const data = await response.json();
-      loader.close(SpinnerOverlayComponentComponent);
-      this.errorMessage = 'Invalid username or password';
+      // const data = await response.json();
+      
+      
+    //   if (data.sessionToken) {
+    //   // console.log(data.sessionToken);
+    // }
+      // localStorage.setItem('email', username.toLowerCase());
+      // localStorage.setItem('sessionToken', data.sessionToken);
+      // this.router.navigate(['/navigationPage'])
 
-    }
+    // } else {
+      // const data = await response.json();
+      // loader.close(SpinnerOverlayComponentComponent);
+      // this.errorMessage = 'Invalid username or password';
+
+    // }
   } catch (error) {
 
     this.errorMessage = 'An error occured please try again later';

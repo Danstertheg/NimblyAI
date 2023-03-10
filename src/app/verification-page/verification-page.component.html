@@ -1,30 +1,4 @@
-
- <!-- Section above conversation and request shared-panel: -->
- <div class="chat-options-menu" >
-    <div class="create-new-conversation-section">
-        <!-- <button mat-raised-button class = "create-chat-btn"
-            (click)="openCreateConversationDialog()"
-        >
-            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
-            Create New Conversation
-        </button> -->
-        
-
-    </div>
-
-    <div class="conversation-toggle">
-        <mat-button-toggle-group 
-            [(ngModel)]="selectedOptionForConversations"
-            class="toggle-buttons"
-        >
-            <mat-button-toggle value="conversations">Conversations</mat-button-toggle>
-            <mat-button-toggle value="requests">Requests <div  *ngIf = "requestAmount !== 0" class = "request-alert">{{requestAmount}}</div></mat-button-toggle>
-        </mat-button-toggle-group>
-    </div>
-    <mat-icon (click) = "showToolTip()" matTooltip="Copy Invitation Link"  matTooltipHideDelay="0" class = "invite-link" cdkCopyToClipboard = {{invite}} aria-hidden = "false" aria-label="Invitation Link Icon"  fontIcon="insert_link"></mat-icon>
-    <mat-icon (click) = "openCreateConversationDialog()" fontIcon = "create" class = "invite-link" ></mat-icon>
-</div>
-<!-- <div class = "AIChat">
+<div class = "verificationPage">
     <div class='wrap'>
         <div class='c'></div>
         <div class='c'></div>
@@ -327,63 +301,13 @@
         <div class='c'></div>
         <div class='c'></div>
     </div>
-    <img src = "./assets/welcome-chat-removebg-preview.png" style = "height:50px;width:50px;position: relative;top:25%;left:25px;margin:none;">
-    <h2 class = "Nimbly-Title" (click) = "NimblyConversation()">Chat with Nimbly</h2>
-</div> -->
-<!-- <div style = "height:100px;width:auto;background-color: brown;border-right: 10px solid rgb(53, 59, 71);">
-<div style = "width:50%;height:100px;background-color: aliceblue;">Chat With Friends</div>
-<div style = "width: 50%;height:100px;background-color: aquamarine;">Chat with Nimbly</div>
-</div> -->
-<div class = "chatOptions">
-    <!-- Code for a search bar (not in MVP tho): -->
-        <!-- <div class = "chatButtonArea" > 
-            <div class = "smallChatBtnArea">
-                <svg class = "elipsis-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc.<path d="M384 192h-64v128H192v128H0v-25.6h166.4v-128h128v-128H384V192zm-25.6 38.4v128h-128v128H64V512h192V384h128V230.4h-25.6zm25.6 192h-89.6V512H320v-64h64v-25.6zM0 0v384h128V256h128V128h128V0H0z"/></svg>
-                <svg class = "elipsis-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">Font Awesome Pro 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License)<path d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"/></svg>
-            </div> -->
+    <h1>Verification Status</h1>
+ 
+    <mat-icon *ngIf = "verified" class = "verified-icon" >verified_user</mat-icon>
+    <mat-icon *ngIf = "!verified" class = "verified-icon" style = "color:firebrick !important">cancel</mat-icon>
+    <p *ngIf = "!verified" style = "color:firebrick">{{verificationStatus}}</p>
+    <p *ngIf = "verified" style = "color:#4BB543">{{verificationStatus}}</p>
 
-            <!-- <div class="search">
-                <input type="text" class="searchTerm" >
-                <button type="submit" class="searchButton">
-                </button>
-            </div>
-        </div> -->
-
-
-   
-    
-    <!-- Display the conversation list if that is toggled (starting value of selectedOptionForConversations) -->
-    <div class = "options" *ngIf="selectedOptionForConversations === 'conversations'">
-        <div *ngIf="this.socket.connected">
-        <app-chat-option 
-            *ngFor="let conversation of conversations"
-            [conversation]="conversation"
-            (click)="setCurrentConversation(conversation)"
-        ></app-chat-option>
-        </div>
-        <p class="empty-message" *ngIf="conversations.length === 0 && this.socket.connected">You don't have any conversations. Why not start one?</p>
-        <p class="empty-message" *ngIf="!this.socket.connected">No internet connection =(</p>
-    </div>
-
-    <!-- Display the request list if that is toggled -->
-    <div class = "options" *ngIf="selectedOptionForConversations === 'requests'">
-
-        <!-- Angular Knowledge Note: 
-            This child component (conversation-request) has @Output() "refreshConvReqsEmitter" that emits 
-            an event to call a function in parent (this: chat-options).
-            In the parent's HTML, we pair the Output component to a function (getConversationRequests()) for it to trigger
-            when it emits(). This is done with:
-                    (refreshConvReqsEmitter) = "getConversationRequests()"
-        -->
-
-        <app-conversation-request
-            *ngFor="let request of conversationRequests"
-            [conversationRequest]="request"
-
-            (refreshConvReqsEmitter) = "getConversationRequests(); getConversations(); openChats()"
-
-        ></app-conversation-request>
-
-        <p class="empty-message" *ngIf="conversationRequests.length === 0">You don't have any conversation requests.</p>
-    </div>
+    <button (click) = "redirectLogin()" style = "position: relative;bottom:50px;padding:15px;background-color: #54c7ec; color:#fff;font-weight: 700;">Return To Login</button>
 </div>
+

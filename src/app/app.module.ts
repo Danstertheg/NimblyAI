@@ -51,6 +51,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SuccessfulRequestSendComponent } from './chat-dialogs/successful-request-send/successful-request-send.component';
 import { SuccessSignupMsgComponent } from './success-signup-msg/success-signup-msg.component';
+import { VerificationPageComponent } from './verification-page/verification-page.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { SuccessSignupMsgComponent } from './success-signup-msg/success-signup-m
     NavigationPageComponent,
     SuccessfulRequestSendComponent,
     SuccessSignupMsgComponent,
+    VerificationPageComponent,
     
     
   ],

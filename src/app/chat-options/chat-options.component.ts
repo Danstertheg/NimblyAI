@@ -197,7 +197,9 @@ See you on the platform.`;
       console.error(error);
     });
   }
-
+  NimblyConversation(){
+    console.log("start chat with nimbly");
+  }
   setCurrentConversation(conversation: Conversation) {
     this.currentConversationId = conversation._id;
     // this.currentConversation = conversation;

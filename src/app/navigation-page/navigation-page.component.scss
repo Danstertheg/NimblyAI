@@ -244,6 +244,82 @@ p {
       }
   }
 
+
+
+
+
+
+
+
+
+
+////////////////////////////
+.social-menu ul{
+  margin-top: 100px;
+  position: relative;
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  padding: 0;
+  // transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+}
+
+.social-menu ul li{
+  list-style: none;
+  margin: 0 15px;
+}
+
+.social-menu ul li .fab{
+  font-size: 30px;
+  line-height: 60px;
+  transition: .3s;
+  color: #000;
+}
+
+.social-menu ul li .fab:hover{
+  color: #fff;
+}
+
+.social-menu ul li a{
+  position: relative;
+  display: block;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #fff;
+  text-align: center;
+  transition: .6s;
+  box-shadow: 0 5px 4px rgba(0,0,0,.5);
+}
+
+.social-menu ul li a:hover{
+  transform: translate(0, -10%);
+}
+
+.social-menu ul li:nth-child(1) a:hover{
+  background-image: linear-gradient(to right, #ff0050 , #00f2ea);
+}
+.social-menu ul li:nth-child(2) a:hover{
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+
+}
+.social-menu ul li:nth-child(3) a:hover{
+  // background-color: #0077b5;
+  background-color: #1DA1F2;
+}
+.social-menu ul li:nth-child(4) a:hover{
+  // background-color: #ff0050;
+  background-image: linear-gradient(to right, #ff0050 , #00f2ea);
+}
+
+
+
+
+
+
+  ///////////////////////
 #stars {
 	width: 1px;
 	height: 1px;

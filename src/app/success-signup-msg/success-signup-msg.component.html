@@ -1,4 +1,29 @@
-<div  style = "padding:24px;display:flex;flex-direction: column;justify-content: center;align-items: center;">
-<h2 mat-dialog-title>Successful Sign Up!</h2>
-<button mat-raised-button mat-dialog-close color="primary" (click) = 'redirectLogin()'>Continue To Login</button>
+
+<!-- Verified Not yet successful. -->
+<div *ngIf = "!verified"  style = "padding:24px;display:flex;flex-direction: column;justify-content: center;align-items: center;">
+<h2 mat-dialog-title style = "font-weight: 600;font-size: 30px;">Verify your email</h2>
+<p style = "text-align: center; margin-bottom: 0;"> Please check your email for a link to verify your email address.</p>
+<p> Once verified, you'll be able to log in. </p>
+<p style = "margin: 0;text-align: center;font-weight: 600;">{{email}}</p>
+<mat-icon style = "font-size: 100px;height: 100px; width: 100px;"> email</mat-icon>
+<p style = "margin:0; text-align: center;font-weight:600">{{emailStatus}}</p>
+<p >Didn't receive an email? <a (click) = "sendVerification()" style = "color: blue;cursor: pointer;">Resend</a></p>
 </div>
+
+<!-- Showcase a verified success message -->
+<div *ngIf = "verified"  style = "padding:24px;display:flex;flex-direction: column;justify-content: center;align-items: center;">
+<h2 mat-dialog-title style = "font-weight: 600;font-size: 30px;">Successfully Verified!</h2>
+<p style = "margin: 0;text-align: center;font-weight: 600;">{{email}}</p>
+<mat-icon style = "font-size: 100px;height: 100px; width: 100px;color:#4BB543">verified_user</mat-icon>
+<p style = " text-align: center;font-weight:600">Verified</p>
+<button mat-raised-button mat-dialog-close style="background-color: #1b1c26;color:#fff;" (click) = 'redirectLogin()'>Continue To Login</button>
+</div>
+
+
+
+
+
+
+
+
+
