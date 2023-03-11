@@ -30,7 +30,9 @@ export class AccountPageComponent implements OnInit {
       newPassword: new FormControl('')
     })
    }
-
+   redirectFAQ(){
+    this.router.navigate(['/FAQPage']);
+   }
    mobileReturnToAccountNav(){
 
     this.accountRenderingClass = "hideMobile-flex";

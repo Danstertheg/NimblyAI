@@ -49,6 +49,7 @@ fetch("https://finaltest-ten.vercel.app/api/user/check-paid-status", {
   });
    
   }
+
   goHome(){
     this.router.navigate(['/navigationPage']);
 
@@ -63,6 +64,9 @@ fetch("https://finaltest-ten.vercel.app/api/user/check-paid-status", {
   }
   accountPage(){
     this.router.navigate(['./accountPage']);
+  }
+  redirectFAQ(){
+    this.router.navigate(['/FAQPage']);
   }
   async checkLoggedIn(){
     if (localStorage.getItem("email") == null )

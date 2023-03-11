@@ -3,8 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccountPageComponent } from './account-page/account-page.component';
 import { EinsteinChatComponent } from './einstein-chat/einstein-chat.component';
 import { EinsteinWriterComponent } from './einstein-writer/einstein-writer.component';
+import { FAQPageComponent } from './faq-page/faq-page.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
 import { NavigationPageComponent } from './navigation-page/navigation-page.component';
 import { PremiumPageComponent } from './premium-page/premium-page.component';
 import { SignupPageComponent } from './signup-page/signup-page.component';
@@ -21,7 +23,9 @@ const routes: Routes = [
   {path: 'thankYouPage', component:ThankYouPageComponent},
   {path: 'accountPage', component:AccountPageComponent},
   {path: 'navigationPage', component:NavigationPageComponent},
-  {path: 'verificationPage', component:VerificationPageComponent}
+  {path: 'verificationPage', component:VerificationPageComponent},
+  {path: 'FAQPage', component:FAQPageComponent},
+  {path: 'maintenance', component:MaintenancePageComponent}
 ];
 
 @NgModule({

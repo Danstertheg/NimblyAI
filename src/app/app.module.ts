@@ -52,6 +52,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SuccessfulRequestSendComponent } from './chat-dialogs/successful-request-send/successful-request-send.component';
 import { SuccessSignupMsgComponent } from './success-signup-msg/success-signup-msg.component';
 import { VerificationPageComponent } from './verification-page/verification-page.component';
+import { FAQPageComponent } from './faq-page/faq-page.component';
+import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +90,8 @@ import { VerificationPageComponent } from './verification-page/verification-page
     SuccessfulRequestSendComponent,
     SuccessSignupMsgComponent,
     VerificationPageComponent,
+    FAQPageComponent,
+    MaintenancePageComponent,
     
     
   ],

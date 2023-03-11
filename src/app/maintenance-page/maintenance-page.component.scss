@@ -1,0 +1,49 @@
+		body {
+			background-color: #1b1c26;
+			font-family: Arial, sans-serif;
+			color: white;
+			text-align: center;
+			padding-top: 50px;
+		}
+
+		h1 {
+			font-size: 60px;
+			margin-bottom: 20px;
+		}
+
+		p {
+			font-size: 20px;
+			margin-bottom: 40px;
+		}
+
+		button {
+			background-color: #ffffff;
+			color: #1b1c26;
+			border: none;
+			padding: 15px 25px;
+			font-size: 18px;
+			font-weight: bold;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		button:hover {
+			background-color: #ff9900;
+			color: #ffffff;
+		}
+
+		#fun-element {
+			background-image: url('../../assets/maintenance.png');
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: contain;
+			height: 400px;
+			margin-top: 40px;
+			transition: transform 0.5s ease;
+			cursor: pointer;
+		}
+
+		#fun-element:active {
+			transform: rotate(360deg);
+		}

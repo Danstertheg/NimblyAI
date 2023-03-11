@@ -10,15 +10,13 @@
     <button mat-raised-button  class = "add-user-btn"
         (click)="openAddUserToConvDialog()"
     >
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
-        Add User
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="group_add"></mat-icon>
     </button>
 
     <button mat-raised-button class = "leave-btn"
         (click)="openExitConvDialog()"
     >
         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="exit_to_app"></mat-icon>
-        Leave   
     </button>
     <!-- <button mat-raised-button class = "return-btn showMobile" (click)="mobileReturnToChatOptionsBtn()">
       <mat-icon fontIcon="arrow_back_ios"></mat-icon>
@@ -32,7 +30,7 @@
 <!-- Messages: -->
 <div class="chatlogs" *ngIf="conversationId !== '0'">
   <div #messageContainer class="logs" (scroll)="onScroll($event)">
-    <p *ngIf="pendingUsers.toString() != ''"> Pending Invite: {{pendingUsers.toString()}}</p>
+    <p *ngIf="pendingUsers.toString() != ''" class = "pendingUsers"> Pending Invite(s): {{pendingUsers.toString()}}</p>
     <app-chat-message *ngFor="let message of messages" 
       [message]="message"
       [messageStatus]="message.messageStatus"
