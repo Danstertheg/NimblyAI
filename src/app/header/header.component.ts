@@ -14,12 +14,17 @@ export class HeaderComponent implements OnInit {
     
   }
   onHamburger = false;
+  
   toggleMenu(){
     this.onHamburger = !this.onHamburger;
   }
+
   openGetPremiumModal() {
     this.modalOpener.open(PremiumModalComponent);
   }
+  redirectFeedbackForm(){
+    this.router.navigate(['/feedback']);
+   }
   sessionToken = localStorage.getItem("sessionToken");
   premiumStatus = true;
   async ngOnInit(){
@@ -54,20 +59,25 @@ fetch("https://finaltest-ten.vercel.app/api/user/check-paid-status", {
     this.router.navigate(['/navigationPage']);
 
   }
+
   einsteinWriter(){
     this.router.navigate(['/einsteinWriter']);
 
   }
+
   einsteinChat(){
     this.router.navigate(['/einsteinChat']);
 
   }
+
   accountPage(){
     this.router.navigate(['./accountPage']);
   }
+
   redirectFAQ(){
     this.router.navigate(['/FAQPage']);
   }
+
   async checkLoggedIn(){
     if (localStorage.getItem("email") == null )
     {

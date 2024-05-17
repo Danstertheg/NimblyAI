@@ -33,6 +33,9 @@ export class AccountPageComponent implements OnInit {
    redirectFAQ(){
     this.router.navigate(['/FAQPage']);
    }
+   redirectFeedbackForm(){
+    this.router.navigate(['/feedback']);
+   }
    mobileReturnToAccountNav(){
 
     this.accountRenderingClass = "hideMobile-flex";

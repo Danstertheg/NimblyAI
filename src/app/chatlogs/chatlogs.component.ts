@@ -1,8 +1,6 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter, ViewChild, ElementRef   } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import io from "socket.io-client";
-
 import { Message } from '../domains/message';
 import { CachedMessage } from '../domains/cachedBuffer';
 import { AddUserToConversationComponent } from '../chat-dialogs/add-user-to-conversation/add-user-to-conversation.component';
@@ -11,7 +9,7 @@ import { SpinnerOverlayComponentComponent } from '../spinner-overlay-component/s
 import { Conversation } from '../domains/conversation';
 import { GetUserIdsStringFromArray } from '../chat-option/chat-option.component';
 
-
+import io from "socket.io-client";
 // Socket Io (Glitch) URL:
 // const serverUrl = "https://einsteinchat-socket-io-server.glitch.me"; // no need to specify port 
 const serverUrl = "https://nimbly.glitch.me";
@@ -55,10 +53,10 @@ export class ChatlogsComponent implements OnInit, OnChanges {
   myId = localStorage.getItem("email") || "";
 
   messageBuffer: Array<CachedMessage> = [];
-
+  thinking = false
   // Message array to be pulled from DB
   messages: Array<Message> = [];
-  
+  thinkingIndicesMessages: Array <Number> = []
   // Handle for form to send message
   messageForm: FormGroup;
   pendingUsers: Array<String> = [];
@@ -97,7 +95,8 @@ export class ChatlogsComponent implements OnInit, OnChanges {
       audio.play();
     
   }
-  ngOnInit(): void {
+  async ngOnInit(){
+    
     this.socket = io(serverUrl);
     // Set the socket.io reconnection properties
     this.socket.io.reconnectionAttempts = 3;
@@ -114,7 +113,12 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     })
     this.socket.on("joined",(userList:any) =>{
 
-    })
+    });
+    this.socket.on("nimblyReplied",() => {
+    this.messages.splice(this.thinkingIndicesMessages[0] as number,1);
+    this.thinkingIndicesMessages.pop();
+    this.thinking = false;
+    });
     this.socket.on('connect_error', (error:string) => {
       console.log(error)
     this.errorMessage = 'Failed to reconnect. Please check your internet connection and try again';
@@ -210,7 +214,7 @@ export class ChatlogsComponent implements OnInit, OnChanges {
       senderId: senderEmail,
       timestamp: '',
       text: message,
-      aiAnswer: 'pending'
+      aiAnswer: 'sending'
     })
   }
     // Store the message in an array or a localStorage object
@@ -258,16 +262,16 @@ export class ChatlogsComponent implements OnInit, OnChanges {
 
   async getMessagesFromMongoDB(scrollBottom: boolean) {
     console.log("getting page of messages: " + this.currMessagePage);
-
+    const sessToken = localStorage.getItem("sessionToken");
     fetch(apiURL + "/api/messages/" + this.conversationId + "?page=" + this.currMessagePage, {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${sessionToken}`
+        "Authorization": `Bearer ${sessToken}`
       }
     })
     .then(response => response.json())
     .then((response: any) => {
-      if (response.length < 5) {
+      if (response.length < 20) {
         this.currMessagePage = -1; // Set it to this value to prevent any more GETs
       }
         let newMessages: Array<Message> = [];
@@ -321,8 +325,9 @@ export class ChatlogsComponent implements OnInit, OnChanges {
         }
 
         this.messages.unshift(...newMessages); // add new array of messages to the front of messages array
-      
-
+        console.log(this.messages)
+        // const chatlogs = this.Nimbly();
+        // console.log(chatlogs);
       // scrollBottom? Ok, it will scroll to the bottom after messages is updated
       // scrollBottom = false? Ok, it will scroll to 21 px away from top (To allow user to scroll up once to get next page)
       // this.playMessageSound();
@@ -335,6 +340,8 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     .catch(error => {
       console.error("Error while retrieving messages from MongoDB for this conversation: " + error);
     });
+
+
   }
 
  async sendMessage(message:string, forAI:boolean){
@@ -346,9 +353,9 @@ export class ChatlogsComponent implements OnInit, OnChanges {
       // Asking the AI:
       if (this.socket.connected){
       if (forAI) {
-        this.openAI(message);
+        await this.Nimbly(message);
       } else 
-        await this.postMessage(message, aiAnswer);
+        await this.postMessage(message);
     }
     else{
       console.log("not connected to internet, cannot send message: " + message + ": going to attempt to store")
@@ -364,63 +371,16 @@ export class ChatlogsComponent implements OnInit, OnChanges {
    const message = this.messageForm.get('message')?.value;
     let msgResult = await this.sendMessage(message,forAI);
     this.messageForm.get('message')?.setValue("");
-  //   let aiAnswer = ""; // stays empty if is wasn't a question for AI
-  //   // CHECK IF IT WAS A QUESTION FOR AI, IF SO:
-  //     // Call server.js to contact AI and get an answer before sending to socket.io
 
-  //   if (message !== "") {
-  //     // Asking the AI:
-  //     if (this.socket.connect){
-  //     if (forAI) {
-  //       this.openAI(message);
-  //     } else 
-  //       this.postMessage(message, aiAnswer);
-  //   }
-  //   else{
-  //     this.storeCachedMessage(message, forAI);
-  //     // this.messageForm.get('message')?.setValue("Lost connection...");
-  //   }
-  // }
-  // else{
-
-  // }
   }
 
-  async postMessage(message: string, aiAnswer: string) {
+  async postMessage(message: string) {
      const timestamp = new Date().toUTCString();
     let sessionToken = localStorage.getItem("sessionToken")
     // Send message to Socket.io
-    this.socket.emit("message", this.conversationId, this.myId, message, timestamp, aiAnswer,sessionToken);
-    // Post message to MongoDb "Messages" collection:
-    
-    // await fetch(apiURL + "/api/messages/" + this.conversationId, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "Authorization": `Bearer ${sessionToken}`
-    //   },
-    //   body: JSON.stringify({
-    //     senderId: this.myId,
-    //     // timestamp: timestamp,
-    //     text: message,
-    //     aiAnswer: aiAnswer
-    //   })
-    // }) 
-    // .then(response => {
-    //   if (response.ok) {
-    //     console.log('Message sent successfully.');
-    //     return "sent"
-    //   } else {
-    //     // throw new Error(`Failed to send message to MongoDB (status ${response.status}). (POST to /messages)`);
-    //     return "failed to send message"
-    //   }
-    // })
-    // .catch(error => {
-    //   return "failed to send message";
-    //   // console.error('An error occurred while accepting the conversation request (POST to /conversation):', error);
-    // });
-     // clear input field:
-    //  return "failed to send message"
+    //empty string for ai answer since this will only be used for posting regular messages
+    this.socket.emit("message", this.conversationId, this.myId, message, timestamp, "",sessionToken);
+
   }
 
   openAddUserToConvDialog() {
@@ -446,56 +406,50 @@ export class ChatlogsComponent implements OnInit, OnChanges {
     this.currentConversationIdChange.emit("0");
   }
 
-
-  openAI(prompt: string) {  
-    let engine = 'text-davinci-002';
-
-    const request = new XMLHttpRequest();
-    request.open('POST', 'https://finaltest-ten.vercel.app/api/handleAI/premium');
-    request.setRequestHeader('Content-Type', 'application/json');
-    request.setRequestHeader('Authorization', `Bearer ${sessionToken}`);
-
-    request.onload = async () =>  {
-      // loader.close(SpinnerOverlayComponentComponent);
-      if (request.status >= 200 && request.status < 400) {
-        // Success!
-        const response = JSON.parse(request.responseText);
-        const completedText = response.completedText;
-
-        // close loading modal:
-        
-
-        if (response.credits){
-          console.log(response.credits + " new credit amount")
-          
-          // BOB-TODO: Reduce credit amount by one:
-          // this.creditAmount = response.credits;
-        }
-
-        console.log("AI Responded to '" + prompt + "': " + completedText)
-        await this.postMessage(prompt, completedText);
-      } else {
-        // There was an error
-        const completedText = request.responseText;
-        await this.postMessage(prompt, completedText);
-        console.error("ERROR when sending to OpenAI: " + request.responseText);
+   async Nimbly(prompt:string){
+    const timestamp = new Date().toUTCString();
+    const chatLogs = this.messages.slice(-20)
+    .map((message, i) => {
+      const sender = message.senderId.split('@')[0];
+      const isBot = message.aiAnswer !== "";
+      const senderLabel = isBot ? "Nimbly" : sender;
+      let messageText:string = message.text;
+      if (isBot) {
+        messageText = `${sender} asked Nimbly: ${message.text} \n ${senderLabel} replied: ${message.aiAnswer}`;
       }
-    };
+      return {
+        role: isBot ? 'assistant' : 'user',
+        content: `${senderLabel}: ${messageText}`
+      };
+    });
+    const sessToken = localStorage.getItem("sessionToken");
+   let pushPrompt = {role:"user", content:`${localStorage.getItem("email")?.toString().split('@')[0]} asked Nimbly ${prompt}`}
+   let systemMessage = {role:"system", content:"You are a chat bot named Nimbly. You only need to reply not include details unless you are specifically adressing a user in the chat."}
+  // push adds at end of array.
+   chatLogs.push(pushPrompt);
+   //unshift adds at beginning of array
+   chatLogs.unshift(systemMessage);
+   // prompt is the "message", and pushPrompt is what's going to actually be asked to the artificial intelligence including all of the previous context
+   this.socket.emit("askNimbly",this.conversationId, this.myId, prompt, timestamp, chatLogs,sessToken);
+   //
+   let email = localStorage.getItem("email")
+   if (email != null){
 
-    request.onerror = function() {
-      // loader.close(SpinnerOverlayComponentComponent);
-      console.error('An error occurred while making the request');
-    };
-   
-   
-    const data = {
-      model: engine,
-      prompt: 
-      ` the following is the past messages of the chat in an array for context ` + JSON.stringify(this.messages) + ` Please do not mention your characterstics unless specifically asked to, please reply to the following text to the best of your ability: ` + prompt
-    };
-    // var loader = this.dialogOpener.open(SpinnerOverlayComponentComponent);
-    
-    request.send(JSON.stringify(data));
+    this.messages.push({
+      conversationId: this.conversationId,
+      messageStatus:'sending',
+      senderId: email,
+      timestamp: '',
+      text: prompt,
+      aiAnswer: 'thinking'
+    })
+    this.thinkingIndicesMessages.push(this.messages.length - 1);
+    this.thinking = true;
+    setTimeout(() => {
+      this.scrollDown(true);
+    }, 0);
+   }
+  
   }
 
 

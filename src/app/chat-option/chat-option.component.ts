@@ -11,7 +11,8 @@ export class ChatOptionComponent implements OnInit {
 
   // String to display for other users (OTHER THAN current user) IDs:
   userIds = ""; 
-
+  recentMessage:string = "";
+  recentMessageTimestamp:string = "10pm";
   // User's unique identifier is their email
   myId = localStorage.getItem("email") || "";
 
@@ -21,6 +22,28 @@ export class ChatOptionComponent implements OnInit {
     // Fill userIds with IDs of all users except current one:
     if (this.conversation)
       this.userIds = GetUserIdsStringFromArray(this.conversation.userIds, this.myId);
+      this.recentMessage = this.conversation?.recentMessage as string;
+      const inputDate = new Date(this.conversation?.recentMessageTimestamp as string); // Convert the input date string to a Date object
+
+      const today = new Date(); // Get the current date object
+
+      // Check if the input date is the same as today
+      if (inputDate.getDate() === today.getDate() &&
+        inputDate.getMonth() === today.getMonth() &&
+        inputDate.getFullYear() === today.getFullYear()) {
+
+      // If the input date is today, print only the time
+      const timeString = inputDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      this.recentMessageTimestamp = timeString;
+        }
+      else if (inputDate.toLocaleDateString() == "Invalid Date"){
+        this.recentMessageTimestamp = "New";
+      }
+        else{
+          const timeStamp = inputDate.toLocaleDateString();
+          this.recentMessageTimestamp = timeStamp;
+        }
+      
   }
 
 }

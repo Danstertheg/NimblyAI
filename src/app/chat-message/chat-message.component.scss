@@ -6,9 +6,11 @@
 
     margin: auto;
     width:70%;
-    border: 2px solid #9ff9c3;
-    color:#dcfce3;
-    background-color: #1b1c26;
+    // border: 2px solid #9ff9c3;
+    // color:#dcfce3;
+    // background-color: #1b1c26;
+    color:black;
+    background-color: #fff;
     border-radius: 5px;
     
     margin: 10px auto 10px auto;
@@ -23,8 +25,10 @@ p{
     overflow-wrap: anywhere;
 }
 .ai-question {
-    background: rgb(51, 51, 51);
-}
+    // background: rgb(51, 51, 51);
+    // background-color: #ADD8E6;
+    background-color:#89CFF0;
+  }
 
 
 .loading::after{

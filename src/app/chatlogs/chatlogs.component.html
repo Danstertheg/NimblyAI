@@ -39,18 +39,17 @@
     <p *ngIf = "errorMessage != '' " style = "text-align: center;width:100%;color:firebrick;padding:0px;">{{errorMessage}}</p>
   </div>
 <!--[disabled]="!this.socket.connected"-->
-  <form [formGroup]="messageForm" class="chatInput" (keyup.enter)="handleMessage(false)">
+  <form *ngIf = "!thinking" [formGroup]="messageForm" class="chatInput" (keyup.enter)="handleMessage(this.userIds === '(Only You)')">
     <textarea class="input" id="message" formControlName="message"></textarea>
-    <button class="submit" type="button" (click)="handleMessage(false)"
-      
+    <button *ngIf = "this.userIds != '(Only You)'" class="submit" type="button" (click)="handleMessage(false)"
     >
       Send
     </button>
 
-    <button class="submit ai" 
+    <button  class="submit ai" 
       (click)="handleMessage(true)"
     >
-      AI
+      Ask Nimbly
     </button>
   </form>
 </div>

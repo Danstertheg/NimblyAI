@@ -54,6 +54,8 @@ import { SuccessSignupMsgComponent } from './success-signup-msg/success-signup-m
 import { VerificationPageComponent } from './verification-page/verification-page.component';
 import { FAQPageComponent } from './faq-page/faq-page.component';
 import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
+import { FeedbackFormComponent } from './feedback-form/feedback-form.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
@@ -92,6 +94,8 @@ import { MaintenancePageComponent } from './maintenance-page/maintenance-page.co
     VerificationPageComponent,
     FAQPageComponent,
     MaintenancePageComponent,
+    FeedbackFormComponent,
+    LandingPageComponent,
     
     
   ],

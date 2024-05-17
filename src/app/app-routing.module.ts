@@ -1,10 +1,12 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AccountPageComponent } from './account-page/account-page.component';
 import { EinsteinChatComponent } from './einstein-chat/einstein-chat.component';
 import { EinsteinWriterComponent } from './einstein-writer/einstein-writer.component';
 import { FAQPageComponent } from './faq-page/faq-page.component';
+import { FeedbackFormComponent } from './feedback-form/feedback-form.component';
 import { HomepageComponent } from './homepage/homepage.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
 import { NavigationPageComponent } from './navigation-page/navigation-page.component';
@@ -25,7 +27,9 @@ const routes: Routes = [
   {path: 'navigationPage', component:NavigationPageComponent},
   {path: 'verificationPage', component:VerificationPageComponent},
   {path: 'FAQPage', component:FAQPageComponent},
-  {path: 'maintenance', component:MaintenancePageComponent}
+  {path: 'maintenance', component:MaintenancePageComponent},
+  {path: 'feedback', component:FeedbackFormComponent},
+  {path: 'landingPage', component:LandingPageComponent}
 ];
 
 @NgModule({

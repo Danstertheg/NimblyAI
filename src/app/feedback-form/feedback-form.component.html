@@ -1,0 +1,24 @@
+
+<div class = "feedbackPage" style = "height:100%;width:100%;margin:0 !important;">
+	<app-header></app-header>
+	<div class="container">
+		<mat-icon fontIcon="arrow_back_ios" class = "return-btn" (click)="redirectAccountPage()"></mat-icon>
+		<h1>Leave Feedback</h1>
+		<form action="#" method="post" [formGroup] ="feedback">
+			<label for="name">Name:</label>
+			<input type="text" id="name" name="name" formControlName = "name" required>
+
+			<label for="email">Email:</label>
+			<input type="text" id="email" name="email" formControlName = "email" required>
+
+			<label for="feedback">Feedback:</label>
+			<textarea id="feedback" name="feedback" rows="5" formControlName = "feedback" required></textarea>
+
+			<label for="bugs">Bugs:</label>
+			<textarea id="bugs" name="bugs" rows="5" formControlName = "bugs"></textarea>
+
+			<input type="submit" value="Submit">
+		</form>
+	</div>
+
+</div>

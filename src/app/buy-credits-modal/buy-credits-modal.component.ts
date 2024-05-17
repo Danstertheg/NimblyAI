@@ -35,9 +35,8 @@ export class BuyCreditsModalComponent implements OnInit {
   cardElement!: StripeCardElement | null;
   @ViewChild('cardElement') cardElementRef!: ElementRef;
   async ngOnInit() {
-    this.stripe = await loadStripe('pk_test_51MNnWjKl4N1skbwW4K1RF0AwxDA65F8pNATGyus2HNEeR2MBo4Ucn8cgyW3qA2pKQwj1atOWuuyZvIeZmTJggX7Q00NlmJXMkW');
+    this.stripe = await loadStripe('FAKE_KEY');
      // Create a new instance of the Stripe object with your publishable API key
-    //  this.stripe = await loadStripe('pk_live_51MNnWjKl4N1skbwWrjgV50vyNMquahvMUnNdKpc14TJpEk9YEGCsoRCsjLuG4fLUri5aGensmuqqv9yOFsP63EWG00aCyL1aZA');
      // Create a new instance of the Elements object
      if (this.stripe !== null){
      this.elements = this.stripe.elements();

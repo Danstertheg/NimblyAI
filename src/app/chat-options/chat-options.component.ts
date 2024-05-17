@@ -4,7 +4,6 @@ import { Conversation } from '../domains/conversation';
 import { ConversationRequest } from '../domains/conversation-request';
 import { CreateNewConversationComponent } from '../chat-dialogs/create-new-conversation/create-new-conversation.component';
 import io from "socket.io-client";
-import {Clipboard} from '@angular/cdk/clipboard';
 import { MatTooltip } from '@angular/material/tooltip';
 
 // Socket Io (Glitch) URL:
@@ -157,11 +156,14 @@ See you on the platform.`;
     .then(response => response.json())
     .then((response: any) => {
       for(const conv of response) {
+        console.log(conv.recentMessage)
         //good it is pushing items correctly from chat options here 
         this.conversations.push({
           _id: conv._id,
           userIds: conv.userIds,
-          token:conv.token
+          token:conv.token,
+          recentMessage:conv.recentMessage,
+          recentMessageTimestamp:conv.recentMessageTimestamp
         })
       }
     })
@@ -225,5 +227,23 @@ See you on the platform.`;
   openCreateConversationDialog() {
     this.createConversationDialog.open(CreateNewConversationComponent);
   }
+  startNimblyChat() {
 
+    if (!this.socket.connected){
+alert("error establishing connection")     
+ return
+    }
+    const authToken = localStorage.getItem("sessionToken");
+
+
+      const invitedEmails = JSON.stringify([]);
+
+      const invitingEmail = localStorage.getItem("email");
+      
+      this.socket.emit("invitation",invitedEmails,invitingEmail,authToken);
+
+
+    // close dialog (this component)
+    // this.dialogRef.close();
+  }
 }

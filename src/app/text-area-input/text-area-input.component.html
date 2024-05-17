@@ -14,7 +14,7 @@
           <!-- <form  [formGroup] = "AITabZero"> -->
           <input id="tab2-1" name="tabs-two" type="radio" (click) = "selectTabOne()" [checked] = 'tabOne'>
           <!-- </form> -->
-          <div style = "padding:0px;height:100%;">
+          <div style = "padding:0px;height:calc(100% - 115px);;">
             <!-- <h4>Tab One</h4> -->
             <form class="AI-Input" [formGroup] = "AIWriter">
             <textarea id='text' placeholder="No more than 750 characters" maxLength='750' name = "AIInput" formControlName = "AIInput"></textarea>
@@ -26,7 +26,7 @@
           <!-- <form  [formGroup] = "AITab"> -->
           <input id="tab2-2" name="tabs-two" type="radio" (click) ="selectTabTwo" [checked] = 'tabTwo'>
           <!-- </form> -->
-          <div style = "padding:0px;height:100%;">
+          <div style = "padding:0px;height:calc(100% - 115px);;">
             <!-- <h4>Tab Two</h4> -->
             <textarea id='AIresponse'  maxLength='1000'>{{AIresponse}}</textarea>
             <!-- <div class = "AIresponse">{{AIresponse}}</div> -->
